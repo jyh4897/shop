@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import aixos from 'axios';
 import styles from './Product.module.css';
 import Question from "../Components/Question";
-import Review from "../Components/Review";
 import Questionmodal from "../Components/Questionmodal";
 
 
@@ -149,8 +148,7 @@ const Product = ()  => {
                     </div>
                     <div className={styles.productdetail}>
                         <div dangerouslySetInnerHTML={{ __html : it.description }} />
-                    </div>
-                    {/* <Review id={id} /> */}
+                    </div>                  
                     <div className={styles.productnav}>
                         <ul className={styles.nav_container}>
                             <li>상품 상세</li>
@@ -159,6 +157,7 @@ const Product = ()  => {
                             <li>배송/교환/반품 안내</li>
                         </ul>
                     </div>
+
                     <div className={styles.productnav}>
                         <ul className={styles.nav_container}>
                             <li>상품 상세</li>
