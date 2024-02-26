@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import LocalCartList from "../Compornents/Shop/LocalCartList";
+import LocalCartList from "../Components/Shop/LocalCartList";
 
 import "./Cart.css";
 

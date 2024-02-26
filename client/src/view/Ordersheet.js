@@ -6,8 +6,8 @@ import Modal from "react-modal"; // 팝업 라이브러리
 import axios from "axios";
 
 import "./Ordersheet.css";
-import PopupPaypalContent from "../Compornents/Shop/PopupPaypalContent";
-import MultiPayment from "../Compornents/Shop/MultiPayment";
+import PopupPaypalContent from "../Components/Shop/PopupPaypalContent";
+import MultiPayment from "../Components/Shop/MultiPayment";
 
 const Ordersheet = () => {
   const [userInfo, setUserInfo] = useState([]); // 로그인된 사용자 상세 정보를 저장하기 위한 상태값

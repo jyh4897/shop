@@ -1,20 +1,20 @@
 // import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Main from "./Compornents/Main";
-import Header from "./Compornents/Header";
-import Footer from "./Compornents/Footer";
+import Main from "./Components/Main";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 // 김민호(임시)-----------------
-import LoginPage from "./Compornents/Logins/Login";
-import Modify from "./Compornents/Logins/Modify";
-import Regester from "./Compornents/Logins/Regester";
-import RegesterPersonal from "./Compornents/Logins/RegesterPersonal";
-import RegesterGroup from "./Compornents/Logins/RegisterGroup";
-import RegesterCorporate from "./Compornents/Logins/RegisterCorporate";
+import LoginPage from "./Components/Logins/Login";
+import Modify from "./Components/Logins/Modify";
+import Regester from "./Components/Logins/Regester";
+import RegesterPersonal from "./Components/Logins/RegesterPersonal";
+import RegesterGroup from "./Components/Logins/RegisterGroup";
+import RegesterCorporate from "./Components/Logins/RegisterCorporate";
 // ---------------------------
 // 이기현 ------------------
 import Cart from "./view/Cart"; // 이기현_장바구니 컴포넌트
 import Ordersheet from "./view/Ordersheet"; // 이기현_오더시트 컴포넌트
-import CompleteOrder from "./Compornents/Shop/CompleteOrder"; // 이기현_주문완료 컴포넌트
+import CompleteOrder from "./Components/Shop/CompleteOrder"; // 이기현_주문완료 컴포넌트
 //-------------------------
 
 function App() {
