@@ -1,0 +1,41 @@
+* {
+    
+}
+
+.productinfo {
+    display: flex;
+    gap: 100px;
+}
+
+.imagecontainer {
+    display: flex;
+    gap: 10px;
+}
+
+.bigimage {
+    width: 500px;
+    height: 500px;
+}
+
+.bigimagedetail {
+    width: 500px;
+    height: 500px;
+}
+
+.smallimages {
+    width: 100px;
+    height: 600px;
+}
+
+.detailimage:hover {
+    cursor: pointer;
+}
+
+.selectedImage {
+    opacity: 40%;
+}
+
+.detailimage {
+    width: 100px;
+    height: 100px;
+}

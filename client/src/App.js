@@ -20,6 +20,7 @@ import Higherlist from './view/Higherlist';
 import Latestlist from "./view/Latestlist";
 import Lowerlist from "./view/Lowerlist";
 
+
 function App() {
   return (
     <Router>
@@ -48,7 +49,7 @@ function App() {
           <Route path="/shop/:categoryid/1/:page" element={<Latestlist />} />
           <Route path="/shop/:categoryid/2/:page" element={<Higherlist />} />
           <Route path="/shop/:categoryid/3/:page" element={<Lowerlist />} />
-          
+
         </Routes>
         {/* <Footer /> */}
       </div>

@@ -1,0 +1,17 @@
+* {
+    
+}
+
+.reviewitem {
+    display: flex;
+}
+
+.reviewimgcontainer {
+    display: flex;
+
+}
+
+.reviewimg {
+    width: 100px;
+    height: 100px;
+}

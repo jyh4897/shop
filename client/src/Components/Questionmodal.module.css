@@ -1,0 +1,32 @@
+* {
+
+}
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 300px;
+    background-color: white;
+    border: 1px solid #000;
+    box-shadow: 24;
+}
+
+.closebox {
+    width: 400px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.closebutton {
+    border: none;
+    background-color: white;
+    margin: 0;
+}
+
+.textbox {
+    border : 1px solid gray;
+    border-radius: 2px;
+}
