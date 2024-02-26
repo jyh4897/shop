@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import aixos from 'axios';
 import styles from './Product.module.css';
-
+import Question from "../Components/Question";
 
 
 const Product = ()  => {
@@ -164,6 +164,7 @@ const Product = ()  => {
                             <li>배송/교환/반품 안내</li>
                         </ul>
                     </div>
+                    <Question id={id} />
                     <div className={styles.productnav}>
                         <ul className={styles.nav_container}>
                             <li>상품 상세</li>
