@@ -28,10 +28,10 @@
 }
 
 .detailimage:hover {
-    cursor: pointer;
+    cursor : pointer;
 }
 
-.selectedImage {
+.selectedimage {
     opacity: 40%;
 }
 

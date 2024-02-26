@@ -35,6 +35,8 @@ app.use(express.json()); // bodyParser >> express 대체_이기현
 // CORS 설정
 app.use(cors({ origin: "http://localhost:3000" }));
 
+app.use(express.static(path.join(__dirname + "/images")));
+
 // 이기현_추가 주석 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 // 현재 MySQL 연결 설정이 각각 connection, PromiseConnection 이름으로 되어있습니다,
