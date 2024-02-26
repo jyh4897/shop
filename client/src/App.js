@@ -16,6 +16,9 @@ import Cart from "./view/Cart"; // 이기현_장바구니 컴포넌트
 import Ordersheet from "./view/Ordersheet"; // 이기현_오더시트 컴포넌트
 import CompleteOrder from "./Components/Shop/CompleteOrder"; // 이기현_주문완료 컴포넌트
 //-------------------------
+import Higherlist from './view/Higherlist';
+import Latestlist from "./view/Latestlist";
+import Lowerlist from "./view/Lowerlist";
 
 function App() {
   return (
@@ -42,6 +45,10 @@ function App() {
           <Route path="/Regester/group" element={<RegesterGroup/>}></Route>
           {/* 전윤호 */}
           {/* <Route path="/shop" element={<Shop />} /> */}
+          <Route path="/shop/:categoryid/1/:page" element={<Latestlist />} />
+          <Route path="/shop/:categoryid/2/:page" element={<Higherlist />} />
+          <Route path="/shop/:categoryid/3/:page" element={<Lowerlist />} />
+          
         </Routes>
         {/* <Footer /> */}
       </div>

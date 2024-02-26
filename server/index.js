@@ -7,6 +7,10 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");//0213 김민호 세션 추가
 const MySQLStore= require('express-mysql-session')(session);//0213 김민호 
 
+
+const multer = require('multer');
+const path = require('path');
+
 // 이기현_추가 코드 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 // chatGPT 설명
@@ -563,5 +567,94 @@ app.post("/regester", async (req, res) => {
 // });
 
 // 전윤호 -------------------------------
+
+app.get("/shop", (req,res) => {
+  const sqlQuery = "SELECT * FROM ezteam2.SHOPPRODUCTS;";
+  connection.query(sqlQuery, (err, result) => {
+      res.send(result);
+  })
+})
+
+
+app.get("/review", (req,res) => {
+  const sqlQuery = "SELECT * FROM ezteam2.productreview;";
+  connection.query(sqlQuery, (err, result) => {
+      res.send(result);
+  })
+})
+
+app.get("/question", (req,res) => {
+  const sqlQuery = "SELECT * FROM ezteam2.productquestion;";
+  connection.query(sqlQuery, (err, result) => {
+      res.send(result);
+  })
+})
+
+app.post('/question', (req, res) => {
+  const { userid, prodid, content } = req.body
+  const values = [userid, prodid, content]
+  const sqlQuery = "INSERT INTO ezteam2.productquestion (qid, userid, prodid, content, date) VALUES (null, ?, ?, ?, Now());"
+
+  connection.query(sqlQuery, values, (err, result) => {
+      if(err) {
+          console.error('Error inserting into database:',err);
+          res.status(500).send('Intenal Server Error')
+      }
+      else {
+          res.status(200).send('Files and text data upload and database updated');
+      }
+  })
+})
+
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'images/');
+  },
+  filename: (req, file, cb) => {
+      var ext = path.extname(file.originalname);
+      cb(null, `${Date.now()}${ext}`);
+  },
+})
+
+const upload = multer({ storage: storage });
+
+app.post("/review", upload.array('files', 4), async(req, res) => {
+
+  const { userid, orderid, prodid, title, content, rate } = req.body;
+  const fileColumns = ['img1', 'img2', 'img3', 'img4'];
+  const filePaths = req.files.map((file, index) => ({
+      column: fileColumns[index],
+      path: file.path
+  }));
+  console.log(filePaths[0])
+  const columns = ['date', 'userid', 'orderid', 'prodid', 'title', 'content', 'rate'];
+  const values = [ userid, orderid, prodid, title, content, rate];
+
+  filePaths.forEach(file => {
+      if (file.path) {
+          const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, '/').replace('images/', '')}`;
+          columns.push(file.column);
+          values.push(imageUrl);
+      }
+  });
+
+  const sqlQuery = `INSERT INTO ezteam2.productreview (${columns.join(', ')}) VALUES (Now(), ${Array(values.length).fill('?').join(', ')});`
+  
+  // const values = [ userid, orderid, prodid, title, content, rate, ...filePaths.map(file => file.path)];
+
+  
+
+  connection.query(sqlQuery, values, (err, result) => {
+      if(err) {
+          console.error('Error inserting into database:',err);
+          res.status(500).send('Intenal Server Error')
+      }
+      else {
+          res.status(200).send('Files and text data upload and database updated');
+      }
+  });
+});
 
 app.listen(port, () => console.log(`port${port}`));
