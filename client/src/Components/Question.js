@@ -9,7 +9,7 @@ const Question = ({ id }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPosts, setCurrentPosts] = useState(0);
     const postPerPage = 10;
-    const indexOfLastPost = count * postPerPage;
+    const indexOfLastPost = currentPage * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage;
     const [question, setQuestion] = useState([{
         questionid: '',

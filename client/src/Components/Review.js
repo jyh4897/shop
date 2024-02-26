@@ -8,10 +8,10 @@ import Paging from '../Components/Paging'
 const Review = ({id}) => {
 
     const [count, setCount] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [page, setPage] = useState(1);
     const [currentPosts, setCurrentPosts] = useState(0);
     const postPerPage = 5;
-    const indexOfLastPost = count * postPerPage;
+    const indexOfLastPost = page * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage;
     const [point, setPoint] = useState(1);
     const [reviews, setReviews] = useState([{
@@ -70,7 +70,6 @@ const Review = ({id}) => {
             }
         }
         readReview()
-        
     }, [id])
 
     useEffect(() => {
@@ -84,8 +83,16 @@ const Review = ({id}) => {
         reviewPoint()
     },[reviews]);
 
+    useEffect(() => {
+        setCurrentPosts(getSearchResult().slice(indexOfFirstPost, indexOfLastPost));
+        console.log(search)
+        console.log(reviews)
+        console.log(currentPosts)
+    }, [search, reviews, page, indexOfFirstPost, indexOfLastPost])
+
     const getSearchResult = () => {
-        return search === '' ? reviews : reviews.filter((it) => it.content.toLowerCase().includes(search.toLowerCase()));
+        console.log(reviews)
+        return search === "" ? reviews : reviews.filter((it) => it.content.toLowerCase().includes(search.toLowerCase()));
     }
 
     const onChangeSearch = (e) => {
@@ -93,12 +100,10 @@ const Review = ({id}) => {
     }
 
     const handleChangePage =(page) => {
-        setCurrentPage(page)
+        setPage(page)
     }
 
-    useEffect(() => {
-        setCurrentPosts(getSearchResult().slice(indexOfFirstPost, indexOfLastPost));
-    }, [search, reviews, currentPage, indexOfFirstPost, indexOfLastPost])
+    
 
 
 
@@ -146,7 +151,7 @@ const Review = ({id}) => {
                     <p>표시할 리뷰가 없습니다</p>
                 </div>
             )}
-            <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
+            <Paging page={page} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
         </div>
     )
 }
