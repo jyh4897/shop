@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import aixos from 'axios';
 import styles from './Product.module.css';
 import Question from "../Components/Question";
+import Review from "../Components/Review";
 
 
 const Product = ()  => {
@@ -148,6 +149,7 @@ const Product = ()  => {
                     <div className={styles.productdetail}>
                         <div dangerouslySetInnerHTML={{ __html : it.description }} />
                     </div>
+                    <Review id={id} />
                     <div className={styles.productnav}>
                         <ul className={styles.nav_container}>
                             <li>상품 상세</li>
