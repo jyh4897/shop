@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './Review.module.css';
-import { Rate } from 'antd';
+import Rate from 'rc-rate';
+import 'rc-rate/assets/index.css'
 import Paging from '../Components/Paging'
 
 const Review = ({ id }) => {
@@ -112,7 +113,7 @@ const Review = ({ id }) => {
                 <div key={it.id}>
                     <div>
                         <p>{it.userid}님</p>
-                        
+                        <p>{it.rate} / 5</p>
                     </div>
                     <div key={it.id}>
                         {it.img1 ? 
