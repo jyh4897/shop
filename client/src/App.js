@@ -44,12 +44,35 @@ function App() {
           <Route path="/Regester/personal" element={<RegesterPersonal/>}></Route>
           <Route path="/Regester/corporate" element={<RegesterCorporate/>}></Route>
           <Route path="/Regester/group" element={<RegesterGroup/>}></Route>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           {/* 전윤호 */}
           {/* <Route path="/shop" element={<Shop />} /> */}
           <Route path="/shop/:categoryid/1/:page" element={<Latestlist />} />
           <Route path="/shop/:categoryid/2/:page" element={<Higherlist />} />
           <Route path="/shop/:categoryid/3/:page" element={<Lowerlist />} />
           <Route path="/product/:id" element={<Product />} />
+
+
+
+
+
+
+
+
+
         </Routes>
         {/* <Footer /> */}
       </div>
