@@ -612,7 +612,7 @@ app.post('/question', (req, res) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, 'images/');
+      cb(null, 'server/images/');
   },
   filename: (req, file, cb) => {
       var ext = path.extname(file.originalname);
@@ -636,7 +636,7 @@ app.post("/review", upload.array('files', 4), async(req, res) => {
 
   filePaths.forEach(file => {
       if (file.path) {
-          const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, '/').replace('images/', '')}`;
+          const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, '/').replace('images/', '').replace('server/', '')}`;
           columns.push(file.column);
           values.push(imageUrl);
       }
@@ -669,7 +669,7 @@ app.post("/register", upload.array('files', 5), async(req, res) => {
   const fileColumns = ['thumbnail', 'img1', 'img2', 'img3', 'img4'];
   const filePaths = req.files.map((file, index) => ({
     column: fileColumns[index],
-    path: file.path
+    path: file.path.replace('server/', '')
   }));
 
   const columns = ['prodid', 'date', 'title', 'price', 'category', 'description'];
@@ -677,7 +677,7 @@ app.post("/register", upload.array('files', 5), async(req, res) => {
 
   filePaths.forEach(file => {
       if (file.path) {
-          const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, '/').replace('images/', '')}`;
+          const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, '/').replace('images/', '').replace('server/', '')}`;
           columns.push(file.column);
           values.push(imageUrl);
       }
