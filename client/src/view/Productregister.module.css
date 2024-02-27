@@ -1,0 +1,15 @@
+* {
+
+}
+
+.boardbox {
+    display : flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.quill {
+    width: 800px;
+
+}

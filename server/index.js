@@ -659,4 +659,47 @@ app.post("/review", upload.array('files', 4), async(req, res) => {
   });
 });
 
+app.post('/img', upload.single('img'), (req, res) => {
+  const IMG_URL = `http://localhost:8000/${req.file.filename}`;
+  res.json({ url : IMG_URL });
+});
+
+app.post("/register", upload.array('files', 5), async(req, res) => {
+  const { title, price, category, description} = req.body;
+  const fileColumns = ['thumbnail', 'img1', 'img2', 'img3', 'img4'];
+  const filePaths = req.files.map((file, index) => ({
+    column: fileColumns[index],
+    path: file.path
+  }));
+
+  const columns = ['prodid', 'date', 'title', 'price', 'category', 'description'];
+  const values = [ title, price, category, description];
+
+  filePaths.forEach(file => {
+      if (file.path) {
+          const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, '/').replace('images/', '')}`;
+          columns.push(file.column);
+          values.push(imageUrl);
+      }
+  });
+
+  const sqlQuery = `INSERT INTO ezteam2.shopproducts (${columns.join(', ')}) VALUES (null, Now(), ${Array(values.length).fill('?').join(', ')});`
+  connection.query(sqlQuery, values, (err, result) => {
+    if(err) {
+      console.error('Error inserting into database:',err);
+      res.status(500).send('Intenal Server Error')
+    }
+    else {
+        res.status(200).send('Files and text data upload and database updated');
+    }
+  })
+})
+
+app.get("/register", (req,res) => {
+  const sqlQuery = "SELECT * FROM ezteam2.SHOPPRODUCTS;";
+  connection.query(sqlQuery, (err, result) => {
+      res.send(result);
+  })
+})
+
 app.listen(port, () => console.log(`port${port}`));
