@@ -28,7 +28,7 @@ const Readerboard = () => {
             console.log('체인지')
             const file = input.files[0];
             const formData = new FormData();
-
+            
             formData.append('img', file);
             try {
                 const result = await axios.post('http://localhost:8000/img', formData);
