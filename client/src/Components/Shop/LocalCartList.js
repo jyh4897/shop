@@ -72,22 +72,22 @@ const LocalCartList = ({ cartList, setCartReset, cartListUpdate }) => {
   };
 
   // 총 상품 금액을 구하는 메소드
-  const totalCount = () => {
-    let sumCount = 0;
-    // map() 함수를 사용하여 cartList 배열 요소를 순회하며
-    // 수량과 개별 가격을 곱한 값을 sumCount에 더하면서 저장
-    cartList.map((item) => (sumCount = sumCount + item.price * item.quantity));
-    return sumCount;
-  };
+  // const totalCount = () => {
+  //   let sumCount = 0;
+  //   // map() 함수를 사용하여 cartList 배열 요소를 순회하며
+  //   // 수량과 개별 가격을 곱한 값을 sumCount에 더하면서 저장
+  //   cartList.map((item) => (sumCount = sumCount + item.price * item.quantity));
+  //   return sumCount;
+  // };
 
   // 선택 상품들의 총 금액을 구하는 메소드
-  const selectTotalCount = () => {
-    let sumCount = 0;
-    cartList.map((item) => {
-      if (item.isCheck == true) sumCount = sumCount + item.price * item.quantity;
-    });
-    return sumCount;
-  };
+  // const selectTotalCount = () => {
+  //   let sumCount = 0;
+  //   cartList.map((item) => {
+  //     if (item.isCheck == true) sumCount = sumCount + item.price * item.quantity;
+  //   });
+  //   return sumCount;
+  // };
 
   // 상품 페이지 이동 핸들러
   const onClickGoShop = () => {
@@ -123,11 +123,11 @@ const LocalCartList = ({ cartList, setCartReset, cartListUpdate }) => {
               <img src={item.thumbnail} width={100} height={100} />
             </div>
             <div className="item_text">
-              <b>{item.productName}</b>
+              <b>{item.name}</b>
               <p>{item.price.toLocaleString()}원</p>
             </div>
             <div>
-              수량:
+              <b>수량</b>
               <p>
                 <button
                   onClick={() => onClickCountDecrease(item.quantity, item.id)}
@@ -154,21 +154,20 @@ const LocalCartList = ({ cartList, setCartReset, cartListUpdate }) => {
               </p>
             </div>
             <div>
-              상품금액
+            <b>상품 금액</b>
               <p>{(item.price * item.quantity).toLocaleString()}원</p>
             </div>
-            <button key={item.id} value={item.id} onClick={onClickDelete}>
+            <button key={item.id} className="cart_delete_btn" value={item.id} onClick={onClickDelete}>
               삭제
             </button>
           </div>
         ))}
-      <hr></hr>
-      <h1>
+      {/* <h1>
         총 상품 금액 : {totalCount().toLocaleString()} 원
       </h1>
       <h2>
         선택한 상품 금액 : {selectTotalCount().toLocaleString()} 원
-      </h2>
+      </h2> */}
     </div>
   );
 };

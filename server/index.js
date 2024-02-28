@@ -329,7 +329,7 @@ app.get("/getOrderList", async (req, res, next) => {
   try {
 
     const { userId, periodDate } = req.query;
-    console.log(periodDate);
+    
     const startDate = periodDate[0]; // 시작 기간 변수 선언
     const endDate = periodDate[1]; // 끝 기간 변수 선언
 
