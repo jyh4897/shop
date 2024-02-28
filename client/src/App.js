@@ -1,6 +1,6 @@
 // import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Main from "./Components/Main";
+import Main from "./view/Main";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 // 김민호(임시)-----------------
