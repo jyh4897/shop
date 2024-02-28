@@ -1,5 +1,5 @@
 import Slider from 'react-slick'; 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef  } from 'react'
 import axios from 'axios'
 import styles from './Banner.module.css'
 import "slick-carousel/slick/slick.css";
@@ -8,13 +8,21 @@ import "slick-carousel/slick/slick-theme.css";
 
 
 const Banner = () => {
+    const slickRef = useRef(null);
+
+    const previous = useCallback(() => slickRef.current.slickPrev(), []);
+    const next = useCallback(() => slickRef.current.slickNext(), []);
 
     const settings = {
         dots: true,
         infinite: true,
+        fade: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2500,
+        arrows: false
     };
 
     const [banner, setBanner] = useState({
@@ -37,14 +45,25 @@ const Banner = () => {
 
     return (
         <div>
-            <Slider {...settings} className={styles.slidercontainer}>
-            {banner && banner.length > 0 ? 
-                banner.map((it) => (
-                    <div>
-                        <img src={it.bannerurl} className={styles.bannerimg}/>
+            <div className={styles.box}>
+                <Slider {...settings} className={styles.slidercontainer} ref={slickRef}>
+                {banner && banner.length > 0 ? 
+                    banner.map((it) => (
+                        <div>
+                            <img src={it.bannerurl} className={styles.bannerimg}/>
+                        </div>
+                    )) : ''}
+                </Slider> 
+                <div className={styles.arrowcontainer}>
+                    <div onClick={previous} className={styles.arrow}>
+                        &lt;
                     </div>
-                )) : ''}
-            </Slider>
+                    <div onClick={next} className={styles.arrow}>
+                        &gt;
+                    </div>
+                </div>               
+            </div>
+            
         </div>
     )
 }
