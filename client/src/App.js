@@ -23,6 +23,7 @@ import Latestlist from "./view/Latestlist";
 import Lowerlist from "./view/Lowerlist";
 import Product from "./view/Product";
 import Productregister from './view/Productregister'
+import Reviewwriter from "./view/Reviewwirter";
 
 function App() {
   return (
@@ -70,7 +71,7 @@ function App() {
           <Route path="/shop/:categoryid/3/:page" element={<Lowerlist />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/register" element={<Productregister />} />
-
+          <Route path="/review/:userid/:orderid/:prodid" element={<Reviewwriter />} />
 
 
 

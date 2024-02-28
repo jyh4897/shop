@@ -656,7 +656,7 @@ app.post("/review", upload.array('files', 4), async(req, res) => {
   const fileColumns = ['img1', 'img2', 'img3', 'img4'];
   const filePaths = req.files.map((file, index) => ({
       column: fileColumns[index],
-      path: file.path
+      path: file.path.replace('server/', '')
   }));
   console.log(filePaths[0])
   const columns = ['date', 'userid', 'orderid', 'prodid', 'title', 'content', 'rate'];
