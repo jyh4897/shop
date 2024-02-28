@@ -64,8 +64,8 @@ const Ordersheet = () => {
   // 3. switch => orderType, 즉 주문 형식에 따라 사용자에게 보여줄 상품들의 리스트를 설정한다.
   useEffect(() => {
     // 로컬 스토리지가 확인되지 않는다면 생성한다.
-    if (localStorage.cart === undefined) {
-      localStorage.setItem("cart", JSON.stringify([]));
+    if (localStorage.baskets === undefined) {
+      localStorage.setItem("baskets", JSON.stringify([]));
     }
 
     // <Link> 를 통한 ordersheet 접근이 아닐 경우,
@@ -76,27 +76,29 @@ const Ordersheet = () => {
       const orderTypeData = location.state;
       const { orderType } = orderTypeData;
 
-      const getUserData = JSON.parse(localStorage.getItem("user"));
-      const { id } = { ...getUserData[0] };
+      const getUserData = JSON.parse(sessionStorage.getItem("userData"));
+      const { userid } = { ...getUserData };
 
       axios
-        .get("http://localhost:3001/ordersheet", { params: { userId: id } })
-        .then((data) => setUserInfo(data.data[0]));
+        .get("http://localhost:8000/ordersheet", { params: { userId: userid } })
+        .then((data) => {
+          setUserInfo(data.data[0]);
+        });
 
       switch (orderType) {
         case "single_order":
           return setUserCart([orderTypeData]);
         case "select_order": {
           const cartProducts = JSON.parse(sessionStorage.getItem("selectCart"));
-          sessionStorage.removeItem("selectCart");
+          // sessionStorage.removeItem("selectCart");
           return setUserCart(cartProducts);
         }
         case "all_order": {
-          const cartProducts = JSON.parse(localStorage.getItem("cart"));
+          const cartProducts = JSON.parse(localStorage.getItem("baskets"));
           return setUserCart(cartProducts);
         }
         default: {
-          const cartProducts = JSON.parse(localStorage.getItem("cart"));
+          const cartProducts = JSON.parse(localStorage.getItem("baskets"));
           return setUserCart(cartProducts);
         }
       }
@@ -107,15 +109,15 @@ const Ordersheet = () => {
   // 총 상품 금액을 구하는 메소드
   const totalProductAmount = () => {
     let sumAmount = 0;
-    userCart.map((item) => (sumAmount += item.price * item.count));
+    userCart.map((item) => (sumAmount += item.price * item.quantity));
     return sumAmount;
   };
 
   // "주문자 정보 가져오기" 버튼 핸들러, 각 상태에 사용자 정보를 저장하고 갱신함.
   const onClickLoadRecipient = () => {
-    setNameInfo(userInfo.name);
-    setPhoneNumberInfo(userInfo.phoneNumber);
-    setAddressInfo(userInfo.address);
+    setNameInfo(userInfo.username);
+    setPhoneNumberInfo(userInfo.phonenumber);
+    setAddressInfo(userInfo.address+ ", " + userInfo.detailedaddress);
   };
 
   // 포인트 사용량 핸들러
@@ -163,7 +165,7 @@ const Ordersheet = () => {
 
     // createOrderNumber에는 주문번호를 생성한다.
     const createOrderNumber =
-      String(userInfo.id) +
+      String(userInfo.userid) +
       String(date.getFullYear()) +
       String(date.getMonth() + 1) +
       String(date.getDate()) +
@@ -171,7 +173,7 @@ const Ordersheet = () => {
       String(date.getMinutes()) +
       String(date.getSeconds()) +
       "-" +
-      String(userCart[0].productCode);
+      String(userCart[0].id);
 
     // 서버에 전달할 데이터를 담을 변수 배열 설정
     const reqOrderSheet = [];
@@ -183,7 +185,7 @@ const Ordersheet = () => {
       reqOrderSheet.push({
         ...data,
         orderNumber: createOrderNumber,
-        // userId: userInfo.id,
+        userId: userInfo.userid,
         name: nameInfo,
         addr: addressInfo,
         phoneNumber: phoneNumberInfo,
@@ -192,6 +194,8 @@ const Ordersheet = () => {
         totalAmount: totalProductAmount() - usePoint,
         payment: payment,
         usePoint: usePoint,
+        imageURL: data.thumbnail,
+        paymentAmount: data.price * data.quantity,
       });
     });
 
@@ -209,24 +213,25 @@ const Ordersheet = () => {
     // 서버에 엔드포인트 "/reqOrder" 로 POST 요청,
     // 전달할 데이터는 orderSheet 이름의 reqOrderSheet 객체 변수
     axios
-      .post("http://localhost:3001/reqOrder", {
+      .post("http://localhost:8000/reqOrder", {
         orderSheet: reqOrderSheet,
-        orderUserId: userInfo.id,
+        orderUserId: userInfo.userid,
       })
       // 서버에서 성공적으로 실행되었다면, 다음 then() 코드가 실행된다.
       .then(() => {
-        const getCartList = JSON.parse(localStorage.getItem("cart"));
+        const getCartList = JSON.parse(localStorage.getItem("baskets"));
         const orderProductCode = [];
 
         userCart.forEach((product) =>
-          orderProductCode.push(product.productCode)
+          orderProductCode.push(product.id)
         );
 
         const updateCartList = getCartList.filter((product) => {
-          if (orderProductCode.indexOf(product.productCode) < 0) return product;
+          if (orderProductCode.indexOf(product.id) < 0) return product;
         });
 
-        localStorage.setItem("cart", JSON.stringify(updateCartList));
+        localStorage.setItem("baskets", JSON.stringify(updateCartList));
+        sessionStorage.removeItem("selectCart");
         navigate("/completeOrder", { state: { orderData: completeOrderData } });
         // alert("주문이 완료되었습니다."); // "/completeOrder" 페이지 생성으로 폐기
         // navigate("/shop"); // "/completeOrder" 페이지 생성으로 폐기
@@ -244,17 +249,16 @@ const Ordersheet = () => {
           <div className="order_product_box">
             {userCart.map((product) => (
               <div key={product.id}>
-                <Link to={`/product/${product.productCode}`} target="_blank">
+                <Link to={`/product/${product.id}`} target="_blank">
                   <div className="order_itemBox">
                     <div className="order_item">
-                      <img src={product.imageURL} width={150} height={150} />
+                      <img src={product.thumbnail} width={150} height={150} />
                     </div>
                     <div className="order_item">
-                      <p>[{product.brand}]</p>
-                      <p>{product.productName}</p>
-                      <p>주문 수량 : {product.count} 개</p>
+                      <p>{product.name}</p>
+                      <p>주문 수량 : {product.quantity} 개</p>
                       <p>
-                        {(product.price * product.count).toLocaleString()} 원
+                        {(product.price * product.quantity).toLocaleString()} 원
                       </p>
                     </div>
                   </div>

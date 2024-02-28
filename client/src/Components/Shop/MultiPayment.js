@@ -22,7 +22,7 @@ const MultiPayment = ({ userCart, submitOrdersheet, paymentData }) => {
   // 총 상품 금액을 구하는 메소드
   const totalProductAmount = () => {
     let sumAmount = 0;
-    userCart.map((item) => (sumAmount += item.price * item.count));
+    userCart.map((item) => (sumAmount += item.price * item.quantity));
     return sumAmount;
   };
 
@@ -37,9 +37,9 @@ const MultiPayment = ({ userCart, submitOrdersheet, paymentData }) => {
         // 채널 키 설정
         channelKey: channelKey,
         paymentId: `payment-${uuidv4()}`,
-        orderName: `${userCart[0].productName} 외 ${userCart.length - 1} 건`,
-        // totalAmount: totalProductAmount(),
-        totalAmount: 1000,
+        orderName: `${userCart[0].name} 외 ${userCart.length - 1} 건`,
+        totalAmount: totalProductAmount(),
+        // totalAmount: 1000,
         currency: "CURRENCY_KRW",
         payMethod: payMethod,
         productType: "PRODUCT_TYPE_REAL",
@@ -52,9 +52,9 @@ const MultiPayment = ({ userCart, submitOrdersheet, paymentData }) => {
         // 채널 키 설정
         channelKey: channelKey,
         paymentId: `payment-${uuidv4()}`,
-        orderName: `${userCart[0].productName} 외 ${userCart.length - 1} 건`,
-        // totalAmount: totalProductAmount(),
-        totalAmount: 1000,
+        orderName: `${userCart[0].name} 외 ${userCart.length - 1} 건`,
+        totalAmount: totalProductAmount(),
+        // totalAmount: 1000,
         currency: "CURRENCY_KRW",
         payMethod: payMethod,
         productType: "PRODUCT_TYPE_REAL",

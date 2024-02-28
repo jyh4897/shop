@@ -37,17 +37,19 @@ const Cart = () => {
   useEffect(() => {
 
     // 로그인 여부를 확인한다.
-    if (!sessionStorage.loggedIn === undefined) setIsLoggedin(true);
+    if (sessionStorage.loggedIn !== undefined) {
+      setIsLoggedin(true);
+    }
 
     // 로컬 스토리지가 확인되지 않는다면 생성한다.
-    if (localStorage.cart === undefined) {
-      localStorage.setItem("cart", JSON.stringify([]));
+    if (localStorage.baskets === undefined) {
+      localStorage.setItem("baskets", JSON.stringify([]));
     }
 
     setCartReset(0);
     resetAllCheckboxes();
     // 로컬 스토리지의 데이터를 json 파일로 가져온다
-    const carts = JSON.parse(localStorage.getItem("cart"));
+    const carts = JSON.parse(localStorage.getItem("baskets"));
     setCartList(carts);
   }, [cartReset]);
 
@@ -88,7 +90,7 @@ const Cart = () => {
       const filterItem = cartList.filter((item) => item.isCheck == false);
 
       // 로컬 스토리지 갱신
-      localStorage.setItem("cart", JSON.stringify(filterItem));
+      localStorage.setItem("baskets", JSON.stringify(filterItem));
       setCartReset(1); // 페이지 리렌더링 유도(useEffect 재가동)
     }
   };

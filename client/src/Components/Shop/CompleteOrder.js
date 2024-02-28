@@ -68,12 +68,12 @@ const CompleteOrder = () => {
               <div key={product.id}>
                 <div className="order_complete_itemBox">
                   <div className="order_complete_item">
-                    <img src={product.imageURL} width={150} height={150} />
+                    <img src={product.thumbnail} width={150} height={150} />
                   </div>
                   <div className="order_complete_item">
-                    <p>{product.productName}</p>
-                    <p>주문 수량 : {product.count} 개</p>
-                    <p>{(product.price * product.count).toLocaleString()} 원</p>
+                    <p>{product.name}</p>
+                    <p>주문 수량 : {product.quantity} 개</p>
+                    <p>{(product.price * product.quantity).toLocaleString()} 원</p>
                   </div>
                 </div>
               </div>

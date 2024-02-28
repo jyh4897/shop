@@ -105,8 +105,8 @@ const createOrdersTableQuery = `CREATE TABLE IF NOT EXISTS orders (
 
   id INT AUTO_INCREMENT PRIMARY KEY,
   orderNumber VARCHAR(40) NOT NULL,
-  userId INT NOT NULL,
-  FOREIGN KEY (userId) REFERENCES login(userNumber),
+  userId INT,
+  FOREIGN KEY (userId) REFERENCES user(userid),
   productCode VARCHAR(40) NOT NULL,
   status VARCHAR(20) DEFAULT "주문완료",
   date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -122,7 +122,9 @@ const createOrdersTableQuery = `CREATE TABLE IF NOT EXISTS orders (
   payment VARCHAR(20) NOT NULL,
   refundText VARCHAR(255),
   usePoint INT DEFAULT 0,
-  imageURL VARCHAR(600)
+  imageURL VARCHAR(600),
+  paymentAmount INT DEFAULT 0,
+  reviewStatus TINYINT(1) DEFAULT 0
 );`;
 
 connection.query(createOrdersTableQuery); // orders 테이블 생성
@@ -131,141 +133,141 @@ connection.query(createOrdersTableQuery); // orders 테이블 생성
 // 현재는 장바구니 데이터에 접근할 수 없으므로 모두 주석처리
 
 // // paypal API 인증 토큰 발급
-// const generateAccessToken = async () => {
-//   try {
-//     if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
-//       throw new Error("MISSING_API_CREDENTIALS");
-//     }
+const generateAccessToken = async () => {
+  try {
+    if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+      throw new Error("MISSING_API_CREDENTIALS");
+    }
 
-//     // 인증키 암호화
-//     const auth = Buffer.from(
-//       PAYPAL_CLIENT_ID + ":" + PAYPAL_CLIENT_SECRET
-//     ).toString("base64");
+    // 인증키 암호화
+    const auth = Buffer.from(
+      PAYPAL_CLIENT_ID + ":" + PAYPAL_CLIENT_SECRET
+    ).toString("base64");
 
-//     // paypal 서버에 데이터 전송 및 응답
-//     const response = await fetch(`${base}/v1/oauth2/token`, {
-//       method: "POST",
-//       body: "grant_type=client_credentials",
-//       headers: {
-//         Authorization: `Basic ${auth}`,
-//       },
-//     });
+    // paypal 서버에 데이터 전송 및 응답
+    const response = await fetch(`${base}/v1/oauth2/token`, {
+      method: "POST",
+      body: "grant_type=client_credentials",
+      headers: {
+        Authorization: `Basic ${auth}`,
+      },
+    });
 
-//     const data = await response.json();
-//     return data.access_token;
-//   } catch (error) {
-//     console.error("Failed to generate Access Token:", error);
-//   }
-// };
+    const data = await response.json();
+    return data.access_token;
+  } catch (error) {
+    console.error("Failed to generate Access Token:", error);
+  }
+};
 
-// /**
-//  * Create an order to start the transaction.
-//  * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
-//  */
-// const createOrder = async (cart) => {
-//   // use the cart information passed from the front-end to calculate the purchase unit details
-//   console.log(
-//     "shopping cart information passed from the frontend createOrder() callback:",
-//     cart
-//   );
+/**
+ * Create an order to start the transaction.
+ * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
+ */
+const createOrder = async (cart) => {
+  // use the cart information passed from the front-end to calculate the purchase unit details
+  console.log(
+    "shopping cart information passed from the frontend createOrder() callback:",
+    cart
+  );
 
-//   let sumAmount = 0;
-//   const accessToken = await generateAccessToken(); // accessToken 발급받기
-//   const url = `${base}/v2/checkout/orders`;
-//   cart.map((item) => (sumAmount += item.price * item.count));
-//   sumAmount = Math.ceil(sumAmount / 1332.7);
+  let sumAmount = 0;
+  const accessToken = await generateAccessToken(); // accessToken 발급받기
+  const url = `${base}/v2/checkout/orders`;
+  cart.map((item) => (sumAmount += item.price * item.quantity));
+  sumAmount = Math.ceil(sumAmount / 1332.7);
 
-//   // paypal 사용자 정보
-//   const payload = {
-//     intent: "CAPTURE",
-//     purchase_units: [
-//       {
-//         amount: {
-//           currency_code: "USD",
-//           value: sumAmount,
-//         },
-//       },
-//     ],
-//   };
+  // paypal 사용자 정보
+  const payload = {
+    intent: "CAPTURE",
+    purchase_units: [
+      {
+        amount: {
+          currency_code: "USD",
+          value: sumAmount,
+        },
+      },
+    ],
+  };
 
-//   // paypal 서버에 구매 명세서를 동봉하여 데이터 전송 및 응답
-//   const response = await fetch(url, {
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${accessToken}`,
-//       // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
-//       // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-//       // "PayPal-Mock-Response": '{"mock_application_codes": "MISSING_REQUIRED_PARAMETER"}'
-//       // "PayPal-Mock-Response": '{"mock_application_codes": "PERMISSION_DENIED"}'
-//       // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
-//     },
-//     method: "POST",
-//     body: JSON.stringify(payload),
-//   });
+  // paypal 서버에 구매 명세서를 동봉하여 데이터 전송 및 응답
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
+      // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
+      // "PayPal-Mock-Response": '{"mock_application_codes": "MISSING_REQUIRED_PARAMETER"}'
+      // "PayPal-Mock-Response": '{"mock_application_codes": "PERMISSION_DENIED"}'
+      // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
+    },
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 
-//   return handleResponse(response);
-// };
+  return handleResponse(response);
+};
 
-// /**
-//  * Capture payment for the created order to complete the transaction.
-//  * @see https://developer.paypal.com/docs/api/orders/v2/#orders_capture
-//  */
-// const captureOrder = async (orderID) => {
-//   const accessToken = await generateAccessToken();
-//   const url = `${base}/v2/checkout/orders/${orderID}/capture`;
+/**
+ * Capture payment for the created order to complete the transaction.
+ * @see https://developer.paypal.com/docs/api/orders/v2/#orders_capture
+ */
+const captureOrder = async (orderID) => {
+  const accessToken = await generateAccessToken();
+  const url = `${base}/v2/checkout/orders/${orderID}/capture`;
 
-//   const response = await fetch(url, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${accessToken}`,
-//       // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
-//       // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-//       // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
-//       // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
-//       // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
-//     },
-//   });
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
+      // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
+      // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
+      // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
+      // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
+    },
+  });
 
-//   return handleResponse(response);
-// };
+  return handleResponse(response);
+};
 
-// // 응답받은 데이터를 json() 변환
-// async function handleResponse(response) {
-//   try {
-//     const jsonResponse = await response.json();
-//     return {
-//       jsonResponse,
-//       httpStatusCode: response.status,
-//     };
-//   } catch (err) {
-//     const errorMessage = await response.text();
-//     throw new Error(errorMessage);
-//   }
-// }
+// 응답받은 데이터를 json() 변환
+async function handleResponse(response) {
+  try {
+    const jsonResponse = await response.json();
+    return {
+      jsonResponse,
+      httpStatusCode: response.status,
+    };
+  } catch (err) {
+    const errorMessage = await response.text();
+    throw new Error(errorMessage);
+  }
+}
 
-// server.post("/orders", async (req, res) => {
-//   try {
-//     // use the cart information passed from the front-end to calculate the order amount detals
-//     const { cart } = req.body;
-//     const { jsonResponse, httpStatusCode } = await createOrder(cart);
-//     res.status(httpStatusCode).json(jsonResponse);
-//   } catch (error) {
-//     console.error("Failed to create order:", error);
-//     res.status(500).json({ error: "Failed to create order." });
-//   }
-// });
+app.post("/orders", async (req, res) => {
+  try {
+    // use the cart information passed from the front-end to calculate the order amount detals
+    const { cart } = req.body;
+    const { jsonResponse, httpStatusCode } = await createOrder(cart);
+    res.status(httpStatusCode).json(jsonResponse);
+  } catch (error) {
+    console.error("Failed to create order:", error);
+    res.status(500).json({ error: "Failed to create order." });
+  }
+});
 
-// server.post("/orders/:orderID/capture", async (req, res) => {
-//   try {
-//     const { orderID } = req.params;
-//     const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
-//     res.status(httpStatusCode).json(jsonResponse);
-//   } catch (error) {
-//     console.error("Failed to create order:", error);
-//     res.status(500).json({ error: "Failed to capture order." });
-//   }
-// });
+app.post("/orders/:orderID/capture", async (req, res) => {
+  try {
+    const { orderID } = req.params;
+    const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
+    res.status(httpStatusCode).json(jsonResponse);
+  } catch (error) {
+    console.error("Failed to create order:", error);
+    res.status(500).json({ error: "Failed to capture order." });
+  }
+});
 
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -274,24 +276,25 @@ app.post("/reqOrder", async (req, res, next) => {
   try {
     const { orderSheet } = req.body;
     const query =
-      "INSERT INTO orders (orderNumber, userId, productCode, orderName, addr, phoneNumber, reqMessage, count, totalCount, totalAmount, payment, usePoint) VALUES (?)";
+      "INSERT INTO orders (orderNumber, userId, productCode, orderName, addr, phoneNumber, reqMessage, count, totalCount, totalAmount, payment, usePoint, imageURL, paymentAmount) VALUES (?)";
 
     orderSheet.map(async (article) => {
       console.log(article);
       const data = [
         article.orderNumber,
         article.userId,
-        article.productCode,
+        article.id,
         article.name,
         article.addr,
         article.phoneNumber,
         article.reqMessage,
-        article.count,
+        article.quantity,
         article.totalCount,
         article.totalAmount,
         article.payment,
         article.usePoint,
         article.imageURL,
+        article.paymentAmount,
       ];
 
       await PromiseConnection.query(query, [data]);
@@ -310,7 +313,7 @@ app.get("/ordersheet", async (req, res, next) => {
     const { userId } = req.query;
     console.log(userId);
     const [userData] = await PromiseConnection.query(
-      "SELECT username, phoneNumber, address, userNumber FROM login WHERE userNumber = ?",
+      "SELECT username, phonenumber, address, detailedaddress, userid FROM user WHERE userid = ?",
       [userId]
     );
     return res.send(userData);
@@ -319,6 +322,31 @@ app.get("/ordersheet", async (req, res, next) => {
     next(error);
   }
 });
+
+// 사용자 주문 내역 페이지에서의 특정 기간별 주문 데이터 요청
+// GET
+app.get("/getOrderList", async (req, res, next) => {
+  try {
+
+    const { userId, periodDate } = req.query;
+    console.log(periodDate);
+    const startDate = periodDate[0]; // 시작 기간 변수 선언
+    const endDate = periodDate[1]; // 끝 기간 변수 선언
+
+    const orderQuery = "SELECT * FROM orders WHERE userId = ? AND date BETWEEN ? AND ? ORDER BY date DESC";
+    const productQuery = "SELECT prodid, title FROM shopproducts";
+
+    const [orderData] = await PromiseConnection.query(orderQuery, [userId, startDate, endDate]);
+    const [productData] = await PromiseConnection.query(productQuery);
+  
+    return res.send({orderData : orderData, productData: productData});
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+
 
 //-------------------------------로그인-----------------------------------------------
 

@@ -15,6 +15,8 @@ import RegesterCorporate from "./Components/Logins/RegisterCorporate";
 import Cart from "./view/Cart"; // 이기현_장바구니 컴포넌트
 import Ordersheet from "./view/Ordersheet"; // 이기현_오더시트 컴포넌트
 import CompleteOrder from "./Components/Shop/CompleteOrder"; // 이기현_주문완료 컴포넌트
+import MyOrderList from "./Components/Shop/MyOrderList"; // 이기현_주문내역 조회 컴포넌트
+
 //-------------------------
 import Higherlist from './view/Higherlist';
 import Latestlist from "./view/Latestlist";
@@ -37,6 +39,8 @@ function App() {
           {/* "/" 주문서 작성 페이지 라우팅 */}
           <Route exact path="/completeOrder" element={<CompleteOrder />} />
           {/* "/" 주문 완료 페이지 라우팅 */}
+          <Route exact path="/myOrderList" element={<MyOrderList />} />
+          {/* "/" 주문 내역 조회 페이지 라우팅 */}
           {/* 이주호 */}
           {/* 김민호 */}
           <Route path="/Login" element={<LoginPage />}></Route>

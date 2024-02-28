@@ -31,7 +31,7 @@ const PopupPaypalContent = ({ onClose, submitOrdersheet, userCart }) => {
   const createOrder = async () => {
     try {
       console.log("createOrder");
-      const response = await fetch("http://localhost:3001/orders", {
+      const response = await fetch("http://localhost:8000/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const PopupPaypalContent = ({ onClose, submitOrdersheet, userCart }) => {
     try {
       console.log("onApprove");
       const response = await fetch(
-        `http://localhost:3001/orders/${data.orderID}/capture`,
+        `http://localhost:8000/orders/${data.orderID}/capture`,
         {
           method: "POST",
           headers: {

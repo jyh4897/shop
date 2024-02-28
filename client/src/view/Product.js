@@ -89,7 +89,8 @@ const Product = ()  => {
             alert("이미 장바구니에 담으셨습니다.");
             return
         }
-        const data = {...products[0], 'quantity' : quantity}
+         // const data = {...products[0], 'quantity' : quantity} < 원본
+         const data = {...products[0], 'quantity' : quantity, isCheck : false}  // 추가_이기현
         baskets.push(data);
         localStorage.setItem('baskets', JSON.stringify(baskets));
     }
