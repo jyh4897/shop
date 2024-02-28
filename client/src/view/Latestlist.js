@@ -93,7 +93,7 @@ const Latestlist = () => {
                 {currentPosts && currentPosts.map((product) => (
                     <div key={product.id} className={styles.proditem}>
                         <ul>
-                            <Link to={`/product/${product.id}`} target="_blank">
+                            <Link to={`/product/${product.id}`}>
                                 <img src={product.thumbnail} className={styles.itemimg} alt="이미지"/>
                             </Link>
                             <li>{product.name}</li>
@@ -102,7 +102,7 @@ const Latestlist = () => {
                     </div>
                 ))}
             </div>
-            <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
+            <Paging page={page} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
         </div>
     )
 }
