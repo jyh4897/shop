@@ -704,5 +704,12 @@ app.get("/register", (req,res) => {
   })
 })
 
+app.get("/banner", (req,res) => {
+  const sqlQuery = "SELECT * FROM ezteam2.SHOPBANNER";
+  connection.query(sqlQuery, (err, result) => {
+    res.send(result);
+  })
+})
+
 
 app.listen(port, () => console.log(`port${port}`));
