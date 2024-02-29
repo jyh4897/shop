@@ -103,6 +103,12 @@ const Product = ()  => {
 
     const handlePurchase = () => {
 
+        const loginData = JSON.parse(sessionStorage.getItem('loggedIn'));
+
+        if (!loginData) {
+            navigate("/Login")
+        }
+        else {
         navigate("/ordersheet", {state :
             {...products[0],
             quantity: quantity,
@@ -128,7 +134,7 @@ const Product = ()  => {
          const data = {...products[0], 'quantity' : quantity, isCheck : false}  // 추가_이기현
         baskets.push(data);
         localStorage.setItem('baskets', JSON.stringify(baskets));
-
+        }
         
     }
 
