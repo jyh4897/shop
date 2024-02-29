@@ -117,7 +117,7 @@ const Ordersheet = () => {
   const onClickLoadRecipient = () => {
     setNameInfo(userInfo.username);
     setPhoneNumberInfo(userInfo.phonenumber);
-    setAddressInfo(userInfo.address+ ", " + userInfo.detailedaddress);
+    setAddressInfo(userInfo.address + ", " + userInfo.detailedaddress);
   };
 
   // 포인트 사용량 핸들러
@@ -222,9 +222,7 @@ const Ordersheet = () => {
         const getCartList = JSON.parse(localStorage.getItem("baskets"));
         const orderProductCode = [];
 
-        userCart.forEach((product) =>
-          orderProductCode.push(product.id)
-        );
+        userCart.forEach((product) => orderProductCode.push(product.id));
 
         const updateCartList = getCartList.filter((product) => {
           if (orderProductCode.indexOf(product.id) < 0) return product;
@@ -252,12 +250,16 @@ const Ordersheet = () => {
                 <Link to={`/product/${product.id}`} target="_blank">
                   <div className="order_itemBox">
                     <div className="order_item">
-                      <img src={product.thumbnail} width={150} height={150} />
+                      <img src={product.thumbnail} width={140} height={140} />
                     </div>
                     <div className="order_item">
-                      <p>{product.name}</p>
-                      <p>주문 수량 : {product.quantity} 개</p>
                       <p>
+                        <b style={{ color: "black" }}>{product.name}</b>
+                      </p>
+                      <p style={{ color: "gray" }}>
+                        주문 수량 : {product.quantity} 개
+                      </p>
+                      <p style={{ color: "gray" }}>
                         {(product.price * product.quantity).toLocaleString()} 원
                       </p>
                     </div>
@@ -280,55 +282,95 @@ const Ordersheet = () => {
               <hr></hr>
               <input
                 type="button"
+                style={{ marginRight: 10 }}
                 value={"주문자 정보 가져오기"}
                 onClick={onClickLoadRecipient}
               />
-              <p></p>
-              <label for="full_name">수령인 이름: </label>
-              <input
-                className="inputArea txtbox"
-                type="text"
-                id="full_name"
-                name="full_name"
-                value={nameInfo}
-                onChange={(e) => setNameInfo(e.target.value)}
-                required
-              ></input>
-              <p></p>
-              <label for="full_name">수령인 연락처: </label>
-              <input
-                className="inputArea txtbox"
-                type="tel"
-                id="tel"
-                name="tel"
-                value={phoneNumberInfo}
-                placeholder="000-0000-0000"
-                onChange={(e) => setPhoneNumberInfo(e.target.value)}
-                required
-              ></input>
-              <p></p>
-              <label for="address">배송 주소: </label>
-              <textarea
-                className="inputArea txtbox"
-                id="address"
-                name="address"
-                value={addressInfo}
-                onChange={(e) => setAddressInfo(e.target.value)}
-                required
-              ></textarea>
-              <p></p>* 주소지 확인 : {addressInfo}
-              <p></p>
-              <label for="req">배송 요청 사항: </label>
-              <textarea
-                className="inputArea"
-                id="req"
-                value={messageInfo}
-                name="req"
-                onChange={(e) => setMessageInfo(e.target.value)}
-              ></textarea>
+              {/* <p></p> */}
+              <span
+                style={{
+                  fontSize: 12,
+                  textDecoration: "underline",
+                  textDecorationColor: "green",
+                }}
+              >
+                * 표시는 필수 입력 사항입니다.
+              </span>
+              <table>
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td className="ordersheet_table_label">
+                      <label for="full_name">수령인 이름*</label>
+                    </td>
+                    <td>
+                      <input
+                        className="ordersheet_table_input"
+                        type="text"
+                        id="full_name"
+                        name="full_name"
+                        value={nameInfo}
+                        onChange={(e) => setNameInfo(e.target.value)}
+                        required
+                      ></input>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="ordersheet_table_label">
+                      <label for="full_name">수령인 연락처*</label>
+                    </td>
+                    <td>
+                      <input
+                        className="ordersheet_table_input"
+                        type="tel"
+                        id="tel"
+                        name="tel"
+                        value={phoneNumberInfo}
+                        placeholder="000-0000-0000"
+                        onChange={(e) => setPhoneNumberInfo(e.target.value)}
+                        required
+                      ></input>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="ordersheet_table_label">
+                      <label for="address">배송 주소*</label>
+                    </td>
+                    <td>
+                      <textarea
+                        className="ordersheet_table_input"
+                        id="address"
+                        name="address"
+                        value={addressInfo}
+                        onChange={(e) => setAddressInfo(e.target.value)}
+                        required
+                      ></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="ordersheet_table_label">주소지 확인</td>
+                    <td>{addressInfo}</td>
+                  </tr>
+                  <tr>
+                    <td className="ordersheet_table_label">
+                      <label for="req">배송 요청 사항</label>
+                    </td>
+                    <td>
+                      <textarea
+                        className="ordersheet_table_input"
+                        id="req"
+                        value={messageInfo}
+                        name="req"
+                        onChange={(e) => setMessageInfo(e.target.value)}
+                      ></textarea>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </form>
             <p></p>
             <input
+              className="positive_btn"
               type="button"
               value={"다음 단계로"}
               onClick={onClickNextUsePointSheet}
@@ -366,6 +408,7 @@ const Ordersheet = () => {
             />
             <p></p>
             <input
+              className="positive_btn"
               type="button"
               value={"다음 단계로"}
               onClick={onClickNextPaymentSheett}
@@ -382,7 +425,12 @@ const Ordersheet = () => {
             <h2>! 주문 내용을 확인하였으며, 정보 제공 등에 동의합니다.</h2>
             <h2>결제 수단 선택</h2>
             <hr></hr>
-            <input type="button" onClick={openPaypalModal} value={"Paypal"} />
+            <input
+              className="payment_btn_paypal"
+              type="button"
+              onClick={openPaypalModal}
+              value={"Paypal"}
+            />
             {paymentMethods.map((paymentData) => (
               <MultiPayment
                 paymentData={paymentData}
@@ -392,16 +440,40 @@ const Ordersheet = () => {
             ))}
           </div>
         </div>
-        <div className="payment_detail_box">
+        <div className="ordersheet_summary_container">
           <h2>결제 상세</h2>
           <hr></hr>
+          {userCart.length ? (
+            <h2>
+              상품명 :{" "}
+              <span className="emphasis_positive">{userCart[0].name}</span>{" "}
+              {userCart.length > 1 && (
+                <span>
+                  외{" "}
+                  <span className="emphasis_positive">
+                    {userCart.length - 1}
+                  </span>{" "}
+                  건
+                </span>
+              )}
+            </h2>
+          ) : (
+            <h2>장바구니에 담긴 상품이 없습니다.</h2>
+          )}
           <h2>
-            주문 금액 :{" "}
-            {(totalProductAmount() - usePoint).toLocaleString()}{" "}
-            원
+            주문 금액 : {(totalProductAmount() - usePoint).toLocaleString()} 원
           </h2>
-          + 상품 금액: {totalProductAmount().toLocaleString()} 원<p></p>+ 포인트 :{" "}
-          {usePoint.toLocaleString()}원<p></p>
+          + 상품 금액: {totalProductAmount().toLocaleString()} 원<p></p>- 포인트
+          : {usePoint.toLocaleString()}원<p></p>
+          <h3>
+            {" "}
+            ! <b style={{ color: "green" }}>도움이 필요하신가요?</b>
+          </h3>
+          <p></p>
+          <h4>Contact us</h4>
+          <h5 style={{ fontWeight: "normal" }}>월요일 ~ 금요일(영업일 기준)</h5>
+          <h5 style={{ fontWeight: "normal" }}>08.00 to 17.00</h5>
+          <h5 style={{ fontWeight: "normal" }}>담당자 : 상호형 대표님</h5>
         </div>
       </div>
       <Modal

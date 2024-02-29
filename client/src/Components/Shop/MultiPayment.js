@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import "./MultiPayment.css";
+
 const MultiPayment = ({ userCart, submitOrdersheet, paymentData }) => {
   const { paymentType, channelKey, payMethod, paymentName } = paymentData;
 
@@ -73,7 +75,21 @@ const MultiPayment = ({ userCart, submitOrdersheet, paymentData }) => {
 
   return (
     <>
-      <input type="button" onClick={onClickPayment} value={paymentName} />
+      {paymentName == "카카오 페이" ? (
+        <input
+          className="payment_btn_kakaopay"
+          type="button"
+          onClick={onClickPayment}
+          value={paymentName}
+        />
+      ) : (
+        <input
+          className="payment_btn_multi"
+          type="button"
+          onClick={onClickPayment}
+          value={paymentName}
+        />
+      )}
     </>
   );
 };

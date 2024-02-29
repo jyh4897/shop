@@ -18,37 +18,36 @@ const MyOrderList = () => {
     periodToday: "today",
     periodMonth: "month",
     periodYear: "year",
-
   };
   // const paramsPeriod = "period"; // 쿼리스트링에 사용될 key // 폐기
-  
+
   // 버튼에 내재될 값
   const orderPeriodButtons = [
     {
       btnName: "오늘",
-      addData : {
+      addData: {
         queryString: "today",
-      }
+      },
     },
     {
       btnName: "6개월",
-      addData : {
+      addData: {
         queryString: "month",
-        intervalPeriod : 6,
-      }
+        intervalPeriod: 6,
+      },
     },
     {
       btnName: "1년",
-      addData : {
+      addData: {
         queryString: "year",
-      intervalPeriod : 1,
-      }
+        intervalPeriod: 1,
+      },
     },
   ];
 
   // 기간을 도출하기 위한 메소드
   function getPeriodData(data) {
-    const {queryString, intervalPeriod} = data;
+    const { queryString, intervalPeriod } = data;
     const now = new Date(); // 날짜 객체 생성
     const periodData = new Array(); // 날짜를 저장할 배열 변수 생성
 
@@ -67,35 +66,35 @@ const MyOrderList = () => {
 
     // 만약 오늘자 데이터를 원한다면,
     // 기본값은 오늘자 데이터를 제공하도록 되어있다.
-    if(queryString == periodCategory.periodToday || queryString == "") {
+    if (queryString == periodCategory.periodToday || queryString == "") {
       // 오늘 날찌의 시작 설정, 0시 0분 0초
       periodData.push(`${year}-${month}-${day} 00:00:00`);
       periodData.reverse(); // 배열을 역순으로 변환한다.
       return periodData;
     }
-    // 6개월 간의 주문내역을 원할 경우, 
-    if(queryString == periodCategory.periodMonth) {
+    // 6개월 간의 주문내역을 원할 경우,
+    if (queryString == periodCategory.periodMonth) {
       // 6개월 전부터의 데이터를 조회해야 하므로 6(intervalPeriod)만큼 월 데이터 감소
       now.setMonth(now.getMonth() - intervalPeriod);
       month = String(now.getMonth() + 1).padStart(2, "0");
       // 만약 1~6월이라면 연도 또한 작년도로 변환한다.
       if (checkMonth <= 6) {
         now.setFullYear(now.getFullYear());
-        year = String(now.getFullYear()); 
+        year = String(now.getFullYear());
       }
     }
 
     // 1년 간의 데이터를 원할 경우,
-    if(queryString == periodCategory.periodYear) {
+    if (queryString == periodCategory.periodYear) {
       now.setFullYear(now.getFullYear() - intervalPeriod);
-      year = String(now.getFullYear()); 
+      year = String(now.getFullYear());
     }
 
     // 과거 날짜 및 시각 저장
     periodData.push(`${year}-${month}-${day} 00:00:00`);
     periodData.reverse();
     return periodData;
-  };
+  }
 
   // "오늘" 주문내역 문자열 날짜 처리(기본값)
   const getValidTodayString = () => {
@@ -120,14 +119,15 @@ const MyOrderList = () => {
   }
 
   // 주문 데이터에 품목의 title 추가 메소드
-  function mergeProductTitleForOrder(targetOrderData) { // targetOrderData :: 품목별 주문 데이터
+  function mergeProductTitleForOrder(targetOrderData) {
+    // targetOrderData :: 품목별 주문 데이터
     let targetMergeData;
     // forEach() 품목을 순회하면서,
     productInfoData.forEach((product) => {
       // 고유 품목 코드가 같다면,
       if (product.prodid == targetOrderData.productCode) {
         // 배열안에 title 속성을 추가한다.
-        targetMergeData = {...targetOrderData, title : product.title };
+        targetMergeData = { ...targetOrderData, title: product.title };
         return;
       }
     });
@@ -149,28 +149,45 @@ const MyOrderList = () => {
         const getMergeData = mergeProductTitleForOrder(data);
         if (orderDate == getMergeData.date) {
           innerHtmlOrderData.push(
-            <div>
-              <h2>
-                {getMergeData.status}
-              </h2>
+            <div className="order_detail_container">
               <div className="orderlist_container">
-                <div className="orderlist_image">
-                  <img src={getMergeData.imageURL} width={100} height={100} />
+                <div className="my_order_list_box1">
+                  <div className="orderlist_image">
+                    <img src={getMergeData.imageURL} width={120} height={120} />
+                  </div>
+                  <div className="orderlist_detail">
+                    주문 상태:{" "}
+                    <b style={{ color: "blue" }}>{getMergeData.status}</b>
+                    <p></p>
+                    {getMergeData.title}
+                    <p></p>
+                    {getMergeData.paymentAmount.toLocaleString()} 원,{" "}
+                    {getMergeData.count} 개
+                  </div>
                 </div>
-                <div className="orderlist_detail">
-                  {getMergeData.title}
-                  <p></p>
-                  {getMergeData.paymentAmount.toLocaleString()} 원, {getMergeData.count} 개
-                  </div>
-                <div className="orderlist_btn_group">
-                  <div className="orderlist_btn">
-                    <input type="button" value={"주문 상세 보기"} />
-                  </div>
-                  <div className="orderlist_btn">
-                    <input type="button" value={"리뷰 작성하기"} />
-                  </div>
-                  <div className="orderlist_btn">
-                    <input type="button" value={"주문 취소 요청"} />
+                <div className="my_order_list_box2">
+                  <div className="orderlist_btn_group">
+                    <div className="orderlist_btn">
+                      <input
+                        className="my_order_btnOrder"
+                        type="button"
+                        value={"주문 상세 보기"}
+                      />
+                    </div>
+                    <div className="orderlist_btn">
+                      <input
+                        className="my_order_btnOrder"
+                        type="button"
+                        value={"리뷰 작성하기"}
+                      />
+                    </div>
+                    <div className="orderlist_btn">
+                      <input
+                        className="my_order_btnOrder"
+                        type="button"
+                        value={"주문 취소 요청"}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -183,7 +200,6 @@ const MyOrderList = () => {
   };
 
   useEffect(() => {
-
     // 비로그인 예외처리
     if (sessionStorage.loggedIn === undefined) return;
 
@@ -211,7 +227,7 @@ const MyOrderList = () => {
         },
       })
       .then((resOrderData) => {
-        const {orderData, productData} = resOrderData.data;
+        const { orderData, productData } = resOrderData.data;
 
         orderData.forEach((data) => {
           data.date = getDateBeforeT(data.date); // 데이터 정제
@@ -226,7 +242,7 @@ const MyOrderList = () => {
   }, [orderPeriod]);
   // orderPeriod 값이 바뀔 때마다, 즉 버튼을 누를때마다 useEffect 재실행
 
-  const handleButtonClick = (queryDateData,btnName) => {
+  const handleButtonClick = (queryDateData, btnName) => {
     // navigate(`/myOrderList?${paramsPeriod}=${queryPeriod}`); // 폐기
     const periodBtns = document.querySelectorAll(".period_button");
 
@@ -244,29 +260,53 @@ const MyOrderList = () => {
   const onClickGoShop = () => {
     navigate("/shop");
   };
-  
+
   if (sessionStorage.loggedIn === undefined) {
-    return (<div>
-      <h1>페이지 접근이 거부되었습니다.</h1>
-      <h3>비로그인 상태거나 페이지에 접근할 수 있는 권한이 없습니다.</h3>
-      <input type="button" value={"쇼핑몰 홈으로 돌아가기"} onClick={onClickGoShop} />
-    </div>);
-  } else {
-  return (
-    <div>
-      {orderPeriodButtons.map((period) => (
-        <input type="button" className="period_button" key={period.btnName} value={period.btnName} onClick={() => handleButtonClick(period.addData, period.btnName)}/>
-      ))}
-      <div className="orderlist_page_container">
-        {orderData.length ? spreadOrderData(orderDateArray, orderData) : <div>
-          <h1><b style={{color: "red"}}>!</b> 주문 내역이 존재하지 않습니다.</h1>
-          
-          <input type="button" value={"쇼핑몰 홈으로 돌아가기"} onClick={onClickGoShop} />
-          </div>}
+    return (
+      <div>
+        <h1>페이지 접근이 거부되었습니다.</h1>
+        <h3>비로그인 상태거나 페이지에 접근할 수 있는 권한이 없습니다.</h3>
+        <input
+          type="button"
+          value={"쇼핑몰 홈으로 돌아가기"}
+          onClick={onClickGoShop}
+        />
       </div>
-    </div>
-  );
-}
+    );
+  } else {
+    return (
+      <div>
+        <h1>구매내역</h1>
+        <hr></hr>
+        {orderPeriodButtons.map((period) => (
+          <input
+            type="button"
+            className="period_button"
+            key={period.btnName}
+            value={period.btnName}
+            onClick={() => handleButtonClick(period.addData, period.btnName)}
+          />
+        ))}
+        <div className="orderlist_page_container">
+          {orderData.length ? (
+            spreadOrderData(orderDateArray, orderData)
+          ) : (
+            <div>
+              <h1>
+                <b style={{ color: "red" }}>!</b> 주문 내역이 존재하지 않습니다.
+              </h1>
+
+              <input
+                type="button"
+                value={"쇼핑몰 홈으로 돌아가기"}
+                onClick={onClickGoShop}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 };
 
 export default MyOrderList;

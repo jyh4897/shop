@@ -11,6 +11,11 @@ const CompleteOrder = () => {
     navigate("/shop");
   };
 
+  // 구매내역 페이지 이동 핸들러
+  const onClickMyOrderListNavigateHandler = () => {
+    navigate("/myOrderList");
+  };
+
   if (!location.state) {
     // 올바른 접근 방법이 아닐 경우
     return (
@@ -43,25 +48,77 @@ const CompleteOrder = () => {
           <b style={{ color: "green" }}>주문이 정상적으로 완료</b>되었습니다.
         </h1>
         <div className="complete_order_container">
-          <div className="order_detail_box_1">
-            <h2>주문 번호</h2>
-            <h2>{orderNumber}</h2>
-            <h1>배송지 정보</h1>
-            <hr></hr>
-            주소 : {deliveryDestAddress}
-            <p></p>
-            수령인 성명 : {deliveryDestName}
-            <p></p>
-            수령인 연락처 : {deliveryDestPhone}
-            <p></p>
-            배송 메시지 : {deliveryDestMessage}
+          <div>
+            <div className="order_detail_box_1">
+              <h1>주문 번호</h1>
+              <h2>{orderNumber}</h2>
+              <h1>배송지 정보</h1>
+              <hr></hr>
+              <table>
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td className="order_complete_delivery_destination">
+                      주소
+                    </td>
+                    <td>{deliveryDestAddress}</td>
+                  </tr>
+                  <tr>
+                    <td className="order_complete_delivery_destination">
+                      수령인 성명
+                    </td>
+                    <td>{deliveryDestName}</td>
+                  </tr>
+                  <tr>
+                    <td className="order_complete_delivery_destination">
+                      수령인 연락처
+                    </td>
+                    <td>{deliveryDestPhone}</td>
+                  </tr>
+                  <tr>
+                    <td className="order_complete_delivery_destination">
+                      배송 메시지
+                    </td>
+                    <td>{deliveryDestMessage}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <hr></hr>
+              <h1>결제 상세</h1>
+              <hr></hr>
+              <table>
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td className="order_complete_delivery_destination">
+                      <b>{paymentType}</b>
+                    </td>
+                    <td>{`${payTotalAmount.toLocaleString()} 원`}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <hr></hr>
+              <div>광고존</div>
+            </div>
+            <div>
+              <center>
+                <input
+                  type="button"
+                  className="complete_order_btnOrder"
+                  onClick={onClickShopNavigateHandler}
+                  value={"쇼핑 홈 가기"}
+                />
+                <input
+                  type="button"
+                  className="complete_order_btnOrder"
+                  onClick={onClickMyOrderListNavigateHandler}
+                  value={"구매내역 보기"}
+                />
+              </center>
+            </div>
           </div>
+
           <div className="order_detail_box_2">
-            <h1>결제 상세</h1>
-            <hr></hr>
-            <b>{paymentType}</b>
-            {`${payTotalAmount.toLocaleString()} 원`}
-            <hr></hr>
             <h1>결제 상품</h1>
             <hr></hr>
             {orderProduct.map((product) => (
@@ -71,22 +128,22 @@ const CompleteOrder = () => {
                     <img src={product.thumbnail} width={150} height={150} />
                   </div>
                   <div className="order_complete_item">
-                    <p>{product.name}</p>
+                    <p>
+                      <b>{product.name}</b>
+                    </p>
                     <p>주문 수량 : {product.quantity} 개</p>
-                    <p>{(product.price * product.quantity).toLocaleString()} 원</p>
+                    <p>
+                      <span style={{ color: "blue" }}>
+                        {(product.price * product.quantity).toLocaleString()}
+                      </span>{" "}
+                      원
+                    </p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <center>
-          <input
-            type="button"
-            onClick={onClickShopNavigateHandler}
-            value={"쇼핑 홈 가기"}
-          />
-        </center>
       </div>
     );
   }

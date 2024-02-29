@@ -35,7 +35,6 @@ const Cart = () => {
 
   // 마운트 과정에서 장바구니 데이터를 가져오는 메소드
   useEffect(() => {
-
     // 로그인 여부를 확인한다.
     if (sessionStorage.loggedIn !== undefined) {
       setIsLoggedin(true);
@@ -167,65 +166,101 @@ const Cart = () => {
   const selectTotalCount = () => {
     let sumCount = 0;
     cartList.map((item) => {
-      if (item.isCheck == true) sumCount = sumCount + item.price * item.quantity;
+      if (item.isCheck == true)
+        sumCount = sumCount + item.price * item.quantity;
     });
     return sumCount;
   };
 
-
   return (
     <div className="cart_full_container">
       <div className="cart_detail_container">
-      <h1>장바구니</h1>
-      <hr></hr>
-      <button className="cart_select_menu" onClick={allCheckedTrueItem}>전체 선택</button>
-      <button className="cart_select_menu" onClick={allCheckedFalseItem}>전체 선택 해제</button>
-      <button className="cart_select_menu" onClick={cartSelectDelete}>선택한 상품 삭제</button>
-      <hr></hr>
-      <LocalCartList
-        cartList={cartList}
-        setCartReset={setCartReset}
-        cartListUpdate={cartListUpdate}
-      />
+        <h1>장바구니</h1>
+        <hr></hr>
+        <button className="cart_select_menu" onClick={allCheckedTrueItem}>
+          전체 선택
+        </button>
+        <button className="cart_select_menu" onClick={allCheckedFalseItem}>
+          전체 선택 해제
+        </button>
+        <button className="cart_select_menu" onClick={cartSelectDelete}>
+          선택한 상품 삭제
+        </button>
+        <hr></hr>
+        <LocalCartList
+          cartList={cartList}
+          setCartReset={setCartReset}
+          cartListUpdate={cartListUpdate}
+        />
       </div>
       <div className="order_summary_container">
         <h1>주문서 요약</h1>
-        {cartList.length ? <h2>상품명 : <span className="emphasis_positive">{cartList[0].name}</span> {cartList.length > 1 && <span>외 <span className="emphasis_positive">{cartList.length - 1}</span> 건</span>}</h2> : <h2>장바구니에 담긴 상품이 없습니다.</h2>}
-        
-      <h2>
-        총 상품 금액 : <span className="emphasis_positive">{totalCount().toLocaleString()}</span> 원
-      </h2>
-      <hr></hr>
-      <h2>
-        {isCheckItem && <span>선택한 상품 금액 : <span className="emphasis_positive">{selectTotalCount().toLocaleString()}</span> 원</span>}
-      </h2>
-      {/* Link를 클릭 시, 전달할 prop 데이터로 state 값을 넘겨주게끔 함 */}
-      {isLoggedin ? (
-        <>
-        {cartList.length > 0 && 
-        <Link to="/ordersheet" state={{ orderType: orderType.allOrder }}>
-            <button className="btnOrder">모든 상품 주문하기</button>
-          </Link>
-        }
+        {cartList.length ? (
+          <h2>
+            상품명 :{" "}
+            <span className="emphasis_positive">{cartList[0].name}</span>{" "}
+            {cartList.length > 1 && (
+              <span>
+                외{" "}
+                <span className="emphasis_positive">{cartList.length - 1}</span>{" "}
+                건
+              </span>
+            )}
+          </h2>
+        ) : (
+          <h2>장바구니에 담긴 상품이 없습니다.</h2>
+        )}
+
+        <h2>
+          총 상품 금액 :{" "}
+          <span className="emphasis_positive">
+            {totalCount().toLocaleString()}
+          </span>{" "}
+          원
+        </h2>
+        <hr></hr>
+        <h2>
           {isCheckItem && (
-            <Link to="/ordersheet" state={{ orderType: orderType.selectOrder }}>
-              <button className="btnOrder" onClick={onClcikSelectOrder}>
-                선택한 상품만 주문하기
-              </button>
-            </Link>
+            <span>
+              선택한 상품 금액 :{" "}
+              <span className="emphasis_positive">
+                {selectTotalCount().toLocaleString()}
+              </span>{" "}
+              원
+            </span>
           )}
-        </>
-      ) : (
-        <>
-        ! 주문하려면 로그인이 필요합니다.
-        </>
-      )}
-      <h3> ! <b style={{color : "green"}}>도움이 필요하신가요?</b></h3>
-      <p></p>
-      <h4>Contact us</h4>
-      <h5 style={{fontWeight:"normal"}}>월요일 ~ 금요일(영업일 기준)</h5>
-      <h5 style={{fontWeight:"normal"}}>08.00 to 17.00</h5>
-      <h5 style={{fontWeight:"normal"}}>담당자 : 상호형 대표님</h5>
+        </h2>
+        {/* Link를 클릭 시, 전달할 prop 데이터로 state 값을 넘겨주게끔 함 */}
+        {isLoggedin ? (
+          <>
+            {cartList.length > 0 && (
+              <Link to="/ordersheet" state={{ orderType: orderType.allOrder }}>
+                <button className="btnOrder">모든 상품 주문하기</button>
+              </Link>
+            )}
+            {isCheckItem && (
+              <Link
+                to="/ordersheet"
+                state={{ orderType: orderType.selectOrder }}
+              >
+                <button className="btnOrder" onClick={onClcikSelectOrder}>
+                  선택한 상품만 주문하기
+                </button>
+              </Link>
+            )}
+          </>
+        ) : (
+          <>! 주문하려면 로그인이 필요합니다.</>
+        )}
+        <h3>
+          {" "}
+          ! <b style={{ color: "green" }}>도움이 필요하신가요?</b>
+        </h3>
+        <p></p>
+        <h4>Contact us</h4>
+        <h5 style={{ fontWeight: "normal" }}>월요일 ~ 금요일(영업일 기준)</h5>
+        <h5 style={{ fontWeight: "normal" }}>08.00 to 17.00</h5>
+        <h5 style={{ fontWeight: "normal" }}>담당자 : 상호형 대표님</h5>
       </div>
     </div>
   );
