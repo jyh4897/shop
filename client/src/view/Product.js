@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import aixos from 'axios';
 import styles from './Product.module.css';
@@ -23,6 +23,7 @@ const Product = ()  => {
         img3: '',
         img4: ''
     }])
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function resData() {
@@ -100,6 +101,37 @@ const Product = ()  => {
         setSelectedImageIndex(index);
     }
 
+    const handlePurchase = () => {
+
+        navigate("/ordersheet", {state :
+            {...products[0],
+            quantity: quantity,
+            orderType: "single_order"
+            }
+        })
+        if (localStorage.baskets === undefined) {
+            localStorage.setItem('baskets', JSON.stringify([]));
+        }
+
+        const baskets = JSON.parse(localStorage.getItem('baskets'));
+
+        let isExist = false;
+        baskets.forEach((item) => {
+            if(products[0].id === item.id) {
+                isExist = true;
+            };
+        });
+        if (isExist) {
+            return
+        }
+         // const data = {...products[0], 'quantity' : quantity} < 원본
+         const data = {...products[0], 'quantity' : quantity, isCheck : false}  // 추가_이기현
+        baskets.push(data);
+        localStorage.setItem('baskets', JSON.stringify(baskets));
+
+        
+    }
+
 
     return (
         <div className={styles.container}>
@@ -137,6 +169,9 @@ const Product = ()  => {
                             </div>
                             <div>
                                 <button onClick={() => onClickBasket(products)}>장바구니 추가</button>
+                            </div>
+                            <div>
+                            <button onClick={() => handlePurchase(products)}>구매하기</button>
                             </div>
                         </div>
                     </div>
