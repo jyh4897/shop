@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import styles from './Header.module.css'
 
 function Header() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -24,34 +25,52 @@ function Header() {
     <div>
       Header입니다.
       {loggedIn ? (
-        <>
-          <button className="LoginBtn" onClick={handleLogout}>
+        <ul className={styles.logincontainer}>
+          <li className={styles.LoginBtn} onClick={handleLogout}>
             로그아웃
-          </button>
-          <button>
-            <Link to="/modify">정보 수정</Link>
-          </button>
-        </>
+          </li>
+          <li>
+            <Link to="/modify">정보수정</Link>
+          </li>
+          <li>
+            <Link to="/cart">장바구니</Link>
+          </li>
+        </ul>
       ) : (
         // 로그아웃 상태일 때 로그인과 회원가입 버튼 표시
-        <>
-          <button className="LoginBtn">
+        <ul className={styles.logincontainer}>
+          <li className={styles.LoginBtn}>
             <Link to="/Login">로그인</Link>
-          </button>
-          <button>
+          </li>
+          <li>
             <Link to="/Regester">회원가입</Link>
-          </button>
-          <br />
-        </>
+          </li>
+          <li>
+            <Link to="/Login">장바구니</Link>
+          </li>
+        </ul>
       )}
       {/* 20240213 테스트 추가_이기현 */}
-      <button>
-        <Link to="/cart">장바구니</Link>
-      </button>
-      <button>
-        <Link to="/shop">상점</Link>
-      </button>
       {/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이기현 */}
+      <div className={styles.horizon}>
+      </div>
+      <ul className={styles.navcontainer}>
+        <li>전체</li>
+        <li>
+          <Link to="/shop/1/1/1">리빙</Link>
+        </li>
+        <li>
+          <Link to="/shop/2/1/1">패션</Link>
+        </li>
+        <li>
+          <Link to="/shop/3/1/1">식품</Link>
+        </li>
+        <li>
+          <Link to="/shop/4/1/1">헤어,바디</Link>
+        </li>
+      </ul>
+      <div className={styles.horizon}>
+      </div>
     </div>
   );
 }

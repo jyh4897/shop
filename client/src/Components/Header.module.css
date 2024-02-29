@@ -1,0 +1,56 @@
+* {
+
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.logincontainer a {
+    text-decoration: none;
+    color: gray
+}
+
+.logincontainer {
+    margin: 10px auto;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    width: 1280px;
+}
+
+.logincontainer li:before {
+    content: "ㅣ";
+    color : gray;
+    margin-right: 5px;
+}
+
+.logincontainer li:first-child:before {
+    content: '';
+}
+
+.navcontainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+    gap: 100px;
+    width: 1280px;
+    font-size: 15px;
+}
+
+.navcontainer a {
+    text-decoration: none;
+    color: black
+}
+
+.navcontainer a:hover {
+    color: rgb(23, 175, 23)
+}
+
+.horizon {
+    margin: 0 auto;
+    border-top: 0.1px solid gray;
+    opacity: 20%;
+    width: 1400px;
+}
