@@ -946,4 +946,20 @@ app.get("/ordercount", (req, res) => {
   });
 });
 
+
+app.delete("/review", (req, res) => {
+  const { id } = req.body
+  const value = [ id ]
+  const sqlQuery = "DELETE FROM ezteam2.productreview WHERE reviewid = ?";
+  connection.query(sqlQuery, value, (err, result) => {
+    if(err) {
+      console.error('Error deleting into database:',err);
+      res.status(500).send('Intenal Server Error')
+    }
+    else {
+        res.status(200).send('deleted');
+    }
+  })
+})
+
 app.listen(port, () => console.log(`port${port}`));

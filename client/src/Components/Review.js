@@ -96,6 +96,23 @@ const Review = ({ id }) => {
         return search === "" ? reviews : reviews.filter((it) => it.content.toLowerCase().includes(search.toLowerCase()));
     }
 
+    const handleOnDelete = async (reviews) => {
+        try {
+            await axios.delete("http://localhost:8000/review", {
+                data : {
+                    ...reviews
+                },
+                headers: {
+                    'Content-Type': `application/json`,
+                }
+            })
+            window.location.reload();           
+        }
+        catch {
+            console.error("ERROR during delete");
+        }
+    }
+
 
     return (
         <div>
@@ -103,10 +120,13 @@ const Review = ({ id }) => {
                 <input value={search} onChange={onChangeSearch} placeholder='검색어를 입력하세요' />
             </div>
             <div>
-                구매만족도
+                {currentPosts && currentPosts.length > 0 ?
                 <div>
-                    <p>{Number(point).toFixed(1)}</p>
-                </div>
+                    구매만족도
+                    <div>
+                        <p>{Number(point).toFixed(1)}/5</p>
+                    </div> 
+                </div>: '표시할 만족도가 없습니다'}
             </div>
             {currentPosts && currentPosts.length > 0 ? 
             currentPosts.map((it) => (
@@ -134,6 +154,7 @@ const Review = ({ id }) => {
                         <p className={styles.itemcontent}>{it.content}</p>
                         <p className={styles.itemdate}>{it.date}</p>
                     </div>
+                    <button onClick={() => handleOnDelete(it)}>삭제하기</button>
                 </div>
             )) :
             <p>표시할 리뷰가 없습니다.</p>}
