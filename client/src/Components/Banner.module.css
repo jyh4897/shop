@@ -20,6 +20,7 @@
 .box {
     position: relative;
     width: 1400px;
+    margin : 0 auto;
 }
 .arrowcontainer {
     margin: 0 auto;

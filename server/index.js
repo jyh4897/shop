@@ -833,4 +833,11 @@ app.get("/banner", (req, res) => {
   });
 });
 
+app.get("/ordercount", (req,res) => {
+  const sqlQuery = "SELECT sp.prodid, sp.title, sp.price, sp.thumbnail, COUNT(*) AS ordered FROM ezteam2.orders AS o INNER JOIN ezteam2.shopproducts AS sp ON o.productCode = sp.prodid GROUP BY o.productCode";
+  connection.query(sqlQuery, (err, result) => {
+    res.send(result);
+  })
+})
+
 app.listen(port, () => console.log(`port${port}`));
