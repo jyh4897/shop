@@ -337,14 +337,15 @@ const Ordersheet = () => {
                       <label for="address">배송 주소*</label>
                     </td>
                     <td>
-                      <textarea
+                      <input
+                        type="text"
                         className="ordersheet_table_input"
                         id="address"
                         name="address"
                         value={addressInfo}
                         onChange={(e) => setAddressInfo(e.target.value)}
                         required
-                      ></textarea>
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -356,13 +357,14 @@ const Ordersheet = () => {
                       <label for="req">배송 요청 사항</label>
                     </td>
                     <td>
-                      <textarea
+                      <input
+                        type="text"
                         className="ordersheet_table_input"
                         id="req"
                         value={messageInfo}
                         name="req"
                         onChange={(e) => setMessageInfo(e.target.value)}
-                      ></textarea>
+                      />
                     </td>
                   </tr>
                 </tbody>

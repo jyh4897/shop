@@ -2,6 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import "./CompleteOrder.css";
 
+import BuyerDistributionChart from "./BuyerDistributionChart";
+
 const CompleteOrder = () => {
   const location = useLocation(); // useNavigate 훅스를 통해 가져온 데이터를 다루기 위한 기능
   const navigate = useNavigate();
@@ -42,8 +44,10 @@ const CompleteOrder = () => {
       orderProduct,
     } = orderData;
 
+    console.log(orderProduct);
+
     return (
-      <div>
+      <div className="complete_order_full_container">
         <h1 style={{ textAlign: "center" }}>
           <b style={{ color: "green" }}>주문이 정상적으로 완료</b>되었습니다.
         </h1>
@@ -144,6 +148,17 @@ const CompleteOrder = () => {
             ))}
           </div>
         </div>
+        <center>
+          <div className="complete_order_chart_component">
+            <h1>상품별 구매자 분포</h1>
+            <hr></hr>
+            <div className="buyer_chart_container">
+              {orderProduct.map((product) => (
+                <BuyerDistributionChart key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </center>
       </div>
     );
   }

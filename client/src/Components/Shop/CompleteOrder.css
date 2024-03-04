@@ -48,3 +48,19 @@
   /* border: 1px solid black; */
   cursor: pointer;
 }
+
+.complete_order_chart_component {
+  background-color: rgb(233, 233, 233);
+  margin-top: 20px;
+  padding: 15px;
+  width: 950px;
+  /* display: flex; */
+  justify-content: center;
+  /* border: 1px solid black; */
+}
+
+.buyer_chart_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

@@ -4,12 +4,11 @@ const mysql = require("mysql2");
 const mysqlPromise = require("mysql2/promise");
 const bcrypt = require("bcrypt");
 // const bodyParser = require("body-parser"); // express 모듈이 대체 가능함_이기현
-const session = require("express-session");//0213 김민호 세션 추가
-const MySQLStore= require('express-mysql-session')(session);//0213 김민호 
+const session = require("express-session"); //0213 김민호 세션 추가
+const MySQLStore = require("express-mysql-session")(session); //0213 김민호
 
-
-const multer = require('multer');
-const path = require('path');
+const multer = require("multer");
+const path = require("path");
 
 // 이기현_추가 코드 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -52,19 +51,16 @@ app.use(express.static(path.join(__dirname + "/images")));
 
 // MySQL 연결 설정
 const connection = mysql.createConnection({
-
   // 외부 데이터 베이스 MySQL
   host: "1.243.246.15",
   user: "root",
   password: "1234",
   database: "ezteam2",
   port: 5005,
-
 });
 
 // 프로미스 기반 MySQL 연결 설정
 const PromiseConnection = mysqlPromise.createPool({
-
   // 외부 데이터 베이스 MySQL
   host: "1.243.246.15",
   user: "root",
@@ -95,8 +91,10 @@ app.get("/", (req, res) => res.send(`Hell'o World!`));
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 // Paypal API 접근 코드 ㅡㅡㅡ
-const PAYPAL_CLIENT_ID ="AZEh01o-yVFl957KTW72L1B3LiPyGN5Z5IJV2xTcDEfE3pBsbwt59kPiqvUbBmAacAtEmo0t9x0mzRdT";
-const PAYPAL_CLIENT_SECRET ="EJGeViT1jFj1g2V1Gtn2DM_M5DbVbn-HkGF9PNZ4x-Zy4fNB5KF067kt0NMjMZ8OE23FH3xAhdXj5dvb";
+const PAYPAL_CLIENT_ID =
+  "AZEh01o-yVFl957KTW72L1B3LiPyGN5Z5IJV2xTcDEfE3pBsbwt59kPiqvUbBmAacAtEmo0t9x0mzRdT";
+const PAYPAL_CLIENT_SECRET =
+  "EJGeViT1jFj1g2V1Gtn2DM_M5DbVbn-HkGF9PNZ4x-Zy4fNB5KF067kt0NMjMZ8OE23FH3xAhdXj5dvb";
 const base = "https://api-m.sandbox.paypal.com";
 
 // orders 테이블이 존재하지 않을 경우 생성 쿼리문
@@ -327,57 +325,124 @@ app.get("/ordersheet", async (req, res, next) => {
 // GET
 app.get("/getOrderList", async (req, res, next) => {
   try {
-
     const { userId, periodDate } = req.query;
-    
+
     const startDate = periodDate[0]; // 시작 기간 변수 선언
     const endDate = periodDate[1]; // 끝 기간 변수 선언
 
-    const orderQuery = "SELECT * FROM orders WHERE userId = ? AND date BETWEEN ? AND ? ORDER BY date DESC";
+    const orderQuery =
+      "SELECT * FROM orders WHERE userId = ? AND date BETWEEN ? AND ? ORDER BY date DESC";
     const productQuery = "SELECT prodid, title FROM shopproducts";
 
-    const [orderData] = await PromiseConnection.query(orderQuery, [userId, startDate, endDate]);
+    const [orderData] = await PromiseConnection.query(orderQuery, [
+      userId,
+      startDate,
+      endDate,
+    ]);
     const [productData] = await PromiseConnection.query(productQuery);
-  
-    return res.send({orderData : orderData, productData: productData});
+
+    return res.send({ orderData: orderData, productData: productData });
   } catch (error) {
     console.error(error);
     next(error);
   }
 });
 
+// 주문 완료 페이지에서 상품 코드를 기반으로, 해당 상품을 구매한 사용자들의 회원 식별 정보를 요청
+// GET
+app.get("/products/usertype", async (req, res, next) => {
+  try {
+    const query =
+      "SELECT user.userid, user.usertype, orders.productCode FROM user INNER JOIN orders ON user.userid = orders.userId WHERE orders.productCode = ?";
+    const { productCode } = req.query;
+    const [getUserData] = await PromiseConnection.query(query, [productCode]); // productCode 를 기반으로 쿼리문 실행
 
+    // 성별 데이터 객체
+    const userTypeCountData = {
+      buyerPersonal: 0,
+      buyerCorporate: 0,
+      buyerGroup: 0,
+    };
+
+    // 배열을 순회하며, 일치하는 성별이 있을 때마다 그 성별의 데이터를 1씩 증가
+    getUserData.forEach((userData) => {
+      const { usertype } = userData;
+
+      switch (usertype) {
+        case "1": {
+          userTypeCountData["buyerPersonal"] =
+            userTypeCountData["buyerPersonal"] + 1;
+          break;
+        }
+        case "2": {
+          userTypeCountData["buyerCorporate"] =
+            userTypeCountData["buyerCorporate"] + 1;
+          break;
+        }
+        case "3": {
+          userTypeCountData["buyerGroup"] = userTypeCountData["buyerGroup"] + 1;
+          break;
+        }
+        default: {
+          console.log("정의되지 않은 사용자 유형입니다.");
+          break;
+        }
+      }
+    });
+
+    // 백분율로 변환, 표본 수 숨기기
+    userTypeCountData["buyerPersonal"] = Math.round(
+      (userTypeCountData["buyerPersonal"] / getUserData.length) * 100
+    );
+    userTypeCountData["buyerCorporate"] = Math.round(
+      (userTypeCountData["buyerCorporate"] / getUserData.length) * 100
+    );
+    userTypeCountData["buyerGroup"] = Math.round(
+      (userTypeCountData["buyerGroup"] / getUserData.length) * 100
+    );
+
+    return res.json(userTypeCountData);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
 //-------------------------------로그인-----------------------------------------------
 
 //-------------------------------익스플로스 세션 0213------------------------------------
-const sessionStore = new MySQLStore({
-  expiration: 3600000, // 세션의 유효시간 (1시간)
-  createDatabaseTable: true, // 세션 테이블을 자동으로 생성
-  schema: {
-    tableName: 'sessions', // 세션 테이블의 이름
-    columnNames: {
-      session_id: 'session_id', // 세션 ID를 저장하는 열의 이름
-      expires: 'expires', // 세션 만료 시간을 저장하는 열의 이름
-      data: 'data', // 세션 데이터를 저장하는 열의 이름
+const sessionStore = new MySQLStore(
+  {
+    expiration: 3600000, // 세션의 유효시간 (1시간)
+    createDatabaseTable: true, // 세션 테이블을 자동으로 생성
+    schema: {
+      tableName: "sessions", // 세션 테이블의 이름
+      columnNames: {
+        session_id: "session_id", // 세션 ID를 저장하는 열의 이름
+        expires: "expires", // 세션 만료 시간을 저장하는 열의 이름
+        data: "data", // 세션 데이터를 저장하는 열의 이름
+      },
     },
   },
-}, connection);
+  connection
+);
 
-app.use(session({
-  secret: 'secretKey', // 랜덤하고 안전한 문자열로 바꾸세요.
-  resave: false,
-  saveUninitialized: true,
-  store: sessionStore,
-  cookie: {
-    maxAge: 3600000,
-    httpOnly: true,
-  },
-}));
+app.use(
+  session({
+    secret: "secretKey", // 랜덤하고 안전한 문자열로 바꾸세요.
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore,
+    cookie: {
+      maxAge: 3600000,
+      httpOnly: true,
+    },
+  })
+);
 //-------------------------------로그인------------------------------------
 
 app.post("/login", async (req, res) => {
-  const { email, password, usertype } = req.body;//usertype 추가 2/14 김민호
+  const { email, password, usertype } = req.body; //usertype 추가 2/14 김민호
 
   try {
     // 이메일을 사용하여 데이터베이스에서 사용자를 찾습니다.
@@ -395,13 +460,13 @@ app.post("/login", async (req, res) => {
               result[0].password
             );
             if (isPasswordMatch && usertype == result[0].usertype) {
-            // 0213 김민호 세션스토리 초기화 확인
-            if (!req.session) {
-              req.session = {};
-            }
-            //세션데이터 저장(새로운 데이터 추가시 이부분 수정)
-            req.session.usertype = result[0].usertype;//0213 김민호 익스플로우 세션기능 추가
-            req.session.userid = result[0].userid;//0213 김민호 익스플로우 세션기능 추가
+              // 0213 김민호 세션스토리 초기화 확인
+              if (!req.session) {
+                req.session = {};
+              }
+              //세션데이터 저장(새로운 데이터 추가시 이부분 수정)
+              req.session.usertype = result[0].usertype; //0213 김민호 익스플로우 세션기능 추가
+              req.session.userid = result[0].userid; //0213 김민호 익스플로우 세션기능 추가
 
               res.send({ success: true, message: "로그인 성공", data: result });
             } else {
@@ -415,10 +480,6 @@ app.post("/login", async (req, res) => {
             res.send({ success: false, message: "유저 정보가 없습니다." });
             //가입된 정보가 없을 시 출력
           }
-
-
-
-          
         }
       }
     );
@@ -439,14 +500,13 @@ async function generateUserid(usertype) {
     business: 2,
     organization: 3,
   }[usertype];
-  
+
   do {
     randomDigits = Math.floor(10000 + Math.random() * 90000);
     userid = `${prefix}${randomDigits}`;
   } while (usedUserNumbers.has(userid)); // 중복된 userid가 있다면 다시 생성
 
   usedUserNumbers.add(userid); // Set에 추가
-
 
   return userid;
 }
@@ -516,10 +576,18 @@ app.post("/checkEmailDuplication", (req, res) => {
 //---------------------------회원가입 기능구현----------------------------------------------
 app.post("/regester", async (req, res) => {
   // 클라이언트에서 받은 요청의 body에서 필요한 정보를 추출합니다.
-  const { username, password, email, address, detailedaddress, phonenumber, usertype: clientUsertype, businessnumber } = req.body;
+  const {
+    username,
+    password,
+    email,
+    address,
+    detailedaddress,
+    phonenumber,
+    usertype: clientUsertype,
+    businessnumber,
+  } = req.body;
 
   try {
-    
     // 비밀번호를 해시화합니다.
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -540,7 +608,17 @@ app.post("/regester", async (req, res) => {
       "INSERT INTO user (userid, username, email, password, address, detailedaddress, phonenumber, usertype, businessnumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     connection.query(
       sql,
-      [userid, username, email, hashedPassword, address, detailedaddress, phonenumber, serverUsertype, businessnumber],
+      [
+        userid,
+        username,
+        email,
+        hashedPassword,
+        address,
+        detailedaddress,
+        phonenumber,
+        serverUsertype,
+        businessnumber,
+      ],
       (err, result) => {
         if (err) {
           // 쿼리 실행 중 에러가 발생한 경우 에러를 처리합니다.
@@ -598,146 +676,161 @@ app.post("/regester", async (req, res) => {
 
 // 전윤호 -------------------------------
 
-app.get("/shop", (req,res) => {
+app.get("/shop", (req, res) => {
   const sqlQuery = "SELECT * FROM ezteam2.SHOPPRODUCTS;";
   connection.query(sqlQuery, (err, result) => {
-      res.send(result);
-  })
-})
+    res.send(result);
+  });
+});
 
-
-app.get("/review", (req,res) => {
+app.get("/review", (req, res) => {
   const sqlQuery = "SELECT * FROM ezteam2.productreview;";
   connection.query(sqlQuery, (err, result) => {
-      res.send(result);
-  })
-})
+    res.send(result);
+  });
+});
 
-app.get("/question", (req,res) => {
+app.get("/question", (req, res) => {
   const sqlQuery = "SELECT * FROM ezteam2.productquestion;";
   connection.query(sqlQuery, (err, result) => {
-      res.send(result);
-  })
-})
+    res.send(result);
+  });
+});
 
-app.post('/question', (req, res) => {
-  const { userid, prodid, content } = req.body
-  const values = [userid, prodid, content]
-  const sqlQuery = "INSERT INTO ezteam2.productquestion (qid, userid, prodid, content, date) VALUES (null, ?, ?, ?, Now());"
+app.post("/question", (req, res) => {
+  const { userid, prodid, content } = req.body;
+  const values = [userid, prodid, content];
+  const sqlQuery =
+    "INSERT INTO ezteam2.productquestion (qid, userid, prodid, content, date) VALUES (null, ?, ?, ?, Now());";
 
   connection.query(sqlQuery, values, (err, result) => {
-      if(err) {
-          console.error('Error inserting into database:',err);
-          res.status(500).send('Intenal Server Error')
-      }
-      else {
-          res.status(200).send('Files and text data upload and database updated');
-      }
-  })
-})
-
-
+    if (err) {
+      console.error("Error inserting into database:", err);
+      res.status(500).send("Intenal Server Error");
+    } else {
+      res.status(200).send("Files and text data upload and database updated");
+    }
+  });
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, 'server/images/');
+    cb(null, "server/images/");
   },
   filename: (req, file, cb) => {
-      var ext = path.extname(file.originalname);
-      cb(null, `${Date.now()}${ext}`);
+    var ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}${ext}`);
   },
-})
+});
 
 const upload = multer({ storage: storage });
 
-app.post("/review", upload.array('files', 4), async(req, res) => {
-
+app.post("/review", upload.array("files", 4), async (req, res) => {
   const { userid, orderid, prodid, title, content, rate } = req.body;
-  const fileColumns = ['img1', 'img2', 'img3', 'img4'];
-  const filePaths = req.files.map((file, index) => ({
-      column: fileColumns[index],
-      path: file.path.replace('server/', '')
-  }));
-  console.log(filePaths[0])
-  const columns = ['date', 'userid', 'orderid', 'prodid', 'title', 'content', 'rate'];
-  const values = [ userid, orderid, prodid, title, content, rate];
-
-  filePaths.forEach(file => {
-      if (file.path) {
-          const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, '/').replace('images/', '').replace('server/', '')}`;
-          columns.push(file.column);
-          values.push(imageUrl);
-      }
-  });
-
-  const sqlQuery = `INSERT INTO ezteam2.productreview (${columns.join(', ')}) VALUES (Now(), ${Array(values.length).fill('?').join(', ')});`
-  
-  // const values = [ userid, orderid, prodid, title, content, rate, ...filePaths.map(file => file.path)];
-
-  
-
-  connection.query(sqlQuery, values, (err, result) => {
-      if(err) {
-          console.error('Error inserting into database:',err);
-          res.status(500).send('Intenal Server Error')
-      }
-      else {
-          res.status(200).send('Files and text data upload and database updated');
-      }
-  });
-});
-
-app.post('/img', upload.single('img'), (req, res) => {
-  const IMG_URL = `http://localhost:8000/${req.file.filename}`;
-  res.json({ url : IMG_URL });
-});
-
-app.post("/register", upload.array('files', 5), async(req, res) => {
-  const { title, price, category, description} = req.body;
-  const fileColumns = ['thumbnail', 'img1', 'img2', 'img3', 'img4'];
+  const fileColumns = ["img1", "img2", "img3", "img4"];
   const filePaths = req.files.map((file, index) => ({
     column: fileColumns[index],
-    path: file.path.replace('server/', '')
+    path: file.path.replace("server/", ""),
   }));
+  console.log(filePaths[0]);
+  const columns = [
+    "date",
+    "userid",
+    "orderid",
+    "prodid",
+    "title",
+    "content",
+    "rate",
+  ];
+  const values = [userid, orderid, prodid, title, content, rate];
 
-  const columns = ['prodid', 'date', 'title', 'price', 'category', 'description'];
-  const values = [ title, price, category, description];
-
-  filePaths.forEach(file => {
-      if (file.path) {
-          const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, '/').replace('images/', '').replace('server/', '')}`;
-          columns.push(file.column);
-          values.push(imageUrl);
-      }
+  filePaths.forEach((file) => {
+    if (file.path) {
+      const imageUrl = `http://localhost:8000/${file.path
+        .replace(/\\/g, "/")
+        .replace("images/", "")
+        .replace("server/", "")}`;
+      columns.push(file.column);
+      values.push(imageUrl);
+    }
   });
 
-  const sqlQuery = `INSERT INTO ezteam2.shopproducts (${columns.join(', ')}) VALUES (null, Now(), ${Array(values.length).fill('?').join(', ')});`
+  const sqlQuery = `INSERT INTO ezteam2.productreview (${columns.join(
+    ", "
+  )}) VALUES (Now(), ${Array(values.length).fill("?").join(", ")});`;
 
+  // const values = [ userid, orderid, prodid, title, content, rate, ...filePaths.map(file => file.path)];
 
   connection.query(sqlQuery, values, (err, result) => {
-    if(err) {
-      console.error('Error inserting into database:',err);
-      res.status(500).send('Intenal Server Error')
+    if (err) {
+      console.error("Error inserting into database:", err);
+      res.status(500).send("Intenal Server Error");
+    } else {
+      res.status(200).send("Files and text data upload and database updated");
     }
-    else {
-        res.status(200).send('Files and text data upload and database updated');
-    }
-  })
-})
+  });
+});
 
-app.get("/register", (req,res) => {
+app.post("/img", upload.single("img"), (req, res) => {
+  const IMG_URL = `http://localhost:8000/${req.file.filename}`;
+  res.json({ url: IMG_URL });
+});
+
+app.post("/register", upload.array("files", 5), async (req, res) => {
+  const { title, price, category, description } = req.body;
+  const fileColumns = ["thumbnail", "img1", "img2", "img3", "img4"];
+  const filePaths = req.files.map((file, index) => ({
+    column: fileColumns[index],
+    path: file.path.replace("server/", ""),
+  }));
+
+  const columns = [
+    "prodid",
+    "date",
+    "title",
+    "price",
+    "category",
+    "description",
+  ];
+  const values = [title, price, category, description];
+
+  filePaths.forEach((file) => {
+    if (file.path) {
+      const imageUrl = `http://localhost:8000/${file.path
+        .replace(/\\/g, "/")
+        .replace("images/", "")
+        .replace("server/", "")}`;
+      columns.push(file.column);
+      values.push(imageUrl);
+    }
+  });
+
+  const sqlQuery = `INSERT INTO ezteam2.shopproducts (${columns.join(
+    ", "
+  )}) VALUES (null, Now(), ${Array(values.length).fill("?").join(", ")});`;
+
+  connection.query(sqlQuery, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting into database:", err);
+      res.status(500).send("Intenal Server Error");
+    } else {
+      res.status(200).send("Files and text data upload and database updated");
+    }
+  });
+});
+
+app.get("/register", (req, res) => {
   const sqlQuery = "SELECT * FROM ezteam2.SHOPPRODUCTS;";
   connection.query(sqlQuery, (err, result) => {
-      res.send(result);
-  })
-})
+    res.send(result);
+  });
+});
 
-app.get("/banner", (req,res) => {
+app.get("/banner", (req, res) => {
   const sqlQuery = "SELECT * FROM ezteam2.SHOPBANNER";
   connection.query(sqlQuery, (err, result) => {
     res.send(result);
-  })
-})
-
+  });
+});
 
 app.listen(port, () => console.log(`port${port}`));
