@@ -48,14 +48,15 @@
     color: green
 }
 
-.bestslidercontainer{
 
-}
 
 .bestitems {
     height: 600px;
     width: 1400px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 .bestcontainer {
@@ -93,3 +94,41 @@
     font-weight: 700;
 }
 
+.recommendtitle {
+    text-align: center;
+    font-size: 30px;
+}
+
+.recommendcontainer {
+    height: 600px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+}
+
+
+
+.categroycontainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.categoryitem {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.categoryimg {
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
+}
+
+.categorytitle {
+    text-align: center;
+    font-weight: 600;
+    color: black;
+}

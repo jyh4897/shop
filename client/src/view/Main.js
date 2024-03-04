@@ -70,7 +70,7 @@ useEffect(() => {
       <Banner />
       <div className={styles.bestitems}>
                 <div className={styles.besttitle}>
-                    <p>BEST</p>
+                    <span>BEST</span>
                 </div>
                 <Slider {...settings} className={styles.bestslidercontainer}>
                     {best && best.length > 0 ? best.map((it) => (
@@ -83,6 +83,47 @@ useEffect(() => {
                         </div>
                     )) : ''}
                 </Slider>
+            </div>
+            <div className={styles.recommendcontainer}>
+                <div className={styles.recommendtitle}>
+                    <strong span>추천 카테고리</strong>
+                </div>
+                <div>
+                    <ul className={styles.categroycontainer}>
+                            <li className={styles.categoryitem}>
+                                <Link to={`/shop/1/1/1`}>
+                                    <img src={"http://localhost:8000/living.jpg"} className={styles.categoryimg}/>
+                                </Link>
+                                <Link to={`/shop/1/1/1`}>
+                                    <span className={styles.categorytitle}>리빙</span>
+                                </Link>
+                            </li>
+                            <li className={styles.categoryitem}>
+                                <Link to={`/shop/2/1/1`}>
+                                    <img src={"http://localhost:8000/fashion.jpeg"} className={styles.categoryimg}/>
+                                </Link>
+                                <Link to={`/shop/2/1/1`}>
+                                    <span className={styles.categorytitle}>패션</span>
+                                </Link>                                
+                            </li>
+                                <li className={styles.categoryitem}>
+                                <Link to={`/shop/3/1/1`}>
+                                    <img src={"http://localhost:8000/grocery.jpeg"} className={styles.categoryimg}/>
+                                </Link>
+                                <Link to={`/shop/3/1/1`}>
+                                    <span className={styles.categorytitle}>식품</span>
+                                </Link>
+                            </li>
+                            <li className={styles.categoryitem}>
+                                <Link to={`/shop/4/1/1`}>
+                                    <img src={"http://localhost:8000/hair.jpg"} className={styles.categoryimg}/>
+                                </Link>
+                                <Link to={`/shop/4/1/1`}>
+                                    <span className={styles.categorytitle}>헤어,바디</span>
+                                </Link>    
+                            </li>
+                    </ul>
+                </div>
             </div>
     </div>
   )
