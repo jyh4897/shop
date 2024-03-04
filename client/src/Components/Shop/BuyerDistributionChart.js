@@ -41,7 +41,11 @@ const BuyerDistributionChart = ({ product }) => {
       {
         label: chartTitle,
         data: chartUserTypeData,
-        backgroundColor: ["rgb(0, 0, 255)", "rgb(0, 255, 0)", "rgb(255, 0, 0)"],
+        backgroundColor: [
+          "rgb(90, 226, 215)",
+          "rgb(255, 105, 185)",
+          "rgb(0, 190, 255)",
+        ],
         hoverOffset: 4,
       },
     ],

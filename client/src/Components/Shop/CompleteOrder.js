@@ -1,16 +1,41 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useRef } from "react";
+
+// https://www.npmjs.com/package/file-saver
+// https://www.npmjs.com/package/html2canvas
+import html2canvas from "html2canvas"; // 이미지 다운로드 라이브러리
+import { saveAs } from "file-saver"; // 이미지 다운로드 라이브러리
 
 import "./CompleteOrder.css";
+import downloadImage from "..//Shop/image/downloaded_icon.png"; // 다운로드 이미지
 
 import BuyerDistributionChart from "./BuyerDistributionChart";
 
 const CompleteOrder = () => {
+  // 이미지 저장에 참조가 되는 html div 태그 요소. 아직 지정하지 않았으므로 초기값은 null
+  const divRef = useRef(null);
+
   const location = useLocation(); // useNavigate 훅스를 통해 가져온 데이터를 다루기 위한 기능
   const navigate = useNavigate();
 
   // 메인 || 샵 이동 핸들러
   const onClickShopNavigateHandler = () => {
     navigate("/shop");
+  };
+
+  // 이미지 다운로드 핸들러
+  const handleDownload = async () => {
+    const div = divRef.current; // div 태그 요소를 저장
+
+    // html2canvas 라이브러리를 이용하여 참조된 div 영역을 이미지로 변환
+    const canvas = await html2canvas(div, { useCORS: true });
+    // useCORS 옵션을 true로 설정, 이미지 CORS 정책을 통과하기 위함.
+
+    // Canvas의 내용을 데이터 URL로 변환
+    const imageDataUrl = canvas.toDataURL("image/png");
+
+    // 파일로 저장
+    saveAs(imageDataUrl, "downloaded_order_complete.png");
   };
 
   // 구매내역 페이지 이동 핸들러
@@ -51,11 +76,15 @@ const CompleteOrder = () => {
         <h1 style={{ textAlign: "center" }}>
           <b style={{ color: "green" }}>주문이 정상적으로 완료</b>되었습니다.
         </h1>
-        <div className="complete_order_container">
+        <div ref={divRef} className="complete_order_container">
           <div>
             <div className="order_detail_box_1">
               <h1>주문 번호</h1>
               <h2>{orderNumber}</h2>
+              주문서 이미지 다운로드
+              <button className="image_download_btn" onClick={handleDownload}>
+                <img src={downloadImage} width={20} height={20} />
+              </button>
               <h1>배송지 정보</h1>
               <hr></hr>
               <table>

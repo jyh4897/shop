@@ -64,3 +64,7 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.image_download_btn {
+  margin-left: 10px;
+}

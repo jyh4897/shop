@@ -38,7 +38,9 @@
   width: 150px;
 } */
 .ordersheet_contanier {
+  margin-top: 30px;
   display: flex;
+  justify-content: center;
 }
 
 .order_detail_box {
@@ -59,7 +61,7 @@
   background-color: rgb(201, 201, 201);
   padding: 20px;
   /* border: 1px solid black; */
-  height: 550px;
+  height: 600px;
   width: 475px;
 }
 
@@ -93,14 +95,26 @@
   width: 390px;
   height: 30px;
   border-radius: 10px;
+  margin-right: 5px;
 }
 
 .positive_btn {
   padding: 10px;
-  height: 50px;
+  height: 40px;
   margin-left: 10px;
   font-weight: bold;
   background-color: rgb(47, 255, 116);
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.positive_btn:hover {
+  padding: 10px;
+  height: 40px;
+  margin-left: 10px;
+  font-weight: bold;
+  background-color: rgb(43, 223, 103);
   border-radius: 10px;
   border: none;
   cursor: pointer;

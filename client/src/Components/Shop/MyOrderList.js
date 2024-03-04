@@ -141,7 +141,7 @@ const MyOrderList = () => {
     loadOrderDateArray.forEach((orderDate) => {
       // orderDate :: 주문 날짜
       innerHtmlOrderData.push(
-        <div key={orderDate}>
+        <div key={orderDate} className="order_title">
           <h1>{orderDate} 주문</h1>
         </div>
       );
@@ -153,7 +153,7 @@ const MyOrderList = () => {
               <div className="orderlist_container">
                 <div className="my_order_list_box1">
                   <div className="orderlist_image">
-                    <img src={getMergeData.imageURL} width={120} height={120} />
+                    <img src={getMergeData.imageURL} width={150} height={150} />
                   </div>
                   <div className="orderlist_detail">
                     주문 상태:{" "}
@@ -276,34 +276,41 @@ const MyOrderList = () => {
   } else {
     return (
       <div>
-        <h1>구매내역</h1>
-        <hr></hr>
-        {orderPeriodButtons.map((period) => (
-          <input
-            type="button"
-            className="period_button"
-            key={period.btnName}
-            value={period.btnName}
-            onClick={() => handleButtonClick(period.addData, period.btnName)}
-          />
-        ))}
-        <div className="orderlist_page_container">
-          {orderData.length ? (
-            spreadOrderData(orderDateArray, orderData)
-          ) : (
-            <div>
-              <h1>
-                <b style={{ color: "red" }}>!</b> 주문 내역이 존재하지 않습니다.
-              </h1>
-
+        <center>
+          <div className="orderlist_page_full_container order_title">
+            <h1>구매내역</h1>
+            <hr></hr>
+            {orderPeriodButtons.map((period) => (
               <input
                 type="button"
-                value={"쇼핑몰 홈으로 돌아가기"}
-                onClick={onClickGoShop}
+                className="period_button"
+                key={period.btnName}
+                value={period.btnName}
+                onClick={() =>
+                  handleButtonClick(period.addData, period.btnName)
+                }
               />
+            ))}
+            <div className="orderlist_page_container">
+              {orderData.length ? (
+                spreadOrderData(orderDateArray, orderData)
+              ) : (
+                <div>
+                  <h1>
+                    <b style={{ color: "red" }}>!</b> 주문 내역이 존재하지
+                    않습니다.
+                  </h1>
+
+                  <input
+                    type="button"
+                    value={"쇼핑몰 홈으로 돌아가기"}
+                    onClick={onClickGoShop}
+                  />
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        </center>
       </div>
     );
   }

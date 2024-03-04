@@ -1,3 +1,10 @@
+.orderlist_page_full_container {
+  width: 850px;
+  margin-top: 30px;
+  /* border: 1px solid black; */
+  padding: 20px;
+}
+
 .orderlist_page_container {
   /* width: 900px; */
   padding: 10px 0px;
@@ -23,8 +30,11 @@
 .orderlist_container {
   display: flex;
   /* justify-content: space-between; */
+  justify-content: center;
   flex-direction: row;
+  height: 150px;
 }
+
 .orderlist_image,
 .orderlist_detail {
   margin-right: 20px;
@@ -33,7 +43,7 @@
 .my_order_list_box1,
 .my_order_list_box2 {
   display: inline-block;
-  background-color: rgb(226, 226, 226);
+  background-color: rgb(241, 241, 241);
   padding: 0px 15px;
 }
 
@@ -47,6 +57,7 @@
   display: inline-block;
 }
 .orderlist_btn_group {
+  margin-top: 20px;
   display: flex;
   float: right;
   flex-direction: column;
@@ -57,6 +68,10 @@
   display: inline-block;
 }
 
+.order_title {
+  text-align: left;
+}
+
 .my_order_btnOrder {
   width: 150px;
   height: 30px;
@@ -64,6 +79,17 @@
   font-weight: bold;
   border-radius: 20px;
   background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(163, 255, 168);
+  cursor: pointer;
+}
+
+.my_order_btnOrder:hover {
+  width: 150px;
+  height: 30px;
+  /* margin-left: 10px; */
+  font-weight: bold;
+  border-radius: 20px;
+  background-color: rgb(191, 255, 194);
   border: 1px solid rgb(163, 255, 168);
   cursor: pointer;
 }

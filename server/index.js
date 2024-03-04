@@ -127,6 +127,113 @@ const createOrdersTableQuery = `CREATE TABLE IF NOT EXISTS orders (
 
 connection.query(createOrdersTableQuery); // orders 테이블 생성
 
+// NH 환율 조회 API
+// 참조 사이트 : 농협 NH 개발자 센터
+// https://developers.nonghyup.com/
+
+const NH_url = "https://developers.nonghyup.com/InquireExchangeRate.nh";
+const NH_AccessToken =
+  "03b4a016dab0220a56ae3c81ae04f1afc988bf5db9676c91ccebca3761af9418";
+const NH_Iscd = "002358";
+
+// 날짜를 구하는 메소드
+const getValidTodayString = () => {
+  // 반환할 객체(문자열 데이터)
+  const todayStringData = {
+    tsymd: "", // YYYYMMDD
+    trtm: "", // HHMMSS
+  };
+
+  const now = new Date(); // 날짜 객체
+
+  const year = String(now.getFullYear());
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  // 객체(todayStringData)에 데이터 저장
+  todayStringData["tsymd"] = `${year}${month}${day}`;
+  todayStringData["trtm"] = `${hours}${minutes}${seconds}`;
+
+  return todayStringData;
+};
+
+// 기관거래고유번호(IsTuno) 6자리 문자열 데이터 랜덤 추출
+const getRandomIsTuno = () => {
+  const allPossibilities = 999999; // 6자리의 모든 경우의 수
+  const getCode = String(
+    Math.floor(Math.random() * allPossibilities) + 1
+  ).padStart(6, "0");
+
+  return getCode;
+};
+
+// NH 환욜 조회 요청
+// POST
+const fetchExchangeRate = async () => {
+  try {
+    // YYYYMMDD, HHMMSS 형식의 날짜 데이터 추출
+    const { tsymd, trtm } = getValidTodayString();
+
+    let data; // 반환할 최종 데이터셋
+    let whileCondition = true; // while 반복문 조건
+
+    while (whileCondition) {
+      // 요청 정보가 담긴 객체
+      const requestData = {
+        Header: {
+          ApiNm: "InquireExchangeRate",
+          Tsymd: tsymd, // YYYYMMDD 문자열 데이터
+          Trtm: trtm, // HHMMSS 문자열 데이터
+          Iscd: NH_Iscd, // 고유 기관코드
+          FintechApsno: "001",
+          ApiSvcCd: "DrawingTransferA",
+          IsTuno: getRandomIsTuno(), // 이미 사용된 기관거래고유번호는 작동 안됨_테스트 한정
+          AccessToken: NH_AccessToken, // API 접근 AccessToken
+        },
+        Btb: "0001", // 과거 환율
+        Crcd: "USD", // 미국 달러
+        Inymd: "20191213", // 환율을 조회할 날짜. 테스트버전은 "20191213" 고정값
+      };
+
+      // 환율 정보 데이터 요청(POST)
+      const response = await fetch(NH_url, {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      // 응답 받은 데이터 저장
+      data = await response.json();
+
+      // data.REC 값이 참이면 정상적으로 처리가 되었음을 의미한다. while문 종료.
+      if (data.REC) whileCondition = false;
+    }
+
+    return data.REC[0].BrgnBsrt; // 환율 매매기준율 전달 및 반환
+  } catch (error) {
+    console.error("환율 조회 요청에 실패하였습니다.", error);
+  }
+};
+
+// "/getExchangeRate" 환율 조회 요청
+app.get("/getExchangeRate", async (req, res) => {
+  try {
+    const data = await fetchExchangeRate();
+    res.json(data);
+  } catch (error) {
+    console.error("환율 조회 API에 문제가 발생하였습니다.", error);
+    res.send(false);
+  }
+});
+
+// ㅡㅡㅡㅡㅡ 환율 조회 API 종료
+
 // 여기서부터 Paypal API  코드  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 // 현재는 장바구니 데이터에 접근할 수 없으므로 모두 주석처리
 
@@ -277,7 +384,6 @@ app.post("/reqOrder", async (req, res, next) => {
       "INSERT INTO orders (orderNumber, userId, productCode, orderName, addr, phoneNumber, reqMessage, count, totalCount, totalAmount, payment, usePoint, imageURL, paymentAmount) VALUES (?)";
 
     orderSheet.map(async (article) => {
-      console.log(article);
       const data = [
         article.orderNumber,
         article.userId,
@@ -309,7 +415,6 @@ app.post("/reqOrder", async (req, res, next) => {
 app.get("/ordersheet", async (req, res, next) => {
   try {
     const { userId } = req.query;
-    console.log(userId);
     const [userData] = await PromiseConnection.query(
       "SELECT username, phonenumber, address, detailedaddress, userid FROM user WHERE userid = ?",
       [userId]
@@ -833,11 +938,12 @@ app.get("/banner", (req, res) => {
   });
 });
 
-app.get("/ordercount", (req,res) => {
-  const sqlQuery = "SELECT sp.prodid, sp.title, sp.price, sp.thumbnail, COUNT(*) AS ordered FROM ezteam2.orders AS o INNER JOIN ezteam2.shopproducts AS sp ON o.productCode = sp.prodid GROUP BY o.productCode";
+app.get("/ordercount", (req, res) => {
+  const sqlQuery =
+    "SELECT sp.prodid, sp.title, sp.price, sp.thumbnail, COUNT(*) AS ordered FROM ezteam2.orders AS o INNER JOIN ezteam2.shopproducts AS sp ON o.productCode = sp.prodid GROUP BY o.productCode";
   connection.query(sqlQuery, (err, result) => {
     res.send(result);
-  })
-})
+  });
+});
 
 app.listen(port, () => console.log(`port${port}`));

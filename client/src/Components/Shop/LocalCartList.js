@@ -130,12 +130,18 @@ const LocalCartList = ({ cartList, setCartReset, cartListUpdate }) => {
               <b>수량</b>
               <p>
                 <button
+                  className="cart_count_btn"
                   onClick={() => onClickCountDecrease(item.quantity, item.id)}
                 >
                   -
                 </button>
-                {item.quantity}
+                <input
+                  className="cart_quantity"
+                  type="button"
+                  value={item.quantity}
+                />
                 <button
+                  className="cart_count_btn"
                   value={item.quantity}
                   id={item.id}
                   onClick={onClickCountIncrease}
@@ -154,10 +160,15 @@ const LocalCartList = ({ cartList, setCartReset, cartListUpdate }) => {
               </p>
             </div>
             <div>
-            <b>상품 금액</b>
+              <b>상품 금액</b>
               <p>{(item.price * item.quantity).toLocaleString()}원</p>
             </div>
-            <button key={item.id} className="cart_delete_btn" value={item.id} onClick={onClickDelete}>
+            <button
+              key={item.id}
+              className="cart_delete_btn"
+              value={item.id}
+              onClick={onClickDelete}
+            >
               삭제
             </button>
           </div>

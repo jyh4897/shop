@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from './Header.module.css'
+import styles from "./Header.module.css";
 
 function Header() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -16,6 +16,7 @@ function Header() {
   // 로그아웃 시 세션 스토리지에서 로그인 상태 제거
   const handleLogout = () => {
     sessionStorage.removeItem("loggedIn");
+    sessionStorage.removeItem("usertype"); // 0304 이기현 추가
     sessionStorage.removeItem("userData"); //0210 상호형 추가
     setLoggedIn(false);
     navigate("/"); //0210 상호형 추가
@@ -35,6 +36,9 @@ function Header() {
           <li>
             <Link to="/cart">장바구니</Link>
           </li>
+          <li>
+            <Link to="/myOrderList">주문내역</Link>
+          </li>
         </ul>
       ) : (
         // 로그아웃 상태일 때 로그인과 회원가입 버튼 표시
@@ -52,8 +56,7 @@ function Header() {
       )}
       {/* 20240213 테스트 추가_이기현 */}
       {/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이기현 */}
-      <div className={styles.horizon}>
-      </div>
+      <div className={styles.horizon}></div>
       <ul className={styles.navcontainer}>
         <li>전체</li>
         <li>
@@ -69,8 +72,7 @@ function Header() {
           <Link to="/shop/4/1/1">헤어,바디</Link>
         </li>
       </ul>
-      <div className={styles.horizon}>
-      </div>
+      <div className={styles.horizon}></div>
     </div>
   );
 }

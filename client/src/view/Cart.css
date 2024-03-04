@@ -1,6 +1,7 @@
 .cart_full_container {
-  margin-top: 10px;
+  margin-top: 30px;
   display: flex;
+  justify-content: center;
 }
 
 .cart_detail_container {
@@ -46,6 +47,28 @@
 
 .item_text {
   width: 300px;
+}
+.cart_quantity {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid black;
+  text-align: center;
+}
+.cart_count_btn {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(160, 255, 192);
+  border: 1px solid black;
+  text-align: center;
+}
+
+.cart_count_btn:hover {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(148, 236, 177);
+  border: 1px solid black;
+  text-align: center;
 }
 
 .btnOrder {

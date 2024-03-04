@@ -2,12 +2,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Modal from "react-modal"; // 팝업 라이브러리
+import DaumPostcode from "react-daum-postcode"; // 주소 검색 라이브러리
+import { handlePostcode } from "../Components/Logins/Handle/Postcodehandle"; // 주소 검색 라이브러리
 
 import axios from "axios";
 
 import "./Ordersheet.css";
 import PopupPaypalContent from "../Components/Shop/PopupPaypalContent";
 import MultiPayment from "../Components/Shop/MultiPayment";
+import ReadExchangeRate from "../Components/Shop/ReadExchangeRate";
 
 const Ordersheet = () => {
   const [userInfo, setUserInfo] = useState([]); // 로그인된 사용자 상세 정보를 저장하기 위한 상태값
@@ -21,9 +24,11 @@ const Ordersheet = () => {
   const [viewOrdererSheet, setViewOrdererSheet] = useState(true);
   const [viewUsePointSheet, setViewUsePointSheet] = useState(false);
   const [viewPaymentSheet, setViewPaymentSheet] = useState(false);
+  const [openPostcode, setOpenPostcode] = useState(false); //주소
+
+  const handle = handlePostcode(openPostcode, setOpenPostcode, setAddressInfo);
 
   const navigate = useNavigate();
-
   const location = useLocation(); // <Link> prop으로 전달 받은 데이터를 사용하기 위한 훅스
 
   // <Link> prop으로 전달 받은 데이터를 사용하기 위해 변수에 저장
@@ -238,8 +243,6 @@ const Ordersheet = () => {
 
   return (
     <div>
-      <h1>주문/결제 페이지</h1>
-      <hr></hr>
       <div className="ordersheet_contanier">
         <div className="order_detail_box">
           <h2>주문 상품</h2>
@@ -346,6 +349,19 @@ const Ordersheet = () => {
                         onChange={(e) => setAddressInfo(e.target.value)}
                         required
                       />
+                      <input
+                        className="positive_btn"
+                        type="button"
+                        onClick={handle.clickButton}
+                        value={"주소 검색"}
+                      />
+                      {openPostcode && (
+                        <DaumPostcode
+                          onComplete={handle.selectAddress}
+                          autoClose={false}
+                          defaultQuery=""
+                        />
+                      )}
                     </td>
                   </tr>
                   <tr>
@@ -476,6 +492,7 @@ const Ordersheet = () => {
           <h5 style={{ fontWeight: "normal" }}>월요일 ~ 금요일(영업일 기준)</h5>
           <h5 style={{ fontWeight: "normal" }}>08.00 to 17.00</h5>
           <h5 style={{ fontWeight: "normal" }}>담당자 : 상호형 대표님</h5>
+          <ReadExchangeRate />
         </div>
       </div>
       <Modal
