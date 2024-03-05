@@ -65,20 +65,32 @@ const Questionmodal = ({products}) => {
             >
                 <div className={styles.modal}>
                     <div className={styles.closebox}>
+                        <span>상품 문의</span>
                         <button onClick={handleClose} className={styles.closebutton}>x</button>
                     </div>
-                    <div>
-                        <p>상품명</p>
-                        <img src={products[0].thumbnail} className={styles.modalprodimg}/>
-                        <span>{products[0].name}</span>
-                    </div>
-                    <div>
-                        <p>문의사항</p>
-                        <input type='text' className={styles.textbox} onChange={(e) => handleChangeContent(e)} />
-                    </div>
-                    <div>
-                        <button onClick={handleSubmit}>완료</button>
-                        <button onClick={handleClose}>취소하기</button>
+                    <div className={styles.contentbox}>
+                        <div className={styles.prodbox}>
+                            <div className={styles.menuname}>
+                                <p>상품명</p>
+                            </div>
+                            <div className={styles.prodname}>
+                                <img src={products[0].thumbnail} className={styles.modalprodimg}/>
+                                <span>{products[0].name}</span>
+                            </div>
+                        </div>
+                        <div className={styles.questionbox}>
+                            <div className={styles.questiontext}>
+                                <p>문의사항</p>
+                            </div>
+                            <input type='text' className={styles.textbox} onChange={(e) => handleChangeContent(e)} />
+                        </div>
+                        <div className={styles.infor}>
+                            <p>* 개인정보(주민번호, 연락처, 주소, 계좌번호, 카드번호 등)가 포함되지 않도록 유의해주세요.</p>
+                        </div>
+                        <div className={styles.btnbox}>
+                            <button onClick={handleSubmit} className={styles.inputbtn}>완료</button>
+                            <button onClick={handleClose} className={styles.closebtn}>취소</button>
+                        </div>
                     </div>
                 </div>
             </Modal>
