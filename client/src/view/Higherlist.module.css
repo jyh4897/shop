@@ -2,6 +2,42 @@
     
 }
 
+.listnavbar {
+    display: flex;
+    justify-content: space-between;
+    color: gray;
+    font-size: 12px;
+}
+
+.itemscount {
+    font-weight: 800;
+    color: black
+}
+
+.orderlist {
+    display: flex;
+}
+
+.orderlist li:before {
+    content: "ㅣ";
+    color : gray;
+    margin-right: 5px;
+}
+
+.orderlist li:first-child:before {
+    content: '';
+}
+
+.orderlist li {
+    cursor: pointer;
+}
+
+.listcontainer {
+    width: 1400px;
+    margin: 0 auto;
+}
+
+
 .listcontainer {
     width: 1400px;
     margin: 0 auto;

@@ -65,8 +65,31 @@ const Highertlist = () => {
         return search === "" ? products : products.filter((it) => it.name.toLowerCase().includes(search.toLowerCase()));
     }
 
+    const goLatest = () => {
+        navigate(`/shop/${categoryid}/1/1`)
+    }
+
+    const goHigher = () => {
+        navigate(`/shop/${categoryid}/2/1`)
+    }
+    const goLower = () => {
+        navigate(`/shop/${categoryid}/3/1`)
+    }
+
     return (
         <div className={styles.listcontainer}>
+            <div className={styles.listnavbar}>
+                <div>
+                    <ul>
+                        <li>총 <span className={styles.itemscount}>{count}</span>개의 상품이 있습니다.</li>
+                    </ul>
+                </div>
+                <ul className={styles.orderlist}>
+                    <li onClick={goLatest}>신상품</li>
+                    <li onClick={goLower}>낮은가격</li>
+                    <li onClick={goHigher}>높은가격</li>
+                </ul>
+            </div>
             <div>
                 <input value={search} onChange={onChangeSearch} className={styles.searchbar} placeholder="검색어를 입력하세요" /> 
             </div>
