@@ -2,6 +2,20 @@
 
 }
 
+.container {
+    width: 1400px;
+    margin: 0 auto;
+}
+
+.container a {
+    text-decoration: none;
+}
+
+
+.headertitle {
+    color: black;
+}
+
 ul {
     list-style: none;
     padding: 0;

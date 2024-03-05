@@ -19,7 +19,7 @@ const Highertlist = () => {
     const [count, setCount] = useState(0)
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPosts, setCurrentPosts] = useState(0);
-    const postPerPage = 10;
+    const postPerPage = 9;
     const indexOfLastPost = page * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage
     const navigate = useNavigate();
@@ -66,19 +66,19 @@ const Highertlist = () => {
     }
 
     return (
-        <div>
+        <div className={styles.listcontainer}>
             <div>
                 <input value={search} onChange={onChangeSearch} className={styles.searchbar} placeholder="검색어를 입력하세요" /> 
-            </div>\
-            <div>
+            </div>
+            <div className={styles.items}>
                 {currentPosts && currentPosts.map((product) => (
-                    <div key={product.id} className={styles.proditem}>
-                        <ul>
+                    <div key={product.id} className={styles.proditemcontainer}>
+                        <ul className={styles.itembox}>
                             <Link to={`/product/${product.id}`}>
                                 <img src={product.thumbnail} className={styles.itemimg} alt="이미지"/>
                             </Link>
-                            <li>{product.name}</li>
-                            <li>{product.price}</li>
+                            <li className={styles.productname}>{product.name}</li>
+                            <li className={styles.productprice}>{product.price.toLocaleString()}원</li>
                         </ul>
                     </div>
                 ))}

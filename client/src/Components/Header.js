@@ -23,37 +23,43 @@ function Header() {
   };
 
   return (
-    <div>
-      Header입니다.
-      {loggedIn ? (
-        <ul className={styles.logincontainer}>
-          <li className={styles.LoginBtn} onClick={handleLogout}>
-            로그아웃
-          </li>
-          <li>
-            <Link to="/modify">정보수정</Link>
-          </li>
-          <li>
-            <Link to="/cart">장바구니</Link>
-          </li>
-          <li>
-            <Link to="/myOrderList">주문내역</Link>
-          </li>
-        </ul>
-      ) : (
-        // 로그아웃 상태일 때 로그인과 회원가입 버튼 표시
-        <ul className={styles.logincontainer}>
-          <li className={styles.LoginBtn}>
-            <Link to="/Login">로그인</Link>
-          </li>
-          <li>
-            <Link to="/Regester">회원가입</Link>
-          </li>
-          <li>
-            <Link to="/Login">장바구니</Link>
-          </li>
-        </ul>
-      )}
+    <div className={styles.container}>
+      <div className={styles.hometext}>
+        <Link to="/">
+          <span className={styles.headertitle}>홈</span>
+        </Link>
+      </div>
+      <div>
+        {loggedIn ? (
+          <ul className={styles.logincontainer}>
+            <li className={styles.LoginBtn} onClick={handleLogout}>
+              로그아웃
+            </li>
+            <li>
+              <Link to="/modify">정보수정</Link>
+            </li>
+            <li>
+              <Link to="/cart">장바구니</Link>
+            </li>
+            <li>
+              <Link to="/myOrderList">주문내역</Link>
+            </li>
+          </ul>
+        ) : (
+          // 로그아웃 상태일 때 로그인과 회원가입 버튼 표시
+          <ul className={styles.logincontainer}>
+            <li className={styles.LoginBtn}>
+              <Link to="/Login">로그인</Link>
+            </li>
+            <li>
+              <Link to="/Regester">회원가입</Link>
+            </li>
+            <li>
+              <Link to="/Login">장바구니</Link>
+            </li>
+          </ul>
+        )}
+      </div>
       {/* 20240213 테스트 추가_이기현 */}
       {/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이기현 */}
       <div className={styles.horizon}></div>

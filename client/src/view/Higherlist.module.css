@@ -1,3 +1,36 @@
 * {
     
 }
+
+.listcontainer {
+    width: 1400px;
+    margin: 0 auto;
+}
+
+.items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.proditemcontainer {
+    width: 430px;
+}
+
+.itembox {
+    width: 430px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap : 10px;
+    margin : 50px 0;
+}
+
+.itemimg {
+    width: 430px;
+    height: 430px;
+}
+
+.productname {
+    
+}
