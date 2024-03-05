@@ -7,15 +7,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
-    height: 300px;
+    width: 700px;
+    height: 600px;
     background-color: white;
     border: 1px solid #000;
     box-shadow: 24;
 }
 
 .closebox {
-    width: 400px;
+    width: 700px;
     display: flex;
     justify-content: flex-end;
 }
@@ -29,4 +29,9 @@
 .textbox {
     border : 1px solid gray;
     border-radius: 2px;
+}
+
+.modalprodimg {
+    width: 100px;
+    height: 100px;
 }

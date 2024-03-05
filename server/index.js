@@ -802,21 +802,20 @@ app.get("/question", (req, res) => {
   });
 });
 
-app.post("/question", (req, res) => {
-  const { userid, prodid, content } = req.body;
-  const values = [userid, prodid, content];
-  const sqlQuery =
-    "INSERT INTO ezteam2.productquestion (qid, userid, prodid, content, date) VALUES (null, ?, ?, ?, Now());";
+app.post('/question', (req, res) => {
+  const values = req.body
+  const sqlQuery = "INSERT INTO ezteam2.productquestion (qid, prodid, userid,content, date) VALUES (null, ?, ?, ?, Now());"
 
   connection.query(sqlQuery, values, (err, result) => {
-    if (err) {
-      console.error("Error inserting into database:", err);
-      res.status(500).send("Intenal Server Error");
-    } else {
-      res.status(200).send("Files and text data upload and database updated");
-    }
-  });
-});
+      if(err) {
+          console.error('Error inserting into database:',err);
+          res.status(500).send('Intenal Server Error')
+      }
+      else {
+          res.status(200).send('Files and text data upload and database updated');
+      }
+  })
+})
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

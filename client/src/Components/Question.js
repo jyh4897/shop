@@ -40,7 +40,7 @@ const Question = ({ id }) => {
                 content: it.content,
                 date : new Intl.DateTimeFormat('en-US', options).format(new Date(it.date)).replace(/(\d+)\/(\d+)\/(\d+),/, '$3/$1/$2')
             }));
-            setQuestion(rawData);
+            setQuestion(rawData.sort((a,b) => b.questionid -a.questionid));
             setCount(rawData.length);
         }
         readQuestion();
