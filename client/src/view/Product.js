@@ -145,42 +145,66 @@ const Product = ()  => {
             {products && products.map((it) => (
                 <div>
                     <div className={styles.productinfo}>
-                        <div className={styles.imagecontainer}>
-                            <div className={styles.bigimage}>
-                                <img src={clickedImage} className={styles.bigimagedetail} alt='이미지' />
+                    <div className={styles.imagecontainer}>
+                        <div className={styles.bigimage}>
+                            <img src={clickedImage} className={styles.bigimagedetail} alt='이미지' />
+                        </div>
+                        <div className={styles.smallimages}>
+                            {image.length ? 
+                            image.map((it, index) => 
+                            it && <img src={it} key={index} className={`${styles.detailimage} ${selectedImageIndex === index ? styles.selectedImage : ''}`} onClick={() => handleChangeImage(index)} alt='이미지' />) : ''}
+                        </div>
+                    </div>
+                    <div key={it.id} className={styles.productcontainer}>
+                        <p className={styles.productname}>{it.name}</p>
+                        <div className={styles.proddetail}>
+                            <div className={styles.detailitems}>
+                                <p className={styles.itemmenu}>국내,해외배송</p>
+                                <p>국내배송</p>
                             </div>
-                            <div className={styles.smallimages}>
-                                {image.length ?
-                                image.map((it, index) =>
-                                it && <img src={it} key={index} className={`${styles.detailimage} ${selectedImageIndex === index ? styles.selectedImage : ''}`} onClick={() => handleChangeImage(index)} alt='이미지' />) : ''}
+                            <div className={styles.detailitems}>
+                                <p className={styles.itemmenu}>배송방법</p>
+                                <p>택배</p>
+                            </div>
+                            <div className={styles.detailitems}>
+                                <p className={styles.itemmenu}>배송비</p>
+                                <p>2,500원</p>
+                            </div>
+                            <div className={styles.detailitems}>
+                                <p className={styles.itemmenu}>제조사</p>
+                                <p>빵끗샵</p>
+                            </div>
+                            <div className={styles.detailitems}>
+                                <p className={styles.itemmenu}>원산지</p>
+                                <p>국내</p>
                             </div>
                         </div>
-                        <div key={it.id} className={styles.procutcontainer}>
-                            <p>{it.name}</p>
-                            <p>{it.price}</p>
-                            <div className={styles.counter}>
-                                <button type="button" onClick={() => handleClickCounter(-1)} disabled={quantity === 1}>-</button>
-                                <input
-                                type="number"
-                                min={1}
-                                value={quantity}
-                                className={styles.inputnumber}
-                                onBlur={handleChangeInput}
-                                onChange={(e) => setQuantity(parseInt(e.target.value))}
-                                />
-                                <button type="button" onClick={() => handleClickCounter(+1)}>+</button>
-                            </div>
-                            <div className={styles.price}>
-                                <strong>{total.toLocaleString()} 원</strong>
+                        <div className={styles.counter}>
+                            <button type="button" onClick={() => handleClickCounter(-1)} disabled={quantity === 1}>-</button>
+                            <input 
+                            type="number" 
+                            min={1} 
+                            value={quantity} 
+                            className={styles.inputnumber} 
+                            onBlur={handleChangeInput}
+                            onChange={(e) => setQuantity(parseInt(e.target.value))}
+                            />
+                            <button type="button" onClick={() => handleClickCounter(+1)}>+</button>
+                        </div>
+                        <div className={styles.price}>
+                            <div>총 상품금액 :</div>
+                            <div className={styles.totalprice}><strong>{total.toLocaleString()} 원</strong></div>
+                        </div>
+                        <div className={styles.btncontainer}>
+                            <div >
+                                <button className={styles.bascketbtn} onClick={() => onClickBasket(products) }>장바구니 추가</button>
                             </div>
                             <div>
-                                <button onClick={() => onClickBasket(products)}>장바구니 추가</button>
-                            </div>
-                            <div>
-                            <button onClick={() => handlePurchase(products)}>구매하기</button>
+                                <button className={styles.purchasebtn} onClick={() => handlePurchase(products)}>구매하기</button>
                             </div>
                         </div>
                     </div>
+                </div>
                     <div className={styles.productnav}>
                         <ul className={styles.nav_container}>
                             <li>상품 상세</li>
