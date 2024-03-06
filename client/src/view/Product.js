@@ -233,8 +233,13 @@ const Product = ()  => {
                             <li><a href="#guide">배송/교환/반품 안내</a></li>
                         </ul>
                     </div>
-                    <Questionmodal products={products} />
-                    <Question id={id} />
+                    <div className={styles.question}>
+                        <div className={styles.modalbox}>
+                            <p className={styles.questiontitle}>상품문의</p>
+                            <Questionmodal products={products} />
+                        </div>
+                        <Question id={id} />
+                    </div>
                     <div className={styles.productnav} id="guide">
                         <ul className={styles.nav_container}>
                             <li><a href="#detail">상품 상세</a></li>

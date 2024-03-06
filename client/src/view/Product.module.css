@@ -184,3 +184,20 @@ input::-webkit-inner-spin-button {
 .productdetail {
     text-align: center;
 }
+
+.question {
+    width: 100%;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+.modalbox {
+    display: flex;
+    justify-content: space-between;
+}
+
+.questiontitle {
+    font-size: 24px;
+    font-weight: 600;
+}
