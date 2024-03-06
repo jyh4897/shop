@@ -5,6 +5,7 @@ import styles from './Product.module.css';
 import Question from "../Components/Question";
 import Review from "../Components/Review";
 import Questionmodal from "../Components/Questionmodal";
+import Shipping from "../Components/Shipping";
 
 
 const Product = ()  => {
@@ -247,7 +248,8 @@ const Product = ()  => {
                             <li><a href="#question">상품 문의</a></li>
                             <li className={styles.activenav}><a href="#guide">배송/교환/반품 안내</a></li>
                         </ul>
-                    </div> 
+                    </div>
+                    <Shipping />
                 </div>
             ))}
         </div>

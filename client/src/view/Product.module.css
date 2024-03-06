@@ -64,9 +64,6 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
-.counter {
-
-}
 
 .counter input {
     width: 40px;
@@ -200,4 +197,8 @@ input::-webkit-inner-spin-button {
 .questiontitle {
     font-size: 24px;
     font-weight: 600;
+}
+
+.productnav {
+    margin-bottom: 30px;
 }

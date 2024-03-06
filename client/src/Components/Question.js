@@ -58,17 +58,22 @@ const Question = ({ id }) => {
     return(
         <div className={styles.container}>           
             <div>
-                {currentPosts && currentPosts.map((it) => (
+                {currentPosts && currentPosts.length > 0 ? currentPosts && currentPosts.map((it) => (
                     <div key={it.questionid} className={styles.questionitems}>
                         <div className={styles.contentbox}>
                             <p className={styles.questionmark}>질문</p>
                             <p>{it.content}</p>
                         </div>
                         <p  className={styles.questiondate}>{it.date}</p>
-                    </div>                       
-                ))}
+                        <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
+                    </div>                
+                )) : 
+                <div>
+                    표시할 문의가 없습니다
+                </div>
+                }
             </div>
-            <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
+            
         </div>
     )
 }

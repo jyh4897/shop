@@ -162,14 +162,15 @@ const Review = ({ id }) => {
                             <p className={styles.itemcontent}>{it.content}</p>
                         </div>
                         <button onClick={() => handleOnDelete(it)} className={styles.deletebtn}>삭제하기</button>
-                    </div>                    
+                    </div>
+                    <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />                    
                 </div>
             )) : (
                 <div>
                     <p>표시할 리뷰가 없습니다</p>
                 </div>
             )}
-            <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
+
         </div>
     )
 }
