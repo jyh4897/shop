@@ -58,7 +58,7 @@ const Questionmodal = ({products}) => {
 
     return (
         <div>
-            <button onClick={handleOpen}>문의하기</button>
+            <button onClick={handleOpen} className={styles.modalbtn}>문의하기</button>
             <Modal
                 open={isOpen}
                 onClose={handleClose}

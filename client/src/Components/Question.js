@@ -56,21 +56,20 @@ const Question = ({ id }) => {
 
 
     return(
-        <div>
+        <div className={styles.container}>           
             <div>
                 {currentPosts && currentPosts.map((it) => (
-                    <div key={it.questionid}>
-                        <div className={styles.questionitems}>
-                            <p>{it.userid}</p>
+                    <div key={it.questionid} className={styles.questionitems}>
+                        <div className={styles.contentbox}>
+                            <p className={styles.questionmark}>질문</p>
                             <p>{it.content}</p>
-                            <p>{it.date}</p>
                         </div>
-                    </div>
+                        <p  className={styles.questiondate}>{it.date}</p>
+                    </div>                       
                 ))}
             </div>
             <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
         </div>
-
     )
 }
 
