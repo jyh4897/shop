@@ -132,8 +132,55 @@ input::-webkit-inner-spin-button {
 }
 
 .purchasebtn {
-    background-color: rgb(161, 201, 161);
+    background-color: rgb(177, 220, 177);
     border: 1px solid #ddd;
     border-radius: 5px;
-    color: white;
+}
+
+.nav_container {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    width: 100%;
+}
+
+
+
+.nav_container li {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.nav_container a {
+    text-decoration: none;
+    color: black;
+}
+
+.nav_container li:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.nav_container li:last-child {
+    border-right: 1px solid #ddd;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.nav_container > .activenav {
+    border-top: 2px solid black;
+    border-bottom: none;
+}
+
+
+.productdetail {
+    text-align: center;
 }
