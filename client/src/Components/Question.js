@@ -65,7 +65,6 @@ const Question = ({ id }) => {
                             <p>{it.content}</p>
                         </div>
                         <p  className={styles.questiondate}>{it.date}</p>
-                        <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
                     </div>                
                 )) : 
                 <div>
@@ -73,7 +72,9 @@ const Question = ({ id }) => {
                 </div>
                 }
             </div>
-            
+            {currentPosts && currentPosts.length > 0 ? 
+            <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} /> 
+            : ''}
         </div>
     )
 }
