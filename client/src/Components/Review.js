@@ -116,48 +116,59 @@ const Review = ({ id }) => {
 
     return (
         <div>
-            <div>
-                <input value={search} onChange={onChangeSearch} placeholder='검색어를 입력하세요' />
-            </div>
-            <div>
+            <div className={styles.ratecontainer}>
                 {currentPosts && currentPosts.length > 0 ?
-                <div>
-                    구매만족도
-                    <div>
-                        <p>{Number(point).toFixed(1)}/5</p>
+                <div className={styles.avgrate}>
+                    <span>상품만족도</span>
+                    <div className={styles.ratebox}>
+                        <img src="http://localhost:8000/star.jpg" className={styles.rateimg} alt="이미지"/>
+                        <p>{Number(point).toFixed(1)}/5.0</p>
                     </div> 
                 </div>: '표시할 만족도가 없습니다'}
+                <div>
+                    <button className={styles.ratebtn}>상품평 쓰기</button>
+                </div>
             </div>
-            {currentPosts && currentPosts.length > 0 ? 
-            currentPosts.map((it) => (
-                <div key={it.id}>
-                    <div>
+            <div className={styles.inputcontainer}>
+                <div>
+                    <p>총 <strong>{reviews.length}</strong>개의 상품평</p>
+                </div>
+                <input value={search} onChange={onChangeSearch} className={styles.searchbar} placeholder="상품평을 검색해보세요" /> 
+            </div>
+            {currentPosts && currentPosts.length > 0 ? currentPosts.map((it) => (
+                <div key={it.id} className={styles.reviewitem}>
+                    <div className={styles.userinfo}>
                         <p>{it.userid}님</p>
-                        <p>{it.rate} / 5</p>
-                    </div>
-                    <div key={it.id}>
-                        {it.img1 ? 
-                        <img src={it.img1} className={styles.reviewimg} alt='이미지' />
-                        : ''}
-                        {it.img2 ? 
-                        <img src={it.img2} className={styles.reviewimg} alt='이미지' />
-                        : ''}
-                        {it.img3 ? 
-                        <img src={it.img3} className={styles.reviewimg} alt='이미지' />
-                        : ''}
-                        {it.img4 ? 
-                        <img src={it.img4} className={styles.reviewimg} alt='이미지' />
-                        : ''}
-                    </div>
-                    <div className={styles.items}>
-                        <p className={styles.itemtitle}>{it.title}</p>
-                        <p className={styles.itemcontent}>{it.content}</p>
+                        <p><strong>{it.rate}</strong>/5 점</p>
                         <p className={styles.itemdate}>{it.date}</p>
                     </div>
-                    <button onClick={() => handleOnDelete(it)}>삭제하기</button>
+                    <div className={styles.reviewcontent} key={it.id}>                        
+                        <div className={styles.reviewimgcontainer} key={it.id}>
+                            {it.img1 ? 
+                                <img src={it.img1} className={styles.reviewimg} alt='이미지' />
+                            : ''}
+                            {it.img2 ? 
+                                <img src={it.img2} className={styles.reviewimg} alt='이미지' />
+                            : ''}
+                            {it.img3 ? 
+                                <img src={it.img3} className={styles.reviewimg} alt='이미지' />
+                            : ''}
+                            {it.img4 ? 
+                                <img src={it.img4} className={styles.reviewimg} alt='이미지' />
+                            : ''}
+                        </div>
+                        <div className={styles.items}>
+                            <p className={styles.itemtitle}>{it.title}</p>
+                            <p className={styles.itemcontent}>{it.content}</p>
+                        </div>
+                        <button onClick={() => handleOnDelete(it)} className={styles.deletebtn}>삭제하기</button>
+                    </div>                    
                 </div>
-            )) :
-            <p>표시할 리뷰가 없습니다.</p>}
+            )) : (
+                <div>
+                    <p>표시할 리뷰가 없습니다</p>
+                </div>
+            )}
             <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
         </div>
     )
