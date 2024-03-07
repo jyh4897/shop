@@ -105,6 +105,10 @@ const Reviewwriter = () => {
         // navigate('/shop')
     }
 
+    const handleCancle = () => {
+        navigate("/")
+    }
+
 
     return (
         <div className={styles.reviewwriter}>
