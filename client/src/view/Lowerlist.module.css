@@ -62,6 +62,12 @@
     height: 430px;
 }
 
-.productname {
-    
+.imgbox {
+    width: 430px;
+    height: 430px;
+    overflow: hidden;
+}
+.itemimg:hover {
+    transition: transform 0.6s;
+    transform: scale(1.2);
 }

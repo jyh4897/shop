@@ -139,7 +139,11 @@ const Review = ({ id }) => {
                 <div key={it.id} className={styles.reviewitem}>
                     <div className={styles.userinfo}>
                         <p>{it.userid}님</p>
-                        <p><strong>{it.rate}</strong>/5 점</p>
+                        <div className={styles.userratebox}>
+                            <img src="http://localhost:8000/star.jpg" className={styles.userrateimg} alt="이미지"/>
+                            <p><strong>{it.rate}</strong>/5 점</p>
+                        </div>
+                        
                         <p className={styles.itemdate}>{it.date}</p>
                     </div>
                     <div className={styles.reviewcontent} key={it.id}>                        

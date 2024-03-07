@@ -89,6 +89,16 @@
     padding-left: 10px;
 }
 
+.userratebox {
+    display: flex;
+    align-items: center;
+}
+
+.userrateimg {
+    width: 40px;
+    height: 40px;
+}
+
 .itemdate {
     font-size: 12px;
 }

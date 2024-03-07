@@ -116,9 +116,11 @@ const Latestlist = () => {
                 {currentPosts && currentPosts.map((product) => (
                     <div key={product.id} className={styles.proditemcontainer}>
                         <ul className={styles.itembox}>
-                            <Link to={`/product/${product.id}`}>
-                                <img src={product.thumbnail} className={styles.itemimg} alt="이미지"/>
-                            </Link>
+                            <div className={styles.imgbox}>
+                                <Link to={`/product/${product.id}`} >
+                                    <img src={product.thumbnail} className={styles.itemimg} alt="이미지"/>
+                                </Link>
+                            </div>
                             <li className={styles.productname}>{product.name}</li>
                             <li className={styles.productprice}>{product.price.toLocaleString()}원</li>
                         </ul>
