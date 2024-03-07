@@ -3,6 +3,7 @@ import { useRef, useMemo, useState } from 'react';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -15,6 +16,7 @@ const Readerboard = () => {
     const [img, setImg] = useState([]);
     const [thumbnail, setThumbnail] = useState([]);
     const quillRef = useRef();
+    const navigate = useNavigate();
 
     
 
@@ -146,44 +148,79 @@ const Readerboard = () => {
 
     }
 
+    const handleCancelbtn = () => {
+        navigate('/')
+    }
+
     return (
-        <div>
+        <div className={styles.registercontainer}>
             <div className={styles.boardbox}>
-                <p>상품명</p>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                    <option value="1">리빙</option>
-                    <option value="2">패션</option>
-                    <option value="3">식품</option>
-                    <option value="4">헤어,바디</option>
-                </select>
-                <p>대표 사진</p>
-                <div>
-                    <input type="file" name="files" onChange={(e) => handleChangeThumbnail(e)} />
-                </div>
-                <div>
-                    <div>
-                        {thumbnail.length ? thumbnail.map((it,index) => <span key={index}>{it.name} </span>) : ''}
+                <div className={styles.registerrow}>
+                    <div className={styles.namebox}>
+                        <p className={styles.productmenu}>상품명</p>
                     </div>
-                    {thumbnail.length ? thumbnail.map((img, index) => (
-                        <img key={index} src={URL.createObjectURL(img)} className={styles.previewimg} alt={`Image ${index + 1}`} onLoad={() => URL.revokeObjectURL(img)} />
-                    )) : '' }
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className={styles.productname} />
                 </div>
-                <p>상세 사진</p>       
-                <div>
-                    <input type="file" id="file-input" name="files" onChange={(e) => handleChangeFile(e)} multiple />
-                </div>
-                <div>
-                    <div>
-                        {img.length ? img.map((it,index) => <span key={index}>{it.name} </span>) : ''}
+                <div className={styles.registerrow}>
+                    <div className={styles.namebox}>
+                        <p className={styles.productmenu}>상품 카테고리</p>
                     </div>
-                    {img.length ? img.map((img, index) => (
-                        <img key={index} src={URL.createObjectURL(img)} className={styles.previewimg} alt={`Image ${index + 1}`} onLoad={() => URL.revokeObjectURL(img)} />
-                    )) : '' }
+                    <select value={category} onChange={(e) => setCategory(e.target.value)} className={styles.productcategory}>
+                        <option value="1">리빙</option>
+                        <option value="2">패션</option>
+                        <option value="3">식품</option>
+                        <option value="4">헤어,바디</option>
+                    </select>
                 </div>
-                <p>가격</p>
-                <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
-                <ReactQuill
+                <div className={styles.thumbnailrow}>
+                    <div className={styles.namebox}>
+                        <p className={styles.productmenu}>대표 사진</p> 
+                    </div>      
+                    <div className={styles.thumbnailbox}>
+                        <div>
+                            <input type="file" name="files" onChange={(e) => handleChangeThumbnail(e)} />   
+                            
+                        </div>                       
+                        <div className={styles.thumbnailarray}>
+                            {thumbnail.length ? thumbnail.map((img, index) => (
+                                <img key={index} src={URL.createObjectURL(img)} className={styles.previewimg} alt={`Image ${index + 1}`} onLoad={() => URL.revokeObjectURL(img)}
+                                />                               
+                            )) : '' }
+                        </div>
+                        <div className={styles.thumbnailname}>
+                            {thumbnail.length ? thumbnail.map((it,index) => <span key={index} className={styles.imgname}>{it.name} </span>) : ''}
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.thumbnailrow}>
+                    <div className={styles.namebox}>
+                        <p className={styles.productmenu}>상세 사진</p>
+                    </div>
+                    <div>      
+                        <div>
+                            <input type="file" id="file-input" name="files" onChange={(e) => handleChangeFile(e)} multiple />
+                        </div>                
+                        <div className={styles.thumbnailarray}>                            
+                            {img.length ? img.map((img, index) => (
+                                <img key={index} src={URL.createObjectURL(img)} className={styles.previewimg} alt={`Image ${index + 1}`} onLoad={() => URL.revokeObjectURL(img)} />
+                            )) : '' }
+                        </div>
+                        <div className={styles.thumbnailname}>
+                            {img.length ? img.map((it,index) => <span key={index} className={styles.imgname}>{it.name} </span>) : ''}
+                        </div>
+                    </div> 
+                </div>
+                <div className={styles.registerrow}>
+                    <div className={styles.namebox}>
+                        <p className={styles.productmenu}>가격</p>
+                    </div>
+                    <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} className={styles.productprice}/>
+                </div>
+                <div className={styles.descriptionrow}>
+                    <div className={styles.namebox}>
+                        <p className={styles.productmenu}>상세설명</p>
+                    </div>                   
+                    <ReactQuill
                     ref={quillRef}
                     theme="snow"
                     placeholder=""
@@ -193,10 +230,14 @@ const Readerboard = () => {
                     formats={formats}
                     className={styles.quill}
                 />
+                </div>
+                <div className={styles.btnbox}>
+                    <button type="submit" onClick={handleSubmit} className={styles.registerbtn}>상품등록</button>
+                    <button className={styles.cancelbtn}  onClick={handleCancelbtn}>취소</button>
+                </div>
+                    
             </div>
-            <div>
-                <button type="submit" onClick={handleSubmit}>submit</button>
-            </div>
+            
         </div>
     )
 }

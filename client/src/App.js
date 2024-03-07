@@ -64,7 +64,7 @@ function App() {
             <Route path="/shop/:categoryid/2/:page" element={<Higherlist />} />
             <Route path="/shop/:categoryid/3/:page" element={<Lowerlist />} />
             <Route path="/product/:id" element={<Product />} />
-            <Route path="/register" element={<Productregister />} />
+            <Route path="/product/register" element={<Productregister />} />
             <Route
               path="/review/:userid/:orderid/:prodid"
               element={<Reviewwriter />}
