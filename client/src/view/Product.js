@@ -7,7 +7,7 @@ import Review from "../Components/Review";
 import Questionmodal from "../Components/Questionmodal";
 import Shipping from "../Components/Shipping";
 
-const Product = () => {
+const Product = ({setcCartlength}) => {
   const { id } = useParams();
   const [image, setImage] = useState([]);
   const [clickedImage, setClickedImage] = useState("");
@@ -94,6 +94,7 @@ const Product = () => {
     // const data = {...products[0], 'quantity' : quantity} < 원본
     const data = { ...products[0], quantity: quantity, isCheck: false }; // 추가_이기현
     baskets.push(data);
+    setcCartlength(baskets.length); // 추가_이기현, 장바구니 수량 업데이트
     localStorage.setItem("baskets", JSON.stringify(baskets));
   };
 
@@ -133,7 +134,6 @@ const Product = () => {
       // const data = {...products[0], 'quantity' : quantity} < 원본
       const data = { ...products[0], quantity: quantity, isCheck: false }; // 추가_이기현
       baskets.push(data);
-      setcCartlength(baskets.length); // 추가_이기현, 장바구니 수량 업데이트
       localStorage.setItem("baskets", JSON.stringify(baskets));
     }
   };
