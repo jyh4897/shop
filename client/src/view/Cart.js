@@ -5,7 +5,7 @@ import LocalCartList from "../Components/Shop/LocalCartList";
 
 import "./Cart.css";
 
-const Cart = () => {
+const Cart = ({ setcCartlength }) => {
   const [cartList, setCartList] = useState([]); // 유저의 장바구니 데이터 상태
   const [cartReset, setCartReset] = useState(0); // 장바구니 상태 갱신 핸들러
   const [isCheckItem, setIsCheckItem] = useState(false); // 체크 상품 여부
@@ -87,6 +87,8 @@ const Cart = () => {
     else if (window.confirm("선택한 상품들을 장바구니에서 삭제하시겠습니까?")) {
       // filter()를 사용하여, 체크된 상품을 제외한 요소만들 filterItem 변수에 담는다.
       const filterItem = cartList.filter((item) => item.isCheck == false);
+
+      setcCartlength(filterItem.length); // 장바구니 수량 업데이트
 
       // 로컬 스토리지 갱신
       localStorage.setItem("baskets", JSON.stringify(filterItem));
@@ -191,6 +193,7 @@ const Cart = () => {
           cartList={cartList}
           setCartReset={setCartReset}
           cartListUpdate={cartListUpdate}
+          setcCartlength={setcCartlength}
         />
       </div>
       <div className="order_summary_container">

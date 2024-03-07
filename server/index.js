@@ -380,8 +380,18 @@ app.post("/orders/:orderID/capture", async (req, res) => {
 app.post("/reqOrder", async (req, res, next) => {
   try {
     const { orderSheet } = req.body;
-    const query =
+    const orderUserId = orderSheet[0].userId; // 주문자 코드 저장
+
+    let usePoint = Number(orderSheet[0].usePoint); // 주문자가 사용한 포인트를 저장
+
+    // order 테이블 추가 쿼리
+    const insertQuery =
       "INSERT INTO orders (orderNumber, userId, productCode, orderName, addr, phoneNumber, reqMessage, count, totalCount, totalAmount, payment, usePoint, imageURL, paymentAmount) VALUES (?)";
+
+    // 사용자의 고유 코드(userid)를 참조하여, 해당 사용자의 포인트 데이터를 조회하는 쿼리
+    const selectQuery = "SELECT point FROM user WHERE userid = ?";
+    // 사용자의 point 데이터를 업데이트 하는 쿼리
+    const updateQuery = "UPDATE user SET point = ? WHERE userid = ?";
 
     orderSheet.map(async (article) => {
       const data = [
@@ -401,8 +411,19 @@ app.post("/reqOrder", async (req, res, next) => {
         article.paymentAmount,
       ];
 
-      await PromiseConnection.query(query, [data]);
+      await PromiseConnection.query(insertQuery, [data]);
     });
+
+    // 사용자 포인트 조회 쿼리
+    const [getUserPointData] = await PromiseConnection.query(selectQuery, [
+      orderUserId,
+    ]);
+
+    // 사용자의 보유 포인트 - 사용 포인트 값을 저장
+    usePoint = Number(getUserPointData[0].point) - usePoint;
+
+    // 사용자의 포인트 업데이트 쿼리
+    await PromiseConnection.query(updateQuery, [usePoint, orderUserId]);
 
     return res.redirect("/");
   } catch (error) {
@@ -416,7 +437,7 @@ app.get("/ordersheet", async (req, res, next) => {
   try {
     const { userId } = req.query;
     const [userData] = await PromiseConnection.query(
-      "SELECT username, phonenumber, address, detailedaddress, userid FROM user WHERE userid = ?",
+      "SELECT username, phonenumber, address, detailedaddress, userid, point FROM user WHERE userid = ?",
       [userId]
     );
     return res.send(userData);
@@ -802,20 +823,20 @@ app.get("/question", (req, res) => {
   });
 });
 
-app.post('/question', (req, res) => {
-  const values = req.body
-  const sqlQuery = "INSERT INTO ezteam2.productquestion (qid, prodid, userid,content, date) VALUES (null, ?, ?, ?, Now());"
+app.post("/question", (req, res) => {
+  const values = req.body;
+  const sqlQuery =
+    "INSERT INTO ezteam2.productquestion (qid, prodid, userid,content, date) VALUES (null, ?, ?, ?, Now());";
 
   connection.query(sqlQuery, values, (err, result) => {
-      if(err) {
-          console.error('Error inserting into database:',err);
-          res.status(500).send('Intenal Server Error')
-      }
-      else {
-          res.status(200).send('Files and text data upload and database updated');
-      }
-  })
-})
+    if (err) {
+      console.error("Error inserting into database:", err);
+      res.status(500).send("Intenal Server Error");
+    } else {
+      res.status(200).send("Files and text data upload and database updated");
+    }
+  });
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -945,20 +966,18 @@ app.get("/ordercount", (req, res) => {
   });
 });
 
-
 app.delete("/review", (req, res) => {
-  const { id } = req.body
-  const value = [ id ]
+  const { id } = req.body;
+  const value = [id];
   const sqlQuery = "DELETE FROM ezteam2.productreview WHERE reviewid = ?";
   connection.query(sqlQuery, value, (err, result) => {
-    if(err) {
-      console.error('Error deleting into database:',err);
-      res.status(500).send('Intenal Server Error')
+    if (err) {
+      console.error("Error deleting into database:", err);
+      res.status(500).send("Intenal Server Error");
+    } else {
+      res.status(200).send("deleted");
     }
-    else {
-        res.status(200).send('deleted');
-    }
-  })
-})
+  });
+});
 
 app.listen(port, () => console.log(`port${port}`));

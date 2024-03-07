@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
 
-function Header() {
+function Header({ cartlength }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
   // 페이지가 로드될 때 로그인 상태를 확인하고 상태를 업데이트
@@ -39,7 +39,15 @@ function Header() {
               <Link to="/modify">정보수정</Link>
             </li>
             <li>
-              <Link to="/cart">장바구니</Link>
+              {/* 20240307 업데이트_이기현 */}
+              <Link to="/cart">
+                장바구니{" "}
+                {cartlength > 0 ? (
+                  <b className="header_cart_count_icon">{cartlength}</b>
+                ) : (
+                  <b></b>
+                )}
+              </Link>
             </li>
             <li>
               <Link to="/myOrderList">주문내역</Link>
@@ -55,7 +63,16 @@ function Header() {
               <Link to="/Regester">회원가입</Link>
             </li>
             <li>
-              <Link to="/Login">장바구니</Link>
+              {/* 20240307 업데이트_이기현 */}
+
+              <Link to="/Login">
+                장바구니{" "}
+                {cartlength > 0 ? (
+                  <b className="header_cart_count_icon">{cartlength}</b>
+                ) : (
+                  <b></b>
+                )}
+              </Link>
             </li>
           </ul>
         )}

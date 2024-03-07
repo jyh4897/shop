@@ -12,7 +12,7 @@ import PopupPaypalContent from "../Components/Shop/PopupPaypalContent";
 import MultiPayment from "../Components/Shop/MultiPayment";
 import ReadExchangeRate from "../Components/Shop/ReadExchangeRate";
 
-const Ordersheet = () => {
+const Ordersheet = ({ setcCartlength }) => {
   const [userInfo, setUserInfo] = useState([]); // 로그인된 사용자 상세 정보를 저장하기 위한 상태값
   const [nameInfo, setNameInfo] = useState(""); // input 태그의 이름 정보 상태 저장
   const [phoneNumberInfo, setPhoneNumberInfo] = useState(""); // input 태그의 연락처 정보 상태 저장
@@ -232,6 +232,8 @@ const Ordersheet = () => {
         const updateCartList = getCartList.filter((product) => {
           if (orderProductCode.indexOf(product.id) < 0) return product;
         });
+
+        setcCartlength(updateCartList.length); // 장바구니 수량 업데이트
 
         localStorage.setItem("baskets", JSON.stringify(updateCartList));
         sessionStorage.removeItem("selectCart");

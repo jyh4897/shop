@@ -1,5 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import Main from "./view/Main";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
@@ -26,18 +28,39 @@ import Productregister from "./view/Productregister";
 import Reviewwriter from "./view/Reviewwirter";
 
 function App() {
+  const [cartlength, setcCartlength] = useState(0); // 장바구니에 담은 아이템 수
+
+  useEffect(() => {
+    // "baskets" 키에 대한 로컬 스토리지가 존재할 경우,
+    if (localStorage.baskets !== undefined) {
+      // "baskets" 키-값 데이터를 파싱하여 배열로 저장한 후,
+      const baskets = JSON.parse(localStorage.getItem("baskets"));
+
+      // 그 아이템의 수 만큼 setcCartlength 에 저장한다.
+      setcCartlength(baskets.length);
+    }
+  }, []);
+
   return (
     <Router>
       <div className="App">
-        <Header />
+        <Header cartlength={cartlength} />
         <div className="App_main_height">
           <Routes>
             {/* Main Page */}
             <Route exact path="/" element={<Main />} />
             {/* 이기현 */}
-            <Route exact path="/cart" element={<Cart />} />
+            <Route
+              exact
+              path="/cart"
+              element={<Cart setcCartlength={setcCartlength} />}
+            />
             {/* "/" 로컬 장바구니 페이지 라우팅 */}
-            <Route exact path="/ordersheet" element={<Ordersheet />} />
+            <Route
+              exact
+              path="/ordersheet"
+              element={<Ordersheet setcCartlength={setcCartlength} />}
+            />
             {/* "/" 주문서 작성 페이지 라우팅 */}
             <Route exact path="/completeOrder" element={<CompleteOrder />} />
             {/* "/" 주문 완료 페이지 라우팅 */}
@@ -63,7 +86,11 @@ function App() {
             <Route path="/shop/:categoryid/1/:page" element={<Latestlist />} />
             <Route path="/shop/:categoryid/2/:page" element={<Higherlist />} />
             <Route path="/shop/:categoryid/3/:page" element={<Lowerlist />} />
-            <Route path="/product/:id" element={<Product />} />
+            {/* 20240307 prop 데이터 setcCartlength 추가_ 이기현 */}
+            <Route
+              path="/product/:id"
+              element={<Product setcCartlength={setcCartlength} />}
+            />
             <Route path="/product/register" element={<Productregister />} />
             <Route
               path="/review/:userid/:orderid/:prodid"

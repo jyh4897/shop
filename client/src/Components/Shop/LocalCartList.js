@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-const LocalCartList = ({ cartList, setCartReset, cartListUpdate }) => {
+const LocalCartList = ({
+  cartList,
+  setCartReset,
+  cartListUpdate,
+  setcCartlength,
+}) => {
   const navigate = useNavigate();
 
   // 수량 1 감소 메소드_로컬 스토리지 "cart"와 연동
@@ -65,6 +70,9 @@ const LocalCartList = ({ cartList, setCartReset, cartListUpdate }) => {
       const filterItem = carts.filter(
         (item) => Number(e.target.value) !== item.id
       );
+
+      setcCartlength(filterItem.length); // 장바구니 수량 업데이트
+
       // "baskets" 키 이름으로 로컬 스토리지 (재)설정
       localStorage.setItem("baskets", JSON.stringify(filterItem));
       setCartReset(1);
