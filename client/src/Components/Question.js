@@ -48,7 +48,7 @@ const Question = ({ id }) => {
 
     useEffect(() => {
         setCurrentPosts(question.slice(indexOfFirstPost, indexOfLastPost));
-    }, [question])
+    }, [question, indexOfFirstPost, indexOfLastPost])
 
     const handleChangePage = (page) => {
         setCurrentPage(page)
