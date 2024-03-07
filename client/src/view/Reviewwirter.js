@@ -107,39 +107,68 @@ const Reviewwriter = () => {
 
 
     return (
-        <div>
-            <p>상품명</p>
-            <img src={products[0].thumbnail} className={styles.prodimg} />
-            <p>{products[0].name}</p>
-            <select value={value} onChange={(e) => setValue(e.target.value)}>
-                <option value={5}>5점</option>
-                <option value={4}>4점</option>
-                <option selected="selected" value={3} >3점</option>
-                <option value={2}>2점</option>
-                <option value={1}>1점</option>
-            </select>
-            <div>
-                <p>한줄 평</p>
-                <input type="text" onChange={(e) => handleChangeTitle(e)} />
-            </div>
-            <div>
-                <p>상세 후기</p>
-                <input type="text" onChange={(e) => handleChangeContent(e)} />
-            </div>
-            <p>파일 첨부</p>
-            <div>
-                <input type="file" id="file-input" name="files" onChange={(e) => handleChangeFile(e)} multiple />
-            </div>
-            
-            <div>
-                <div>
-                    {img.length ? img.map((it,index) => <span key={index}>{it.name} </span>) : ''}
+        <div className={styles.reviewwriter}>
+            <div className={styles.namecontainer}>
+                <div className={styles.namemenu}>
+                    <p>상품명</p>
                 </div>
-                {img.length ? img.map((img, index) => (
-                    <img key={index} src={URL.createObjectURL(img)} className={styles.previewimg} alt={`Image ${index + 1}`} onLoad={() => URL.revokeObjectURL(img)} />
-                )) : '' }
+                <div className={styles.namecontent}>
+                    <img src={products[0].thumbnail} className={styles.prodimg} />
+                    <p>{products[0].name}</p>
+                </div>
             </div>
-            <button onClick={handleSubmit}>등록</button>
+            <div className={styles.ratecontainer}>
+                <div className={styles.ratemenu}>
+                    <p>평점</p>
+                </div>
+                <div className={styles.ratecontent}>
+                    <select value={value} onChange={(e) => setValue(e.target.value)} className={styles.rate}>
+                        <option value={5}>5점</option>
+                        <option value={4}>4점</option>
+                        <option selected="selected" value={3} >3점</option>
+                        <option value={2}>2점</option>
+                        <option value={1}>1점</option>
+                    </select>
+                </div>
+            </div>
+            <div className={styles.titlecontainer}>
+                <div className={styles.titlemenu}>
+                    <p>한줄 평</p>
+                </div>
+                <div className={styles.titlecontent}>
+                    <input type="text" onChange={(e) => handleChangeTitle(e)} className={styles.title}/>
+                </div>
+            </div>
+            <div className={styles.detailcontainer}>
+                <div className={styles.detailmenu}>
+                    <p>상세 후기</p>
+                </div>
+                <div className={styles.detailcontent}>
+                    <input type="text" onChange={(e) => handleChangeContent(e)} className={styles.detail} />
+                </div>
+            </div>
+            <div className={styles.filecontainer}>
+                <div className={styles.filemenu}>
+                    <p>파일 첨부</p>
+                </div>
+                <div className={styles.filecontent}>
+                    <input type="file" id="file-input" name="files" onChange={(e) => handleChangeFile(e)} multiple />
+                    <div className={styles.filedetail}>
+                        <div className={styles.filenamearray}>
+                            {img.length ? img.map((it,index) => <span key={index} className={styles.filename}>{it.name} </span>) : ''}
+                        </div>
+                        <div className={styles.filearray}>
+                            {img.length ? img.map((img, index) => (
+                            <img key={index} src={URL.createObjectURL(img)} className={styles.previewimg} alt={`Image ${index + 1}`} onLoad={() => URL.revokeObjectURL(img)} />
+                        )) : '' }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={styles.btncontainer}>
+                <button onClick={handleSubmit} className={styles.enrollbtn}>등록</button>
+                <button onClick={handleCancle} className={styles.cancelbtn}>취소</button>
+            </div>
         </div>
     )
 }
