@@ -20,7 +20,7 @@ const CompleteOrder = () => {
 
   // 메인 || 샵 이동 핸들러
   const onClickShopNavigateHandler = () => {
-    navigate("/shop");
+    navigate("/");
   };
 
   // 이미지 다운로드 핸들러

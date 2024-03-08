@@ -15,7 +15,12 @@ function Message({ content }) {
 }
 
 // 팝업으로 띄울 컴포넌트
-const PopupPaypalContent = ({ onClose, submitOrdersheet, userCart }) => {
+const PopupPaypalContent = ({
+  usePoint,
+  onClose,
+  submitOrdersheet,
+  userCart,
+}) => {
   // 페이팔 유효성 체크 및 속성 설정
   const initialOptions = {
     "client-id":
@@ -40,6 +45,7 @@ const PopupPaypalContent = ({ onClose, submitOrdersheet, userCart }) => {
         // like product ids and quantities
         body: JSON.stringify({
           cart: userCart,
+          usePoint: usePoint,
         }),
       });
 

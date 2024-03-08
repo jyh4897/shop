@@ -3,7 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 
 import "./MultiPayment.css";
 
-const MultiPayment = ({ userCart, submitOrdersheet, paymentData }) => {
+const MultiPayment = ({
+  usePoint,
+  userCart,
+  submitOrdersheet,
+  paymentData,
+}) => {
   const { paymentType, channelKey, payMethod, paymentName } = paymentData;
 
   let payResponse;
@@ -40,7 +45,7 @@ const MultiPayment = ({ userCart, submitOrdersheet, paymentData }) => {
         channelKey: channelKey,
         paymentId: `payment-${uuidv4()}`,
         orderName: `${userCart[0].name} 외 ${userCart.length - 1} 건`,
-        totalAmount: totalProductAmount(),
+        totalAmount: totalProductAmount() - usePoint,
         // totalAmount: 1000,
         currency: "CURRENCY_KRW",
         payMethod: payMethod,
@@ -55,7 +60,8 @@ const MultiPayment = ({ userCart, submitOrdersheet, paymentData }) => {
         channelKey: channelKey,
         paymentId: `payment-${uuidv4()}`,
         orderName: `${userCart[0].name} 외 ${userCart.length - 1} 건`,
-        totalAmount: totalProductAmount(),
+        totalAmount: totalProductAmount() - usePoint,
+
         // totalAmount: 1000,
         currency: "CURRENCY_KRW",
         payMethod: payMethod,

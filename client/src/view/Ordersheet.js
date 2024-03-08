@@ -76,7 +76,7 @@ const Ordersheet = ({ setcCartlength }) => {
     // <Link> 를 통한 ordersheet 접근이 아닐 경우,
     if (!location.state) {
       alert("잘못된 접근입니다!");
-      return navigate("/shop");
+      return navigate("/");
     } else {
       const orderTypeData = location.state;
       const { orderType } = orderTypeData;
@@ -127,16 +127,42 @@ const Ordersheet = ({ setcCartlength }) => {
 
   // 포인트 사용량 핸들러
   const onChangeUsePoint = (e) => {
+    const minimumOrderAmount = 100; // 최소 결제 금액
+    const totalAmount = totalProductAmount(); // 총 기본 결제금액
+    const maximumAllowedPaymentAmount = totalAmount - minimumOrderAmount;
+
     // 입력된 값이 보유한 포인트에 비해 많을 경우 경고창을 호출하며, 0으로 초기화한다.
     if (e.target.value > userInfo.point) {
       alert("보유 금액 이상 사용은 불가능 합니다.");
       setUsePoint(0);
-    } else setUsePoint(e.target.value);
+      return;
+    }
+
+    // 입력한 포인트값이 혀용된 최대 결제금액을 초과할 경우,
+    if (e.target.value > maximumAllowedPaymentAmount) {
+      alert("최소 결제금액은 100원 이상이여야 합니다.");
+      setUsePoint(maximumAllowedPaymentAmount);
+      return;
+    }
+
+    setUsePoint(e.target.value);
   };
 
   // "전액 사용" 버튼 핸들러
   const onClcikAllUsePoint = () => {
-    setUsePoint(userInfo.point);
+    const minimumOrderAmount = 100; // 최소 결제 금액
+    const totalAmount = totalProductAmount(); // 총 기본 결제금액
+    const maximumAllowedPaymentAmount = totalAmount - minimumOrderAmount;
+
+    // 입력한 포인트값이 혀용된 최대 결제금액을 초과할 경우,
+    if (userInfo.point > maximumAllowedPaymentAmount) {
+      alert("최소 결제금액은 100원 이상이여야 합니다.");
+      setUsePoint(maximumAllowedPaymentAmount);
+      return;
+    } else {
+      setUsePoint(userInfo.point);
+      return;
+    }
   };
 
   // 결제수단 paypal 버튼을 클릭하면 팝업창 발생
@@ -453,6 +479,7 @@ const Ordersheet = ({ setcCartlength }) => {
             />
             {paymentMethods.map((paymentData) => (
               <MultiPayment
+                usePoint={usePoint}
                 paymentData={paymentData}
                 userCart={userCart}
                 submitOrdersheet={submitOrdersheet}
@@ -503,6 +530,7 @@ const Ordersheet = ({ setcCartlength }) => {
         contentLabel="팝업창"
       >
         <PopupPaypalContent
+          usePoint={usePoint}
           onClose={closeModal}
           submitOrdersheet={submitOrdersheet}
           userCart={userCart}

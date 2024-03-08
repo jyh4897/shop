@@ -99,7 +99,7 @@ const LocalCartList = ({
 
   // 상품 페이지 이동 핸들러
   const onClickGoShop = () => {
-    navigate("/shop");
+    navigate("/");
   };
 
   // 체크상태 변경에 대한 데이터 수정 핸들러, "Cart.js" 에서 처리됨.

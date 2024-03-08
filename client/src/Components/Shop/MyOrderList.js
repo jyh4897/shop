@@ -258,7 +258,7 @@ const MyOrderList = () => {
 
   // 쇼핑몰 홈 이동 핸들러
   const onClickGoShop = () => {
-    navigate("/shop");
+    navigate("/");
   };
 
   if (sessionStorage.loggedIn === undefined) {

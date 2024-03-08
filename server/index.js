@@ -269,7 +269,7 @@ const generateAccessToken = async () => {
  * Create an order to start the transaction.
  * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
  */
-const createOrder = async (cart) => {
+const createOrder = async (cart, usePoint) => {
   // use the cart information passed from the front-end to calculate the purchase unit details
   console.log(
     "shopping cart information passed from the frontend createOrder() callback:",
@@ -280,6 +280,8 @@ const createOrder = async (cart) => {
   const accessToken = await generateAccessToken(); // accessToken 발급받기
   const url = `${base}/v2/checkout/orders`;
   cart.map((item) => (sumAmount += item.price * item.quantity));
+  sumAmount = sumAmount - usePoint;
+
   sumAmount = Math.ceil(sumAmount / 1332.7);
 
   // paypal 사용자 정보
@@ -354,8 +356,8 @@ async function handleResponse(response) {
 app.post("/orders", async (req, res) => {
   try {
     // use the cart information passed from the front-end to calculate the order amount detals
-    const { cart } = req.body;
-    const { jsonResponse, httpStatusCode } = await createOrder(cart);
+    const { cart, usePoint } = req.body;
+    const { jsonResponse, httpStatusCode } = await createOrder(cart, usePoint);
     res.status(httpStatusCode).json(jsonResponse);
   } catch (error) {
     console.error("Failed to create order:", error);
