@@ -24,6 +24,7 @@ const Lowerlist = () => {
     const indexOfFirstPost = indexOfLastPost - postPerPage
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
+    const title = [ "리빙", "패션", "식품", "헤어,바디" ]
 
     useEffect(() => {
         async function fetchData() {
@@ -79,6 +80,9 @@ const Lowerlist = () => {
 
     return (
         <div className={styles.listcontainer}>
+            <div className={styles.titlecontainer}>
+                <p className={styles.title}>{title[categoryid-1]}</p>
+            </div>
             <div className={styles.listnavbar}>
                 <div>
                     <ul>
@@ -91,7 +95,7 @@ const Lowerlist = () => {
                     <li onClick={goHigher}>높은가격</li>
                 </ul>
             </div>
-            <div>
+            <div className={styles.searchbox}>
                 <input value={search} onChange={onChangeSearch} className={styles.searchbar} placeholder="검색어를 입력하세요" /> 
             </div>
             <div className={styles.items}>
