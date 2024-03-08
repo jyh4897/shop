@@ -41,7 +41,7 @@ const Questionmodal = ({products}) => {
     
 
     async function handleSubmit () {
-        const pushData = [products[0].id, userid, content]
+        const pushData = [products[0].id, userid, content.replace(/\n/g, '<br>')]
         console.log(pushData)
         await axios.post('http://localhost:8000/question', pushData)
         .then((result) => {
@@ -82,7 +82,7 @@ const Questionmodal = ({products}) => {
                             <div className={styles.questiontext}>
                                 <p>문의사항</p>
                             </div>
-                            <input type='text' className={styles.textbox} onChange={(e) => handleChangeContent(e)} />
+                            <textarea rows="10" cols="80" className={styles.textbox} onChange={(e) => handleChangeContent(e)} />
                         </div>
                         <div className={styles.infor}>
                             <p>* 개인정보(주민번호, 연락처, 주소, 계좌번호, 카드번호 등)가 포함되지 않도록 유의해주세요.</p>

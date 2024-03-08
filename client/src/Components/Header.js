@@ -81,7 +81,6 @@ function Header({ cartlength }) {
       {/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이기현 */}
       <div className={styles.horizon}></div>
       <ul className={styles.navcontainer}>
-        <li>전체</li>
         <li>
           <Link to="/shop/1/1/1">리빙</Link>
         </li>

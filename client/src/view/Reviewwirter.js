@@ -73,7 +73,7 @@ const Reviewwriter = () => {
             formData.append('orderid', orderid);
             formData.append('prodid', prodid);
             formData.append('title', title);
-            formData.append('content', content);
+            formData.append('content', content.replace(/\n/g, '<br>'));
             formData.append('rate', value);
 
 
@@ -148,7 +148,7 @@ const Reviewwriter = () => {
                     <p>상세 후기</p>
                 </div>
                 <div className={styles.detailcontent}>
-                    <input type="text" onChange={(e) => handleChangeContent(e)} className={styles.detail} />
+                    <textarea rows="20" cols="80" onChange={(e) => handleChangeContent(e)} className={styles.detail} />
                 </div>
             </div>
             <div className={styles.filecontainer}>

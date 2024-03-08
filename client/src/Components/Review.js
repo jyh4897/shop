@@ -163,7 +163,7 @@ const Review = ({ id }) => {
                         </div>
                         <div className={styles.items}>
                             <p className={styles.itemtitle}>{it.title}</p>
-                            <p className={styles.itemcontent}>{it.content}</p>
+                            <p className={styles.itemcontent} dangerouslySetInnerHTML={{ __html : it.content }} />
                         </div>
                         <button onClick={() => handleOnDelete(it)} className={styles.deletebtn}>삭제하기</button>
                     </div>               

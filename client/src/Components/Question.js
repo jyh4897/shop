@@ -62,9 +62,9 @@ const Question = ({ id }) => {
                     <div key={it.questionid} className={styles.questionitems}>
                         <div className={styles.contentbox}>
                             <p className={styles.questionmark}>질문</p>
-                            <p>{it.content}</p>
+                            <p dangerouslySetInnerHTML={{ __html : it.content }} />
                         </div>
-                        <p  className={styles.questiondate}>{it.date}</p>
+                        <p className={styles.questiondate}>{it.date}</p>
                     </div>                
                 )) : 
                 <div>
