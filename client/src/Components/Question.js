@@ -1,4 +1,5 @@
 import { useState, useEffect }  from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from './Question.module.css'
 import Paging from '../Components/Paging';
@@ -64,7 +65,9 @@ const Question = ({ id }) => {
                         <div key={it.questionid} className={styles.questionitems}>
                             <div className={styles.contentbox}>
                                 <p className={styles.questionmark}>질문</p>
+                                <Link to={`/answer/${it.questionid}`}>
                                 <p dangerouslySetInnerHTML={{ __html : it.content }} />
+                                </Link>
                             </div>
                             <p className={styles.questiondate}>{it.date}</p>
                         </div>
