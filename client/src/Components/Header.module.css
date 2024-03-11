@@ -16,9 +16,16 @@
     color: black;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
+.headercontainer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+}
+
+.logoimg {
+    width: 150px;
+    height: 120px;
 }
 
 .logincontainer a {
@@ -26,12 +33,20 @@ ul {
     color: gray
 }
 
+.LoginBtn {
+    cursor: pointer;
+}
+
 .logincontainer {
-    margin: 10px auto;
+    /* margin: 10px auto; */
     display: flex;
     gap: 10px;
     justify-content: flex-end;
-    width: 1280px;
+    /* width: 1280px; */
+    color: gray;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .logincontainer li:before {
@@ -42,11 +57,6 @@ ul {
 
 .logincontainer li:first-child:before {
     content: '';
-}
-
-.LoginBtn {
-    color: gray;
-    cursor: pointer;
 }
 
 .navcontainer {

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './Review.module.css';
-import Rate from 'rc-rate';
-import 'rc-rate/assets/index.css'
 import Paging from '../Components/Paging'
 
 const Review = ({ id }) => {
@@ -29,6 +28,7 @@ const Review = ({ id }) => {
         img4: ''
     }]);
     const [search, setSearch] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function readReview () {
@@ -113,6 +113,10 @@ const Review = ({ id }) => {
         }
     }
 
+    const handleRatebtn = () => {
+        navigate('/myOrderList')
+    }
+
 
     return (
         <div>
@@ -126,7 +130,7 @@ const Review = ({ id }) => {
                     </div> 
                 </div>: '표시할 만족도가 없습니다'}
                 <div>
-                    <button className={styles.ratebtn}>상품평 쓰기</button>
+                    <button className={styles.ratebtn} onClick={handleRatebtn}>상품평 쓰기</button>
                 </div>
             </div>
             <div className={styles.inputcontainer}>

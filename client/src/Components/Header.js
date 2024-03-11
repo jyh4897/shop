@@ -24,12 +24,12 @@ function Header({ cartlength }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.hometext}>
-        <Link to="/">
-          <span className={styles.headertitle}>홈</span>
-        </Link>
-      </div>
+      <div className={styles.headercontainer}>
       <div>
+          <Link to="/">
+            <img src="http://localhost:8000/logo.png" className={styles.logoimg} />
+          </Link>
+        </div>
         {loggedIn ? (
           <ul className={styles.logincontainer}>
             <li className={styles.LoginBtn} onClick={handleLogout}>
