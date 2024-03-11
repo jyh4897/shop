@@ -19,7 +19,6 @@ const Questionmodal = ({products}) => {
         setLoggedIn(true);
         setUserid(userData.userid)
         }
-        console.log(products)
     }, [setLoggedIn, userid]);
     
     const handleOpen = ()=> {

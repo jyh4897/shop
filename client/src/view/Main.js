@@ -36,7 +36,6 @@ useEffect(() => {
         const sortedData = [...rawData].sort((a,b) => Number(b.count) - Number(a.count)).slice(0,9)
         
         setBest(sortedData)
-        console.log(best)
       }
       catch (error) {
         console.error("에러!!")
