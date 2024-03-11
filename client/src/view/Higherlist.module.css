@@ -83,7 +83,7 @@
 .items {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    gap : 55px;
 }
 
 .proditemcontainer {
@@ -108,6 +108,7 @@
     width: 430px;
     height: 430px;
     overflow: hidden;
+    border-radius: 20px;
 }
 .itemimg:hover {
     transition: transform 0.6s;
