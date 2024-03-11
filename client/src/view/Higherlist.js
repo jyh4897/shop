@@ -89,9 +89,9 @@ const Highertlist = () => {
                     </ul>
                 </div>
                 <ul className={styles.orderlist}>
-                    <li onClick={goLatest}>신상품</li>
-                    <li onClick={goLower}>낮은가격</li>
-                    <li onClick={goHigher}>높은가격</li>
+                    <li onClick={goLatest}>최신순</li>
+                    <li onClick={goLower}>낮은가격순</li>
+                    <li onClick={goHigher}><strong>높은가격순</strong></li>
                 </ul>
             </div>
             <div className={styles.searchbox}>

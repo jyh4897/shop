@@ -2,6 +2,7 @@ import { useState, useEffect }  from 'react';
 import axios from 'axios';
 import styles from './Question.module.css'
 import Paging from '../Components/Paging';
+import Answerview from './Answerview';
 
 const Question = ({ id }) => {
 
@@ -59,12 +60,15 @@ const Question = ({ id }) => {
         <div className={styles.container}>           
             <div>
                 {currentPosts && currentPosts.length > 0 ? currentPosts && currentPosts.map((it) => (
-                    <div key={it.questionid} className={styles.questionitems}>
-                        <div className={styles.contentbox}>
-                            <p className={styles.questionmark}>질문</p>
-                            <p dangerouslySetInnerHTML={{ __html : it.content }} />
+                    <div key={it.questionid}>
+                        <div key={it.questionid} className={styles.questionitems}>
+                            <div className={styles.contentbox}>
+                                <p className={styles.questionmark}>질문</p>
+                                <p dangerouslySetInnerHTML={{ __html : it.content }} />
+                            </div>
+                            <p className={styles.questiondate}>{it.date}</p>
                         </div>
-                        <p className={styles.questiondate}>{it.date}</p>
+                        <Answerview questionid={it.questionid} />
                     </div>                
                 )) : 
                 <div>

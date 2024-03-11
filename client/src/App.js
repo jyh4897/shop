@@ -26,6 +26,7 @@ import Lowerlist from "./view/Lowerlist";
 import Product from "./view/Product";
 import Productregister from "./view/Productregister";
 import Reviewwriter from "./view/Reviewwirter";
+import Answer from './view/Answer';
 
 function App() {
   const [cartlength, setcCartlength] = useState(0); // 장바구니에 담은 아이템 수
@@ -96,6 +97,7 @@ function App() {
               path="/review/:userid/:orderid/:prodid"
               element={<Reviewwriter />}
             />
+            <Route path="/answer/:questionid" element={<Answer />} />
           </Routes>
         </div>
         <Footer />

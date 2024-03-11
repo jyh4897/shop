@@ -52,6 +52,7 @@
 
 .orderlist {
     display: flex;
+    gap: 5px;
 }
 
 .orderlist li:before {

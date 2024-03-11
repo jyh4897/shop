@@ -982,4 +982,25 @@ app.delete("/review", (req, res) => {
   });
 });
 
+app.post("/answer", (req, res) => {
+  const values = req.body;
+  const sqlQuery = "INSERT INTO ezteam2.productanswer (answerid, qid, answer, prodid, date) VALUES (null, ?, ?, ?, Now())"
+  connection.query(sqlQuery, values, (err, result) => {
+    if (err) {
+      console.log('Error during inserting', err)
+      res.status(500).send('Internal Server Error')
+    }
+    else {
+      res.status(200).send('inserted')
+    }
+  })
+})
+
+app.get("/answer", (req, res) => {
+  const sqlQuery = "SELECT * FROM ezteam2.productanswer";
+  connection.query(sqlQuery, (err, result) => {
+    res.send(result);
+  })
+})
+
 app.listen(port, () => console.log(`port${port}`));
