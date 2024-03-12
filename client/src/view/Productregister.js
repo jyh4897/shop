@@ -159,18 +159,22 @@ const Readerboard = () => {
                     <div className={styles.namebox}>
                         <p className={styles.productmenu}>상품명</p>
                     </div>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className={styles.productname} />
+                    <div className={styles.contentbox}>
+                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className={styles.productname} />
+                    </div>
                 </div>
                 <div className={styles.registerrow}>
                     <div className={styles.namebox}>
                         <p className={styles.productmenu}>상품 카테고리</p>
                     </div>
-                    <select value={category} onChange={(e) => setCategory(e.target.value)} className={styles.productcategory}>
-                        <option value="1">리빙</option>
-                        <option value="2">패션</option>
-                        <option value="3">식품</option>
-                        <option value="4">헤어,바디</option>
-                    </select>
+                    <div className={styles.contentbox}>
+                        <select value={category} onChange={(e) => setCategory(e.target.value)} className={styles.productcategory}>
+                            <option value="1">리빙</option>
+                            <option value="2">패션</option>
+                            <option value="3">식품</option>
+                            <option value="4">헤어,바디</option>
+                        </select>
+                    </div>
                 </div>
                 <div className={styles.thumbnailrow}>
                     <div className={styles.namebox}>
@@ -178,8 +182,7 @@ const Readerboard = () => {
                     </div>      
                     <div className={styles.thumbnailbox}>
                         <div>
-                            <input type="file" name="files" onChange={(e) => handleChangeThumbnail(e)} />   
-                            
+                            <input type="file" name="files" onChange={(e) => handleChangeThumbnail(e)} />      
                         </div>                       
                         <div className={styles.thumbnailarray}>
                             {thumbnail.length ? thumbnail.map((img, index) => (
@@ -196,7 +199,7 @@ const Readerboard = () => {
                     <div className={styles.namebox}>
                         <p className={styles.productmenu}>상세 사진</p>
                     </div>
-                    <div>      
+                    <div className={styles.imagesbox}>      
                         <div>
                             <input type="file" id="file-input" name="files" onChange={(e) => handleChangeFile(e)} multiple />
                         </div>                
@@ -214,22 +217,27 @@ const Readerboard = () => {
                     <div className={styles.namebox}>
                         <p className={styles.productmenu}>가격</p>
                     </div>
-                    <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} className={styles.productprice}/>
+                    <div className={styles.contentbox}>
+                        <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} className={styles.productprice}/>
+                    </div>
+                    
                 </div>
                 <div className={styles.descriptionrow}>
                     <div className={styles.namebox}>
                         <p className={styles.productmenu}>상세설명</p>
-                    </div>                   
-                    <ReactQuill
-                    ref={quillRef}
-                    theme="snow"
-                    placeholder=""
-                    value={value}
-                    onChange={setValue}
-                    modules={modules}
-                    formats={formats}
-                    className={styles.quill}
-                />
+                    </div>
+                    <div className={styles.quillbox}>                   
+                        <ReactQuill
+                        ref={quillRef}
+                        theme="snow"
+                        placeholder=""
+                        value={value}
+                        onChange={setValue}
+                        modules={modules}
+                        formats={formats}
+                        className={styles.quill}
+                        />
+                    </div>
                 </div>
                 <div className={styles.btnbox}>
                     <button type="submit" onClick={handleSubmit} className={styles.registerbtn}>상품등록</button>
