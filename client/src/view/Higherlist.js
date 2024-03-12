@@ -25,6 +25,8 @@ const Highertlist = () => {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
     const title = [ "리빙", "패션", "식품", "헤어,바디" ]
+    const Admin = 150249
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -116,8 +118,10 @@ const Highertlist = () => {
                     </div>
                 ))}
             </div>
-            {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == 150249 ? <button onClick={goRegister}>상품 등록</button> 
-            : ''}
+            <div className={styles.registercontainer}>
+                {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == Admin ? <button onClick={goRegister} className={styles.registerbtn}>상품 등록</button> 
+                : ''}
+            </div>
             <Paging page={page} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
         </div>
     )

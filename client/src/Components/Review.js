@@ -29,6 +29,7 @@ const Review = ({ id }) => {
     }]);
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
+    const Admin = 150249
 
     useEffect(() => {
         async function readReview () {
@@ -169,7 +170,7 @@ const Review = ({ id }) => {
                             <p className={styles.itemtitle}>{it.title}</p>
                             <p className={styles.itemcontent} dangerouslySetInnerHTML={{ __html : it.content }} />
                         </div>
-                        {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == 150249 ? <button onClick={() => handleOnDelete(it)} className={styles.deletebtn} >삭제하기</button>: ''}    
+                        {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == Admin ? <button onClick={() => handleOnDelete(it)} className={styles.deletebtn} >삭제하기</button>: ''}    
                     </div>               
                 </div>
             )) : (

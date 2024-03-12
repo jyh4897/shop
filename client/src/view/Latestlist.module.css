@@ -113,3 +113,18 @@
     transition: transform 0.6s;
     transform: scale(1.2);
 }
+
+.registercontainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.registerbtn {
+    width: 150px;
+    height: 30px;
+    background-color: rgb(177, 220, 177);
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    border-radius: 5px;
+    cursor: pointer;
+}

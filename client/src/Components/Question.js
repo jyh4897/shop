@@ -20,6 +20,7 @@ const Question = ({ id }) => {
         content: '',
         date: ''
     }])
+    const Admin = 150249
 
     useEffect(() => {
         async function readQuestion () {
@@ -65,7 +66,7 @@ const Question = ({ id }) => {
                         <div key={it.questionid} className={styles.questionitems}>
                             <div className={styles.contentbox}>
                                 <p className={styles.questionmark}>질문</p>
-                                {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == 150249 ? 
+                                {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == Admin ? 
                                 <Link to={`/answer/${it.questionid}`}>
                                 <p dangerouslySetInnerHTML={{ __html : it.content }} />
                                 </Link>
