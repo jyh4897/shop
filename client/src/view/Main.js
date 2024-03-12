@@ -63,6 +63,21 @@ useEffect(() => {
       ),
 };
 
+useEffect(() => {
+    if (sessionStorage.userData) {
+        const logindata = JSON.parse(sessionStorage.getItem('userData'))
+        if(logindata.userid == 150249) {
+            sessionStorage.setItem("authorized", true)
+        }
+        else {
+            sessionStorage.setItem("authorized", false)
+        }
+    }
+    else {
+        sessionStorage.removeItem("authorized")
+    }
+})
+
 
   return (
     <div className={styles.container}>

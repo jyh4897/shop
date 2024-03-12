@@ -169,7 +169,7 @@ const Review = ({ id }) => {
                             <p className={styles.itemtitle}>{it.title}</p>
                             <p className={styles.itemcontent} dangerouslySetInnerHTML={{ __html : it.content }} />
                         </div>
-                        <button onClick={() => handleOnDelete(it)} className={styles.deletebtn}>삭제하기</button>
+                        {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == 150249 ? <button onClick={() => handleOnDelete(it)} className={styles.deletebtn} >삭제하기</button>: ''}    
                     </div>               
                 </div>
             )) : (

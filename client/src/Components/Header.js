@@ -20,6 +20,7 @@ function Header({ cartlength }) {
     sessionStorage.removeItem("userData"); //0210 상호형 추가
     setLoggedIn(false);
     navigate("/"); //0210 상호형 추가
+    window.location.reload(); // 0312 전윤호 추가
   };
 
   return (

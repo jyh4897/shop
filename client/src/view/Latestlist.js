@@ -96,6 +96,10 @@ const Latestlist = () => {
         navigate(`/shop/${categoryid}/3/1`)
     }
 
+    const goRegister = () => {
+        navigate('/product/register')
+    }
+
     return (
         <div className={styles.listcontainer}>
             <div className={styles.titlecontainer}>
@@ -131,6 +135,8 @@ const Latestlist = () => {
                     </div>
                 ))}
             </div>
+            {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == 150249 ? <button onClick={goRegister}>상품 등록</button> 
+            : ''}
             <Paging page={page} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
         </div>
     )
