@@ -7,10 +7,13 @@ import spinnerImage from "../Shop/image/spinner2.gif"; // 로딩 이미지
 import "./ReadExchangeRate.css";
 
 const ReadExchangeRate = () => {
+  // 서버 주소
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
+
   const [exchangeRate, setExchangeRate] = useState(false); // 환율 데이터
 
   useEffect(() => {
-    axios.get("http://localhost:8000/getExchangeRate").then((response) => {
+    axios.get(`${Server_URL}/getExchangeRate`).then((response) => {
       setExchangeRate(response.data);
     });
   }, []);

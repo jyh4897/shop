@@ -6,9 +6,12 @@ const bcrypt = require("bcrypt");
 // const bodyParser = require("body-parser"); // express 모듈이 대체 가능함_이기현
 const session = require("express-session"); //0213 김민호 세션 추가
 const MySQLStore = require("express-mysql-session")(session); //0213 김민호
+const dotenv = require("dotenv"); // 추가_이기현
 
 const multer = require("multer");
 const path = require("path");
+
+dotenv.config(); // 추가_이기현
 
 // 이기현_추가 코드 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -26,7 +29,8 @@ const path = require("path");
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 const app = express();
-const port = 8000;
+// const port = 8000; // 폐기_이기현
+app.set("port", process.env.PORT || 8000); // 추가_이기현
 
 app.use(express.urlencoded({ extended: false })); // bodyParser >> express 대체_이기현
 app.use(express.json()); // bodyParser >> express 대체_이기현
@@ -49,24 +53,28 @@ app.use(express.static(path.join(__dirname + "/images")));
 
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT } = process.env;
+const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
+const { NH_AccessToken, NH_Iscd } = process.env;
+
 // MySQL 연결 설정
 const connection = mysql.createConnection({
   // 외부 데이터 베이스 MySQL
-  host: "1.243.246.15",
-  user: "root",
-  password: "1234",
-  database: "ezteam2",
-  port: 5005,
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_DATABASE,
+  port: DB_PORT,
 });
 
 // 프로미스 기반 MySQL 연결 설정
 const PromiseConnection = mysqlPromise.createPool({
   // 외부 데이터 베이스 MySQL
-  host: "1.243.246.15",
-  user: "root",
-  password: "1234",
-  database: "ezteam2",
-  port: 5005,
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_DATABASE,
+  port: DB_PORT,
 });
 
 // MySQL 연결
@@ -79,23 +87,6 @@ connection.connect((err) => {
 });
 
 app.get("/", (req, res) => res.send(`Hell'o World!`));
-
-// 이기현 -------------------------------
-
-// 배포 준비시 사용 예정  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-// dotenv 환경설정
-// dotenv.config();
-
-// const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
-// const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-// Paypal API 접근 코드 ㅡㅡㅡ
-const PAYPAL_CLIENT_ID =
-  "AZEh01o-yVFl957KTW72L1B3LiPyGN5Z5IJV2xTcDEfE3pBsbwt59kPiqvUbBmAacAtEmo0t9x0mzRdT";
-const PAYPAL_CLIENT_SECRET =
-  "EJGeViT1jFj1g2V1Gtn2DM_M5DbVbn-HkGF9PNZ4x-Zy4fNB5KF067kt0NMjMZ8OE23FH3xAhdXj5dvb";
-const base = "https://api-m.sandbox.paypal.com";
 
 // orders 테이블이 존재하지 않을 경우 생성 쿼리문
 // FOREIGN KEY 추가
@@ -132,9 +123,6 @@ connection.query(createOrdersTableQuery); // orders 테이블 생성
 // https://developers.nonghyup.com/
 
 const NH_url = "https://developers.nonghyup.com/InquireExchangeRate.nh";
-const NH_AccessToken =
-  "03b4a016dab0220a56ae3c81ae04f1afc988bf5db9676c91ccebca3761af9418";
-const NH_Iscd = "002358";
 
 // 날짜를 구하는 메소드
 const getValidTodayString = () => {
@@ -237,6 +225,8 @@ app.get("/getExchangeRate", async (req, res) => {
 // 여기서부터 Paypal API  코드  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 // 현재는 장바구니 데이터에 접근할 수 없으므로 모두 주석처리
 
+const base = "https://api-m.sandbox.paypal.com";
+
 // // paypal API 인증 토큰 발급
 const generateAccessToken = async () => {
   try {
@@ -302,11 +292,6 @@ const createOrder = async (cart, usePoint) => {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
-      // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
-      // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-      // "PayPal-Mock-Response": '{"mock_application_codes": "MISSING_REQUIRED_PARAMETER"}'
-      // "PayPal-Mock-Response": '{"mock_application_codes": "PERMISSION_DENIED"}'
-      // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
     },
     method: "POST",
     body: JSON.stringify(payload),
@@ -328,11 +313,6 @@ const captureOrder = async (orderID) => {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
-      // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
-      // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-      // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
-      // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
-      // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
     },
   });
 
@@ -476,7 +456,8 @@ app.get("/getOrderList", async (req, res, next) => {
   }
 });
 
-// 주문 완료 페이지에서 상품 코드를 기반으로, 해당 상품을 구매한 사용자들의 회원 식별 정보를 요청
+// 주문 완료 페이지에서 상품 코드를 기반으로,
+// 해당 상품을 구매한 사용자들의 회원 식별 정보를 요청
 // GET
 app.get("/products/usertype", async (req, res, next) => {
   try {
@@ -984,23 +965,26 @@ app.delete("/review", (req, res) => {
 
 app.post("/answer", (req, res) => {
   const values = req.body;
-  const sqlQuery = "INSERT INTO ezteam2.productanswer (answerid, qid, answer, prodid, date) VALUES (null, ?, ?, ?, Now())"
+  const sqlQuery =
+    "INSERT INTO ezteam2.productanswer (answerid, qid, answer, prodid, date) VALUES (null, ?, ?, ?, Now())";
   connection.query(sqlQuery, values, (err, result) => {
     if (err) {
-      console.log('Error during inserting', err)
-      res.status(500).send('Internal Server Error')
+      console.log("Error during inserting", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.status(200).send("inserted");
     }
-    else {
-      res.status(200).send('inserted')
-    }
-  })
-})
+  });
+});
 
 app.get("/answer", (req, res) => {
   const sqlQuery = "SELECT * FROM ezteam2.productanswer";
   connection.query(sqlQuery, (err, result) => {
     res.send(result);
-  })
-})
+  });
+});
 
-app.listen(port, () => console.log(`port${port}`));
+// app.listen(port, () => console.log(`port${port}`)); << 원본
+app.listen(app.get("port"), () => {
+  console.log(app.get("port"), `port server on...`);
+}); // 추가_이기현

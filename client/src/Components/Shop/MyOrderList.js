@@ -13,6 +13,9 @@ const MyOrderList = () => {
 
   const navigate = useNavigate();
 
+  // 서버 경로
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
+
   // 카테고리별 기간
   const periodCategory = {
     periodToday: "today",
@@ -220,7 +223,7 @@ const MyOrderList = () => {
     }
 
     axios
-      .get("http://localhost:8000/getOrderList", {
+      .get(`${Server_URL}/getOrderList`, {
         params: {
           userId: userid, // user 고유 식별번호
           periodDate: checkOrderPeriod(orderPeriod), // 쿼리문에 쓰일 date 데이터

@@ -21,10 +21,15 @@ const PopupPaypalContent = ({
   submitOrdersheet,
   userCart,
 }) => {
+  // 서버 주소
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
+
+  // 페이팔 클라이언트 ID
+  const { REACT_APP_PAYPAL_CLIENT_ID } = process.env;
+
   // 페이팔 유효성 체크 및 속성 설정
   const initialOptions = {
-    "client-id":
-      "AZEh01o-yVFl957KTW72L1B3LiPyGN5Z5IJV2xTcDEfE3pBsbwt59kPiqvUbBmAacAtEmo0t9x0mzRdT",
+    "client-id": REACT_APP_PAYPAL_CLIENT_ID,
     "enable-funding": "card",
     "disable-funding": "paylater,venmo",
     "data-sdk-integration-source": "integrationbuilder_sc",
@@ -35,8 +40,7 @@ const PopupPaypalContent = ({
   // 페이팔 주문생성 createOrder 이벤트 핸들러, 버튼 클릭시 작동
   const createOrder = async () => {
     try {
-      console.log("createOrder");
-      const response = await fetch("http://localhost:8000/orders", {
+      const response = await fetch(`${Server_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,9 +75,8 @@ const PopupPaypalContent = ({
   const onApprove = async (data, actions) => {
     const thisPaymentType = "페이팔 결제";
     try {
-      console.log("onApprove");
       const response = await fetch(
-        `http://localhost:8000/orders/${data.orderID}/capture`,
+        `${Server_URL}/orders/${data.orderID}/capture`,
         {
           method: "POST",
           headers: {
@@ -103,11 +106,6 @@ const PopupPaypalContent = ({
         const transaction = orderData.purchase_units[0].payments.captures[0];
         setMessage(
           `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`
-        );
-        console.log(
-          "Capture result",
-          orderData,
-          JSON.stringify(orderData, null, 2)
         );
         submitOrdersheet(thisPaymentType);
         onClose();

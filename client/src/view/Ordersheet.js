@@ -34,28 +34,32 @@ const Ordersheet = ({ setcCartlength }) => {
   // <Link> prop으로 전달 받은 데이터를 사용하기 위해 변수에 저장
   // orderTypeData은 개별 구매, 선택 상품 구매, 모든 상품 구매 중 하나의 주문형식 값을 가져오는 데 사용
 
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
+  const { REACT_APP_PortOne_ChannelKey, REACT_APP_PortOne_Kakao_ChannelKey } =
+    process.env;
+
   const paymentMethods = [
     {
       paymentType: "카드 결제",
-      channelKey: "channel-key-46f3c583-c5bf-4b74-9339-86ee907e5dd2",
+      channelKey: REACT_APP_PortOne_ChannelKey,
       payMethod: "CARD",
       paymentName: "카드 결제",
     },
     {
       paymentType: "실시간 계좌이체",
-      channelKey: "channel-key-46f3c583-c5bf-4b74-9339-86ee907e5dd2",
+      channelKey: REACT_APP_PortOne_ChannelKey,
       payMethod: "TRANSFER",
       paymentName: "실시간 계좌이체",
     },
     {
       paymentType: "모바일 결제",
-      channelKey: "channel-key-46f3c583-c5bf-4b74-9339-86ee907e5dd2",
+      channelKey: REACT_APP_PortOne_ChannelKey,
       payMethod: "MOBILE",
       paymentName: "모바일 결제",
     },
     {
       paymentType: "카카오 페이",
-      channelKey: "channel-key-6ac28748-be59-4e14-9b3b-f5f40fe8bd29",
+      channelKey: REACT_APP_PortOne_Kakao_ChannelKey,
       payMethod: "EASY_PAY",
       paymentName: "카카오 페이",
     },
@@ -85,7 +89,7 @@ const Ordersheet = ({ setcCartlength }) => {
       const { userid } = { ...getUserData };
 
       axios
-        .get("http://localhost:8000/ordersheet", { params: { userId: userid } })
+        .get(`${Server_URL}/ordersheet`, { params: { userId: userid } })
         .then((data) => {
           setUserInfo(data.data[0]);
         });
@@ -244,7 +248,7 @@ const Ordersheet = ({ setcCartlength }) => {
     // 서버에 엔드포인트 "/reqOrder" 로 POST 요청,
     // 전달할 데이터는 orderSheet 이름의 reqOrderSheet 객체 변수
     axios
-      .post("http://localhost:8000/reqOrder", {
+      .post(`${Server_URL}/reqOrder`, {
         orderSheet: reqOrderSheet,
         orderUserId: userInfo.userid,
       })

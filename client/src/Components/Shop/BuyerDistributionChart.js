@@ -14,6 +14,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const BuyerDistributionChart = ({ product }) => {
   const [chartUserTypeData, setChartUserTypeData] = useState([]); // 차트에 사용될 표본 데이터
 
+  // 서버 경로
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
+
   // 상품코드, 이미지 경로, 상품명 변수
   const { id, thumbnail, name } = product;
 
@@ -22,7 +25,7 @@ const BuyerDistributionChart = ({ product }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/products/usertype", {
+      .get(`${Server_URL}/products/usertype`, {
         params: { productCode: id },
       })
       .then((response) => {

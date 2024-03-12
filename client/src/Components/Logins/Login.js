@@ -12,6 +12,9 @@ function LoginPage() {
   const [loginStatus, setloginStatus] = useState("");
   const [userTypes, setUserTypes] = useState(1);
 
+  // 서버 주소
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
+
   //어떤 체크박스가 클릭이 됬는지 확인 해주는 함수
   const handleCheckboxChange = (type) => {
     setUserTypes(type);
@@ -22,7 +25,7 @@ function LoginPage() {
 
     // 로그인 요청 구현
     axios
-      .post("http://localhost:8000/login", {
+      .post(`${Server_URL}/login`, {
         email: email,
         password: password,
         usertype: userTypes,

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"; //랜덤 코드 생성 라이브러리
 
 import "./MultiPayment.css";
 
@@ -10,6 +10,8 @@ const MultiPayment = ({
   paymentData,
 }) => {
   const { paymentType, channelKey, payMethod, paymentName } = paymentData;
+  // 포트원 상점 아이디
+  const { REACT_APP_PortOne_StoreId } = process.env;
 
   let payResponse;
 
@@ -40,7 +42,7 @@ const MultiPayment = ({
     if (paymentType == "카카오 페이") {
       payResponse = await PortOne.requestPayment({
         // Store ID 설정
-        storeId: "store-7c9eb5a3-48bb-42c5-8886-6ae0a8a85ec8",
+        storeId: REACT_APP_PortOne_StoreId,
         // 채널 키 설정
         channelKey: channelKey,
         paymentId: `payment-${uuidv4()}`,
@@ -55,14 +57,14 @@ const MultiPayment = ({
     } else {
       payResponse = await PortOne.requestPayment({
         // Store ID 설정
-        storeId: "store-7c9eb5a3-48bb-42c5-8886-6ae0a8a85ec8",
+        storeId: REACT_APP_PortOne_StoreId,
         // 채널 키 설정
         channelKey: channelKey,
         paymentId: `payment-${uuidv4()}`,
         orderName: `${userCart[0].name} 외 ${userCart.length - 1} 건`,
-        totalAmount: totalProductAmount() - usePoint,
+        // totalAmount: totalProductAmount() - usePoint,
 
-        // totalAmount: 1000,
+        totalAmount: 1000,
         currency: "CURRENCY_KRW",
         payMethod: payMethod,
         productType: "PRODUCT_TYPE_REAL",

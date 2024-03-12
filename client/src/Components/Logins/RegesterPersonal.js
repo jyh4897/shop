@@ -19,6 +19,9 @@ function RegesterPersonal() {
 
   const [formEffectiveness, setFormEffectiveness] = useState(true);
 
+  // 서버 주소
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
+
   const handle = handlePostcode(openPostcode, setOpenPostcode, setAddress);
 
   const setPasswordMatch = (match) => {
@@ -34,7 +37,7 @@ function RegesterPersonal() {
 
     // 클라이언트가 서버에 이메일 중복 확인을 요청합니다./0214 김민호
     axios
-      .post("http://localhost:8000/checkEmailDuplication", { email })
+      .post(`${Server_URL}/checkEmailDuplication`, { email })
       .then((response) => {
         console.log("서버 응답:", response.data);
         setEmailDuplication(response.data.success);
@@ -85,7 +88,7 @@ function RegesterPersonal() {
 
     // 클라이언트에서 서버로 회원가입 요청
     axios
-      .post("http://localhost:8000/regester", {
+      .post(`${Server_URL}/regester`, {
         username,
         password,
         email,
