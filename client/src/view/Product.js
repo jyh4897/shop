@@ -140,10 +140,9 @@ const Product = ({setcCartlength}) => {
 
   return (
     <div className={styles.container}>
-      <p>{id} 상세페이지</p>
       {products &&
         products.map((it) => (
-          <div>
+          <div key={it.id}>
             <div className={styles.productinfo}>
               <div className={styles.imagecontainer}>
                 <div className={styles.bigimage}>

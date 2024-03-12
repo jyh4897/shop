@@ -129,7 +129,7 @@ const Reviewwriter = () => {
                     <select value={value} onChange={(e) => setValue(e.target.value)} className={styles.rate}>
                         <option value={5}>5점</option>
                         <option value={4}>4점</option>
-                        <option selected="selected" value={3} >3점</option>
+                        <option defaultValue={3} value={3} >3점</option>
                         <option value={2}>2점</option>
                         <option value={1}>1점</option>
                     </select>

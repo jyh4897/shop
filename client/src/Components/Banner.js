@@ -49,7 +49,7 @@ const Banner = () => {
                 <Slider {...settings} className={styles.slidercontainer} ref={slickRef}>
                 {banner && banner.length > 0 ? 
                     banner.map((it) => (
-                        <div>
+                        <div key={it.bannerid}>
                             <img src={it.bannerurl} className={styles.bannerimg}/>
                         </div>
                     )) : ''}

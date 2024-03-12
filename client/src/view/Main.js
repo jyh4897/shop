@@ -88,7 +88,7 @@ useEffect(() => {
                 </div>
                 <Slider {...settings} className={styles.bestslidercontainer}>
                     {best && best.length > 0 ? best.map((it) => (
-                        <div className={styles.bestcontainer}>
+                        <div key={it.prodid} className={styles.bestcontainer}>
                             <Link to={`/product/${it.prodid}`}>
                                 <div className={styles.bestimgcontainer}><img src={it.thumbnail} className={styles.bestimg}/></div>
                                 <div className={styles.bestname}>{it.name}</div>
@@ -100,7 +100,7 @@ useEffect(() => {
             </div>
             <div className={styles.recommendcontainer}>
                 <div className={styles.recommendtitle}>
-                    <strong span>추천 카테고리</strong>
+                    <strong>추천 카테고리</strong>
                 </div>
                 <div>
                     <ul className={styles.categroycontainer}>

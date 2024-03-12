@@ -38,7 +38,7 @@ const Answerview = ({questionid}) => {
         <div className={styles.answercontainer}>
             {answer && answer.length > 0 ? 
             answer.map((it) =>
-            <div className={styles.answeritems}>
+            <div key={it.qid} className={styles.answeritems}>
                 <div className={styles.answercontent}>
                     <div className={styles.answericon}>
                         <p>↳</p>
