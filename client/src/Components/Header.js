@@ -62,7 +62,7 @@ function Header({ cartlength }) {
               <Link to="/Login">로그인</Link>
             </li>
             <li>
-              <Link to="/Regester">회원가입</Link>
+            <Link to="/Register/personal">회원가입</Link>
             </li>
             <li>
               {/* 20240307 업데이트_이기현 */}

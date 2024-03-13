@@ -16,9 +16,9 @@ function LoginPage() {
   const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
   //어떤 체크박스가 클릭이 됬는지 확인 해주는 함수
-  const handleCheckboxChange = (type) => {
-    setUserTypes(type);
-  };
+  // const handleCheckboxChange = (type) => {
+  //   setUserTypes(type);
+  // }; // 현재 개인회원만 받으므로 비활성화_이기현
 
   const LoginPageJs = () => {
     console.log("LoginPageJs 함수 호출됨"); //스크립트 동작시 콘솔에 출력
@@ -88,7 +88,7 @@ function LoginPage() {
               <br />
             </div>
             {/* 체크박스 표시  */}
-            <div className="login_form_checkbox_container">
+            {/* <div className="login_form_checkbox_container">
               <div
                 className={
                   userTypes === 1
@@ -137,7 +137,7 @@ function LoginPage() {
                 />
                 <label htmlFor="organizationCheckbox">단 체</label>
               </div>
-            </div>
+            </div> */}
             <hr></hr>
             <div className="login_btn_container">
               {/* 로그인 버튼 표시 */}
@@ -153,7 +153,7 @@ function LoginPage() {
               </button>
               <button
                 className="regester_btn"
-                onClick={() => navigate("/Regester")}
+                onClick={() => navigate("/Register/personal")}
               >
                 회원가입
               </button>

@@ -73,16 +73,16 @@ function App() {
             {/* 김민호 */}
             <Route path="/Login" element={<LoginPage />}></Route>
             <Route path="/Modify" element={<Modify />}></Route>
-            <Route path="/Regester" element={<Regester />}></Route>
+            {/* <Route path="/Regester" element={<Regester />}></Route> */}
             <Route
-              path="/Regester/personal"
+              path="/Register/personal"
               element={<RegesterPersonal />}
             ></Route>
-            <Route
+            {/* <Route
               path="/Regester/corporate"
               element={<RegesterCorporate />}
             ></Route>
-            <Route path="/Regester/group" element={<RegesterGroup />}></Route>
+            <Route path="/Regester/group" element={<RegesterGroup />}></Route> */}
 
             {/* 전윤호 */}
             {/* <Route path="/shop" element={<Shop />} /> */}
