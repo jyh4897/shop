@@ -9,10 +9,11 @@ const Answerview = ({questionid}) => {
         answerdate: '',
         qid: ''
     }])
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
     useEffect(() => {
         async function readAnswer () {
-            const answerresponses = await axios.get('http://localhost:8000/answer', {})
+            const answerresponses = await axios.get(`${Server_URL}/answer`, {})
             const filteredAnswer = await answerresponses.data.filter((it) => it.qid == questionid)
             const options = {
                 year: 'numeric',

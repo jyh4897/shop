@@ -26,10 +26,11 @@ const Reviewwriter = () => {
         img3: '',
         img4: ''
     }])
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
     useEffect(() => {
         async function resData() {
-            const responses = await axios.get("http://localhost:8000/shop", {})
+            const responses = await axios.get(`${Server_URL}/shop`, {})
             const inputData = await responses.data.filter((it) => it.prodid == prodid)
             const product = await inputData.map((it) => ({
                 id: it.prodid,
@@ -84,7 +85,7 @@ const Reviewwriter = () => {
             for (var key of formData) {
                 console.log(key)
             }
-            await axios.post('http://localhost:8000/review', formData, {
+            await axios.post(`${Server_URL}/review`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }

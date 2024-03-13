@@ -30,11 +30,12 @@ const Review = ({ id }) => {
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const Admin = 150249
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
     useEffect(() => {
         async function readReview () {
             try {
-                const responses = await axios.get('http://localhost:8000/review', {});
+                const responses = await axios.get(`${Server_URL}/review`, {});
                 const reviewData = responses.data.filter((it) => it.prodid === id);
                 const options = {
                     year: 'numeric',
@@ -99,7 +100,7 @@ const Review = ({ id }) => {
 
     const handleOnDelete = async (reviews) => {
         try {
-            await axios.delete("http://localhost:8000/review", {
+            await axios.delete(`${Server_URL}/review`, {
                 data : {
                     ...reviews
                 },
@@ -126,7 +127,7 @@ const Review = ({ id }) => {
                 <div className={styles.avgrate}>
                     <span>상품만족도</span>
                     <div className={styles.ratebox}>
-                        <img src="http://localhost:8000/star.jpg" className={styles.rateimg} alt="이미지"/>
+                        <img src={`${Server_URL}/star.jpg`} className={styles.rateimg} alt="이미지"/>
                         <p>{Number(point).toFixed(1)}/5.0</p>
                     </div> 
                 </div>: '표시할 만족도가 없습니다'}
@@ -145,7 +146,7 @@ const Review = ({ id }) => {
                     <div className={styles.userinfo}>
                         <p>{it.userid}님</p>
                         <div className={styles.userratebox}>
-                            <img src="http://localhost:8000/star.jpg" className={styles.userrateimg} alt="이미지"/>
+                            <img src={`${Server_URL}/star.jpg`} className={styles.userrateimg} alt="이미지"/>
                             <p><strong>{it.rate}</strong>/5 점</p>
                         </div>
                         

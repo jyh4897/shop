@@ -19,10 +19,11 @@ const Answer = () => {
     }])
     const [answer, setAnswer] = useState('');
     const navigate = useNavigate();
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
     useEffect(() => {
         async function readQuestion () {
-            const responses = await axios.get('http://localhost:8000/question', {})
+            const responses = await axios.get(`${Server_URL}/question`, {})
             const filteredData = await responses.data.filter((it) => it.qid == questionid)
             const options = {
                 year: 'numeric',
@@ -41,7 +42,7 @@ const Answer = () => {
                 content: it.content,
                 date : new Intl.DateTimeFormat('en-US', options).format(new Date(it.date)).replace(/(\d+)\/(\d+)\/(\d+),/, '$3/$1/$2')
             }));
-            const prodresponses = await axios.get('http://localhost:8000/shop', {});
+            const prodresponses = await axios.get(`${Server_URL}/shop`, {});
             const filterprod = await prodresponses.data.filter((it) => it.prodid == rawData[0].prodid)
             const prodrawData = await filterprod.map((it) => ({
                 prodid: it.prodid,
@@ -61,7 +62,7 @@ const Answer = () => {
     async function handleSubmit () {
         const pushData = [question[0].questionid, answer.replace(/\n/g, '<br>'), product[0].prodid]
         console.log(pushData);
-        await axios.post('http://localhost:8000/answer', pushData)
+        await axios.post(`${Server_URL}/answer`, pushData)
         .then((result) => {
             console.log('요청성공')
             console.log(result)

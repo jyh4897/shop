@@ -5,6 +5,7 @@ import styles from "./Header.module.css";
 function Header({ cartlength }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
   // 페이지가 로드될 때 로그인 상태를 확인하고 상태를 업데이트
   useEffect(() => {
     const storedLoggedIn = sessionStorage.getItem("loggedIn");
@@ -28,7 +29,7 @@ function Header({ cartlength }) {
       <div className={styles.headercontainer}>
       <div>
           <Link to="/">
-            <img src="http://localhost:8000/logo.png" className={styles.logoimg} />
+            <img src={`${Server_URL}/logo.png`} className={styles.logoimg} />
           </Link>
         </div>
         {loggedIn ? (

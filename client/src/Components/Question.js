@@ -21,10 +21,11 @@ const Question = ({ id }) => {
         date: ''
     }])
     const Admin = 150249
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
     useEffect(() => {
         async function readQuestion () {
-            const responses = await axios.get("http://localhost:8000/question", {});
+            const responses = await axios.get(`${Server_URL}/question`, {});
             const filteredData = await responses.data.filter((it) => it.prodid == id)
             const options = {
                 year: 'numeric',

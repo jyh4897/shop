@@ -14,69 +14,70 @@ import "slick-carousel/slick/slick-theme.css";
 
 function Main() {
 
-  const [best, setBest] = useState({
-    prodid: '',
-    name: '',
-    price: '',
-    thumbnail: '',
-    count: ''
-})
+    const [best, setBest] = useState({
+        prodid: '',
+        name: '',
+        price: '',
+        thumbnail: '',
+        count: ''
+    })
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
-useEffect(() => {
-    async function fetchData() {
-      try {
-        const responses = await axios.get("http://localhost:8000/ordercount", {});
-        const rawData = await responses.data.map((it) => ({
-            prodid: it.prodid,
-            name: it.title,
-            price: it.price.toLocaleString(),
-            thumbnail: it.thumbnail,
-            count: it.ordered
-        }))
-        const sortedData = [...rawData].sort((a,b) => Number(b.count) - Number(a.count)).slice(0,9)
-        
-        setBest(sortedData)
-      }
-      catch (error) {
-        console.error("에러!!")
-      }
-    }
-    fetchData()
-  }, [])
+    useEffect(() => {
+        async function fetchData() {
+        try {
+            const responses = await axios.get(`${Server_URL}/ordercount`, {});
+            const rawData = await responses.data.map((it) => ({
+                prodid: it.prodid,
+                name: it.title,
+                price: it.price.toLocaleString(),
+                thumbnail: it.thumbnail,
+                count: it.ordered
+            }))
+            const sortedData = [...rawData].sort((a,b) => Number(b.count) - Number(a.count)).slice(0,9)
+            
+            setBest(sortedData)
+        }
+        catch (error) {
+            console.error("에러!!")
+        }
+        }
+        fetchData()
+    }, [])
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    autoplay: false,
-    arrows: false,
-    appendDots: dots => (
-        <div
-          style={{
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 1000,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        autoplay: false,
+        arrows: false,
+        appendDots: dots => (
+            <div
+            style={{
 
-          }}
-        >
-          <ul style={{ margin: "0px", height: "20px" }}> {dots} </ul>
-        </div>
-      ),
-};
+            }}
+            >
+            <ul style={{ margin: "0px", height: "20px" }}> {dots} </ul>
+            </div>
+        ),
+    };
 
-useEffect(() => {
-    if (sessionStorage.userData) {
-        const logindata = JSON.parse(sessionStorage.getItem('userData'))
-        if(logindata.userid == 150249) {
-            sessionStorage.setItem("authorized", true)
+    useEffect(() => {
+        if (sessionStorage.userData) {
+            const logindata = JSON.parse(sessionStorage.getItem('userData'))
+            if(logindata.userid == 150249) {
+                sessionStorage.setItem("authorized", true)
+            }
+            else {
+                sessionStorage.setItem("authorized", false)
+            }
         }
         else {
-            sessionStorage.setItem("authorized", false)
+            sessionStorage.removeItem("authorized")
         }
-    }
-    else {
-        sessionStorage.removeItem("authorized")
-    }
-})
+    })
 
 
   return (
@@ -106,7 +107,7 @@ useEffect(() => {
                     <ul className={styles.categroycontainer}>
                             <li className={styles.categoryitem}>
                                 <Link to={`/shop/1/1/1`}>
-                                    <img src={"http://localhost:8000/living.jpg"} className={styles.categoryimg}/>
+                                    <img src={`${Server_URL}/living.jpg`} className={styles.categoryimg}/>
                                 </Link>
                                 <Link to={`/shop/1/1/1`}>
                                     <span className={styles.categorytitle}>리빙</span>
@@ -114,7 +115,7 @@ useEffect(() => {
                             </li>
                             <li className={styles.categoryitem}>
                                 <Link to={`/shop/2/1/1`}>
-                                    <img src={"http://localhost:8000/fashion.jpeg"} className={styles.categoryimg}/>
+                                    <img src={`${Server_URL}/fashion.jpeg`} className={styles.categoryimg}/>
                                 </Link>
                                 <Link to={`/shop/2/1/1`}>
                                     <span className={styles.categorytitle}>패션</span>
@@ -122,7 +123,7 @@ useEffect(() => {
                             </li>
                                 <li className={styles.categoryitem}>
                                 <Link to={`/shop/3/1/1`}>
-                                    <img src={"http://localhost:8000/grocery.jpeg"} className={styles.categoryimg}/>
+                                    <img src={`${Server_URL}/grocery.jpeg`} className={styles.categoryimg}/>
                                 </Link>
                                 <Link to={`/shop/3/1/1`}>
                                     <span className={styles.categorytitle}>식품</span>
@@ -130,7 +131,7 @@ useEffect(() => {
                             </li>
                             <li className={styles.categoryitem}>
                                 <Link to={`/shop/4/1/1`}>
-                                    <img src={"http://localhost:8000/hair.jpg"} className={styles.categoryimg}/>
+                                    <img src={`${Server_URL}/hair.jpg`} className={styles.categoryimg}/>
                                 </Link>
                                 <Link to={`/shop/4/1/1`}>
                                     <span className={styles.categorytitle}>헤어,바디</span>

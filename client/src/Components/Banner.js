@@ -12,6 +12,7 @@ const Banner = () => {
 
     const previous = useCallback(() => slickRef.current.slickPrev(), []);
     const next = useCallback(() => slickRef.current.slickNext(), []);
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
     const settings = {
         dots: true,
@@ -33,7 +34,7 @@ const Banner = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const responses = await axios.get("http://localhost:8000/banner", {})
+            const responses = await axios.get(`${Server_URL}/banner`, {})
             const rawData = await responses.data.map((it) => ({
                 bannerid : it.bannerid,
                 bannerurl: it.bannerurl

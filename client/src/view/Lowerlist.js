@@ -25,12 +25,13 @@ const Lowerlist = () => {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
     const title = [ "리빙", "패션", "식품", "헤어,바디" ]
-    const Admin = 150249
+    const Admin = 150249;
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const rawData = await axios.get("http://localhost:8000/shop", {});
+                const rawData = await axios.get(`${Server_URL}/shop`, {});
                 const categoryData = rawData.data.filter((it) => it.category.toString() === categoryid.toString());
                 const prodData = categoryData.map((it) => ({
                     id: it.prodid,

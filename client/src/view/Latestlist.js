@@ -24,31 +24,15 @@ const Latestlist = () => {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
     const title = [ "리빙", "패션", "식품", "헤어,바디" ]
-    const Admin = 150249
+    const Admin = 150249;
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         const rawData = await axios.get("http://localhost:8000/shop", {});
-    //         const categoryData = rawData.data.filter((it) => it.category === categoryid)
-    //         const prodData = categoryData.map((it) => ({
-    //             id : it.prodid,
-    //             name: it.title,
-    //             price: it.price,
-    //             thumbnail: it.thumbnail,
-    //             date: it.date
-    //         }));
-    //         const sortedProd = [...prodData].sort((a,b) => a.date - b.date);
-    //         setProducts(sortedProd);
-    //         console.log(sortedProd)
-            
-    //     }
-    //     fetchData();
-    // }), [categoryid]
+
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const rawData = await axios.get("http://localhost:8000/shop", {});
+                const rawData = await axios.get(`${Server_URL}/shop`, {});
                 const categoryData = rawData.data.filter((it) => it.category.toString() === categoryid.toString());
                 const prodData = categoryData.map((it) => ({
                     id: it.prodid,

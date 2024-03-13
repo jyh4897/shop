@@ -26,10 +26,11 @@ const Product = ({setcCartlength}) => {
     },
   ]);
   const navigate = useNavigate();
+  const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
   useEffect(() => {
     async function resData() {
-      const responses = await aixos.get("http://localhost:8000/shop", {});
+      const responses = await aixos.get(`${Server_URL}/shop`, {});
       const inputData = await responses.data.filter((it) => it.prodid == id);
       const product = await inputData.map((it) => ({
         id: it.prodid,

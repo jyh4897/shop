@@ -17,7 +17,7 @@ const Readerboard = () => {
     const [thumbnail, setThumbnail] = useState([]);
     const quillRef = useRef();
     const navigate = useNavigate();
-
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
     
 
     const imageHandler = () => {
@@ -33,7 +33,7 @@ const Readerboard = () => {
             
             formData.append('img', file);
             try {
-                const result = await axios.post('http://localhost:8000/img', formData);
+                const result = await axios.post(`${Server_URL}/img`, formData);
                 console.log(result.data.url)
                 const IMG_URL = result.data.url
                 const editor = quillRef.current.getEditor();
@@ -125,7 +125,7 @@ const Readerboard = () => {
 
 
             // const boardData = { title, price, category, value }
-            await axios.post('http://localhost:8000/register', formData,{
+            await axios.post(`${Server_URL}/register`, formData,{
             headers: {
                 'Content-Type': 'multipart/form-data',
             }

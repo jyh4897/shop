@@ -11,6 +11,7 @@ const Questionmodal = ({products}) => {
     const [userid, setUserid] = useState('')
     const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
+    const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
     useEffect(() => {
         const storedLoggedIn = sessionStorage.getItem("loggedIn");
@@ -42,7 +43,7 @@ const Questionmodal = ({products}) => {
     async function handleSubmit () {
         const pushData = [products[0].id, userid, content.replace(/\n/g, '<br>')]
         console.log(pushData)
-        await axios.post('http://localhost:8000/question', pushData)
+        await axios.post(`${Server_URL}/question`, pushData)
         .then((result) => {
             console.log('요청성공')
             console.log(result)
