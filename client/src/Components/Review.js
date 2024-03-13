@@ -61,7 +61,7 @@ const Review = ({ id }) => {
                     img3: it.img3,
                     img4: it.img4
                 }));
-                setReviews(rawData);
+                setReviews(rawData.sort((a,b) => b.id - a.id));
                 setCount(rawData.length);
             }
             catch (error) {
