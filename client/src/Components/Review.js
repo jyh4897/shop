@@ -119,6 +119,10 @@ const Review = ({ id }) => {
         navigate('/myOrderList')
     }
 
+    const goEditor = (id) => {
+        navigate(`/review/editor/${id}`)
+    }
+
 
     return (
         <div>
@@ -171,7 +175,8 @@ const Review = ({ id }) => {
                             <p className={styles.itemtitle}>{it.title}</p>
                             <p className={styles.itemcontent} dangerouslySetInnerHTML={{ __html : it.content }} />
                         </div>
-                        {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == Admin ? <button onClick={() => handleOnDelete(it)} className={styles.deletebtn} >삭제하기</button>: ''}    
+                        {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == Admin ? <button onClick={() => handleOnDelete(it)} className={styles.deletebtn} >삭제하기</button>: ''}
+                        {JSON.parse(sessionStorage.getItem('userData')) && JSON.parse(sessionStorage.getItem('userData')).userid == it.userid ? <button onClick={() => goEditor(it.id)} className={styles.editbtn}>수정하기</button>: ''}    
                     </div>               
                 </div>
             )) : (
