@@ -879,6 +879,52 @@ app.post("/review", upload.array("files", 4), async (req, res) => {
   });
 });
 
+app.put("/review", upload.array('files', 4), async(req, res) => {
+  const { reviewid, title, content, rate} = req.body;
+  const fileColumns = ['img1', 'img2', 'img3', 'img4'];
+  const filePaths = req.files.map((file, index) => ({
+      column: fileColumns[index],
+      path: file.path
+  }));
+  const columns = ['title', 'content', 'rate'];
+  const values = [ title, content, rate];
+
+  filePaths.forEach(file => {
+    if (file.path) {
+        const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, "/")
+        .replace("images/", "")
+        .replace("server/", "")}`;
+        columns.push(file.column);
+        values.push(imageUrl);
+    }
+  });
+
+  const placeholders = columns.map(column => `${column} = ?`).join(', ');
+
+  const exQuery = `UPDATE ezteam2.productreview SET img1 = null, img2 = null, img3 = null, img4 = null WHERE reviewid = ${reviewid}`
+
+  connection.query(exQuery, (err, result) => {
+    if(err) {
+      console.error('error!!', err);
+      res.status(500).send('Internal Server Error')
+    }
+    else {
+      const sqlQuery = `UPDATE ezteam2.productreview SET ${placeholders}, date = Now() WHERE reviewid = ?`;
+      values.push(reviewid);
+
+      connection.query(sqlQuery, values, (err, result) => {
+        if(err) {
+          console.error('Error updating into database:',err);
+          res.status(500).send('Internal Server Error')
+        }
+        else {
+          res.status(200).send('Files and text data upload and database updated');
+        }
+      });
+    }  
+  })
+});
+
 app.post("/img", upload.single("img"), (req, res) => {
   const IMG_URL = `http://localhost:8000/${req.file.filename}`;
   res.json({ url: IMG_URL });
