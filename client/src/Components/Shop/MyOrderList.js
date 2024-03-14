@@ -181,6 +181,8 @@ const MyOrderList = () => {
                       <input
                         className="my_order_btnOrder"
                         type="button"
+                        // path="/review/:userid/:orderid/:prodid"
+                        onClick={()=> navigate(`/review/${getMergeData.userId}/${getMergeData.id}/${getMergeData.productCode}`)}
                         value={"리뷰 작성하기"}
                       />
                     </div>
