@@ -143,7 +143,7 @@ const Readerboard = () => {
         catch (error) {
             console.error('에러');
         }
-        
+        navigate(`/shop/${category}/1/1`)
         
 
     }
