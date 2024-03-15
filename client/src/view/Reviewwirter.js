@@ -103,7 +103,7 @@ const Reviewwriter = () => {
         catch(error) {
             console.error('Error during POST request:', error);
         }
-        // navigate('/shop')
+        navigate('/myOrderList')
     }
 
     const handleCancle = () => {
