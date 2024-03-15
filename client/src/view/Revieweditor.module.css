@@ -192,6 +192,12 @@ input[type="text"] {
     display: flex;
 }
 
+.filebox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .filename {
     width: 100px;
     overflow: hidden;

@@ -232,7 +232,7 @@ const Revieweditor = () => {
                     <div className={styles.filedetail}>
                         <div className={styles.filearray}>
                             {img.length ? img.map((img, index) => (
-                            <div key={index}>
+                            <div key={index} className={styles.filebox}>
                                 <img key={img} src={ String(img).includes('http') ? img : URL.createObjectURL(img) } className={styles.previewimg} alt={`Image ${index + 1}`}  onLoad={() => URL.revokeObjectURL(img)}/>
                                 <input type='checkbox' checked={checkedIndices.includes(index)} onChange={() => toggleCheckbox(index)}/>
                             </div>

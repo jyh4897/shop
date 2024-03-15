@@ -19,18 +19,21 @@
 }
 
 .bigimage {
-    width: 500px;
-    height: 500px;
+    width: 520px;
+    height: 520px;
 }
 
 .bigimagedetail {
-    width: 500px;
-    height: 500px;
+    width: 520px;
+    height: 520px;
 }
 
 .smallimages {
     width: 100px;
     height: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .detailimage:hover {
