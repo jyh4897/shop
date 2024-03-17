@@ -6,6 +6,7 @@
   color: white;
   height: 180px;
   bottom: 0px;
+  min-width: 1400px;
 }
 
 .footer_first_container {

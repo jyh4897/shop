@@ -1,44 +1,21 @@
-﻿# 탄소중립 BBANG끗 쇼핑몰 PROJECT
+﻿# BBANG끗 SHOP for carbon neutral
 
-    ezenac K-디지털 Class(AWS클라우드 활용 지능형 웹서비스 풀스택개발)
-    Team2 : 이기현, 김민호, 전윤호
+    -ezenac K-디지털 Class(AWS클라우드 활용 지능형 웹서비스 풀스택개발)
+    -Team2 : 이기현, 김민호, 전윤호
 
-## 기본 개발 기본설정
-
-    React port:3000,
-    node.js port:8000,
-    실행 명령어 : npm start
-    -> node.js, react 동시 서버 구동
-
-## git 명령어 목록
-
-    1. 폴더생성 ex) tanso
-    2. 폴더 내부 터미널(Git Bash) open
-    3. git clone https://github.com/hyundesk/project_shoppingMall.git .    -> 맨뒤에 .을 붙이는건 폴더를 추가 생성하지 않고 현재 열려진 디렉토리에 Git 파일들을 내려받는 다는 뜻.
-    3-1. npm i    -> node.js 패키지 설치
-    3-2. cd client    -> client 디렉토리 이동
-    3-3. npm i    -> react 패키지 설치
-    3-5. cd ..    -> 프로젝트 디렉토리로 이동
-
-    코드 작성
-
-    4. git add .    -> 변경 사항 전체 add
-    5. git commit -m "log기록"    -> 코드 작성/변경/수정 등 변경사항을 간략요약 하여 작성
-    ----------------------------------------------------------
-    6. git branch -M main    -> 중요! 기존 실습때 브랜치명이 서로 달라서 오류를 격었었음.
-       => 이 코드는 내 업로드 마스터 브랜치를 main으로 변경하는 코드
-       ! 한번만 실행하면됨 or 코드 작성 환경이 바뀌었을때 실행
-    ----------------------------------------------------------
-    7. git push origin main    -> 완료
-       * 코드 작성 전 or push할 변동내용을없을때 주기적으로
-    8. git pull
-       명령어로 원격 repositorie의 내용을 최신화 할 것.
-
-## 이기현
-    2024-02-23 수정 및 추가 사항
-    - 저장소를 재생성 및 폴더 구조를 초기화하였습니다.
-    - 결제수단을 추가 : 실시간 계좌이체, 모바일, 카카오 페이
-    - 주문완료("/completeOrder") 페이지를 추가하였습니다.
-    - 배송비 관련 코드를 제거하였습니다.
-    - 김민호님의 로그인, 회원가입을 추가하였습니다.
-    - 서버사이드에서 bodyParser 모듈을 비활성화하였습니다. express 모듈이 그 역할을 대체할 수 있습니다. 해당 모듈이 필요할 경우 다시 활성화하면 됩니다.
+# Teach Stacks
+<br>
+    <div style="margin: 0 auto; text-align: center;" align= "center">
+        <img alt="Static Badge" src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub">
+        <img alt="Static Badge" src="https://img.shields.io/badge/diagram.net-F08705?style=for-the-badge&logo=diagrams.net&logoColor=white">
+        <img alt="Static Badge" src="https://img.shields.io/badge/Git-%23F05032?style=for-the-badge&logo=Git&logoColor=white">
+        <img alt="Static Badge" src="https://img.shields.io/badge/Figma-%23F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
+        <br>
+        <img alt="Static Badge" src="https://img.shields.io/badge/HTML5-%23E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
+        <img alt="Static Badge" src="https://img.shields.io/badge/CSS3-%231572B6?style=for-the-badge&logo=CSS3">
+        <img alt="Static Badge" src="https://img.shields.io/badge/JavaScript-%23F7DF1E?style=for-the-badge&logo=javascript&logoColor=white">
+        <img alt="Static Badge" src="https://img.shields.io/badge/React-%2361DAFB?style=for-the-badge&logo=react&logoColor=white">
+        <br>
+        <img alt="Static Badge" src="https://img.shields.io/badge/Node.js-%23339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
+        <img alt="Static Badge" src="https://img.shields.io/badge/MySQL-%234479A1?style=for-the-badge&logo=mysql&logoColor=white">
+    </div>
