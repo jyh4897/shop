@@ -19,3 +19,50 @@
         <img alt="Static Badge" src="https://img.shields.io/badge/Node.js-%23339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
         <img alt="Static Badge" src="https://img.shields.io/badge/MySQL-%234479A1?style=for-the-badge&logo=mysql&logoColor=white">
     </div>
+
+# Getting Started
+## Installation
+```
+npm install
+```
+## Run
+```
+npm start
+```
+
+# Preview
+## 회원가입, 로그인
+<p align="center"> 
+    <img src="https://github.com/jyh4897/shop/assets/144762560/51236ac0-1046-46ec-969f-c4778dcbfad3">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/b8b71398-ed21-4e21-885b-0235d516b143">
+</p>
+
+## 상품리스트, 개별상품
+<p align='center'>
+    <img src="https://github.com/jyh4897/shop/assets/144762560/82f68258-5906-43a0-85f6-c78108151679">
+    <imb src="https://github.com/jyh4897/shop/assets/144762560/7125c981-4df9-459d-89c0-21fbb94d0515">
+</p>
+
+## 장바구니, 결제
+<p align='center'>
+    <img src="https://github.com/jyh4897/shop/assets/144762560/99d490df-a106-4c6b-8ed7-636cea87b8df">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/aac2297c-e301-4f57-8503-803319ec539e">
+</p>
+
+## 상품문의, 문의답변
+<p align='center'>
+    <img src="https://github.com/jyh4897/shop/assets/144762560/e72ac4ca-4ae5-4292-9473-587a2cb00f18">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/2514f66c-6791-48f0-8a33-120fe6e33c5c">
+</p>
+
+## 리뷰등록, 수정
+<p align='center'>
+    <img src="https://github.com/jyh4897/shop/assets/144762560/dd37bfec-f8b3-4d07-bb5e-2da78a057573">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/4f1c8741-a45c-4e0f-a4a5-968bdf102ee1">
+</p>
+
+## 리뷰삭제, 상품등록
+<p align='center'>
+    <img src="https://github.com/jyh4897/shop/assets/144762560/7e6244fd-8051-40a1-abcc-0cce9aa35937">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/c65393e6-4fbc-4933-8fdf-81a39cf50cc">
+</p>
