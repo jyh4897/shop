@@ -38,9 +38,6 @@ function Header({ cartlength }) {
               로그아웃
             </li>
             <li>
-              <Link to="/modify">정보수정</Link>
-            </li>
-            <li>
               {/* 20240307 업데이트_이기현 */}
               <Link to="/cart">
                 장바구니{" "}
