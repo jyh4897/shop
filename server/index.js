@@ -856,7 +856,7 @@ app.post("/review", upload.array("files", 4), async (req, res) => {
 
   filePaths.forEach((file) => {
     if (file.path) {
-      const imageUrl = `${Server_URL}/${file.path
+      const imageUrl = `http://localhost:8000/${file.path
         .replace(/\\/g, "/")
         .replace("images/", "")
         .replace("server/", "")}`;
@@ -893,7 +893,7 @@ app.put("/review", upload.array('files', 4), async(req, res) => {
 
   filePaths.forEach(file => {
     if (file.path) {
-        const imageUrl = `${Server_URL}/${file.path.replace(/\\/g, "/")
+        const imageUrl = `http://localhost:8000/${file.path.replace(/\\/g, "/")
         .replace("images/", "")
         .replace("server/", "")}`;
         columns.push(file.column);
@@ -928,7 +928,7 @@ app.put("/review", upload.array('files', 4), async(req, res) => {
 });
 
 app.post("/img", upload.single("img"), (req, res) => {
-  const IMG_URL = `${Server_URL}/${req.file.filename}`;
+  const IMG_URL = `http://localhost:8000/${req.file.filename}`;
   res.json({ url: IMG_URL });
 });
 
@@ -952,7 +952,7 @@ app.post("/register", upload.array("files", 5), async (req, res) => {
 
   filePaths.forEach((file) => {
     if (file.path) {
-      const imageUrl = `${Server_URL}/${file.path
+      const imageUrl = `http://localhost:8000/${file.path
         .replace(/\\/g, "/")
         .replace("images/", "")
         .replace("server/", "")}`;
