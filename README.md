@@ -64,5 +64,5 @@ npm start
 ## 리뷰삭제, 상품등록
 <p align='center'>
     <img src="https://github.com/jyh4897/shop/assets/144762560/7e6244fd-8051-40a1-abcc-0cce9aa35937">
-    <img src="https://github.com/jyh4897/shop/assets/144762560/c65393e6-4fbc-4933-8fdf-81a39cf50cc">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/df2f4aaf-6245-4626-9d16-a8ac11f046ac">
 </p>
