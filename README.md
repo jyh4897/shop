@@ -40,7 +40,7 @@ npm start
 ## 상품리스트, 개별상품
 <p align='center'>
     <img src="https://github.com/jyh4897/shop/assets/144762560/82f68258-5906-43a0-85f6-c78108151679" width="400px">
-    <imb src="https://github.com/jyh4897/shop/assets/144762560/cea653fa-3488-4af7-980e-3bbf4c969116" width="400px">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/cea653fa-3488-4af7-980e-3bbf4c969116" width="400px">
 </p>
 
 ## 장바구니, 결제
