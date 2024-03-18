@@ -33,8 +33,8 @@ npm start
 # Preview
 ## 회원가입, 로그인
 <p align="center"> 
-    <img src="https://github.com/jyh4897/shop/assets/144762560/51236ac0-1046-46ec-969f-c4778dcbfad3">
-    <img src="https://github.com/jyh4897/shop/assets/144762560/b8b71398-ed21-4e21-885b-0235d516b143">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/51236ac0-1046-46ec-969f-c4778dcbfad3" width="300px">
+    <img src="https://github.com/jyh4897/shop/assets/144762560/b8b71398-ed21-4e21-885b-0235d516b143" width="300px">
 </p>
 
 ## 상품리스트, 개별상품
