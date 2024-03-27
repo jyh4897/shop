@@ -3,65 +3,38 @@ const cors = require("cors");
 const mysql = require("mysql2");
 const mysqlPromise = require("mysql2/promise");
 const bcrypt = require("bcrypt");
-// const bodyParser = require("body-parser"); // express 모듈이 대체 가능함_이기현
-const session = require("express-session"); //0213 김민호 세션 추가
-const MySQLStore = require("express-mysql-session")(session); //0213 김민호
-const dotenv = require("dotenv"); // 추가_이기현
+
+const session = require("express-session"); 
+const MySQLStore = require("express-mysql-session")(session); 
+const dotenv = require("dotenv"); 
 
 const multer = require("multer");
 const path = require("path");
 
-dotenv.config(); // 추가_이기현
+dotenv.config(); 
 
 const Server_URL = process.env.REACT_APP_Server_Side_Address;
 
-// 이기현_추가 코드 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-// chatGPT 설명
-// mysql2/promise:
-// 프로미스 기반의 API를 사용합니다.
-// 쿼리를 수행한 결과가 프로미스로 반환되어 .then() 및 .catch()를 사용하여 처리할 수 있습니다.
-
-// 저는 "mysql2/promise" 모듈을 사용하였기에 코드를 취합하는 과정에서 문제가 발생합니다.
-// 그러므로 다른 변수 이름(mysqlPromise)으로 해당 모듈을 사용해서,
-// MySQL 연결을 추가 설정함으로써 문제를 해결하였습니다.
-
-// 밑에 MySQL 연결 설정 문단에서 주석을 확인해주십시오.
-
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 const app = express();
-// const port = 8000; // 폐기_이기현
-app.set("port", process.env.PORT || 8000); // 추가_이기현
 
-app.use(express.urlencoded({ extended: false })); // bodyParser >> express 대체_이기현
-app.use(express.json()); // bodyParser >> express 대체_이기현
+app.set("port", process.env.PORT || 8000); 
+
+app.use(express.urlencoded({ extended: false })); 
+app.use(express.json()); 
 
 // CORS 설정
 app.use(cors({ origin: "http://localhost:3000" }));
 
 app.use(express.static(path.join(__dirname + "/images")));
 
-// 이기현_추가 주석 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-// 현재 MySQL 연결 설정이 각각 connection, PromiseConnection 이름으로 되어있습니다,
-// chatGPT 의 답변에 따르면, 현재의 코드는 문제가 없다고 하며,
-// 실제로 목 데이터를 넣고 사용한 결과, 별다른 문제점은 발견되지 않았습니다.
-// const mysql = require("mysql2") 기반으로 모듈을 사용한 분은 connection 사용하시고,
-// 저처럼 require("mysql2/promise") 기반으로 모듈을 사용한 분은 PromiseConnection 을
-// 사용하시기 바랍니다.
-
-// 문제가 발생할 경우 제게도 알려주세요!
-
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT } = process.env;
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const { NH_AccessToken, NH_Iscd } = process.env;
 
-// MySQL 연결 설정
+
 const connection = mysql.createConnection({
-  // 외부 데이터 베이스 MySQL
   host: DB_HOST,
   user: DB_USER,
   password: DB_PASSWORD,
@@ -69,9 +42,7 @@ const connection = mysql.createConnection({
   port: DB_PORT,
 });
 
-// 프로미스 기반 MySQL 연결 설정
 const PromiseConnection = mysqlPromise.createPool({
-  // 외부 데이터 베이스 MySQL
   host: DB_HOST,
   user: DB_USER,
   password: DB_PASSWORD,
@@ -90,8 +61,7 @@ connection.connect((err) => {
 
 app.get("/", (req, res) => res.send(`Hell'o World!`));
 
-// orders 테이블이 존재하지 않을 경우 생성 쿼리문
-// FOREIGN KEY 추가
+
 const createOrdersTableQuery = `CREATE TABLE IF NOT EXISTS orders (
 
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -118,7 +88,7 @@ const createOrdersTableQuery = `CREATE TABLE IF NOT EXISTS orders (
   reviewStatus TINYINT(1) DEFAULT 0
 );`;
 
-connection.query(createOrdersTableQuery); // orders 테이블 생성
+connection.query(createOrdersTableQuery); 
 
 // NH 환율 조회 API
 // 참조 사이트 : 농협 NH 개발자 센터
@@ -126,12 +96,12 @@ connection.query(createOrdersTableQuery); // orders 테이블 생성
 
 const NH_url = "https://developers.nonghyup.com/InquireExchangeRate.nh";
 
-// 날짜를 구하는 메소드
+
 const getValidTodayString = () => {
-  // 반환할 객체(문자열 데이터)
+
   const todayStringData = {
-    tsymd: "", // YYYYMMDD
-    trtm: "", // HHMMSS
+    tsymd: "", 
+    trtm: "", 
   };
 
   const now = new Date(); // 날짜 객체
@@ -201,7 +171,7 @@ const fetchExchangeRate = async () => {
       // 응답 받은 데이터 저장
       data = await response.json();
 
-      // data.REC 값이 참이면 정상적으로 처리가 되었음을 의미한다. while문 종료.
+
       if (data.REC) whileCondition = false;
     }
 
@@ -224,8 +194,8 @@ app.get("/getExchangeRate", async (req, res) => {
 
 // ㅡㅡㅡㅡㅡ 환율 조회 API 종료
 
-// 여기서부터 Paypal API  코드  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-// 현재는 장바구니 데이터에 접근할 수 없으므로 모두 주석처리
+// Paypal API  코드  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
 
 const base = "https://api-m.sandbox.paypal.com";
 
@@ -360,7 +330,7 @@ app.post("/orders/:orderID/capture", async (req, res) => {
 
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-// DB order 테이블에 사용자의 주문서 등록
+
 app.post("/reqOrder", async (req, res, next) => {
   try {
     const { orderSheet } = req.body;
@@ -372,9 +342,9 @@ app.post("/reqOrder", async (req, res, next) => {
     const insertQuery =
       "INSERT INTO orders (orderNumber, userId, productCode, orderName, addr, phoneNumber, reqMessage, count, totalCount, totalAmount, payment, usePoint, imageURL, paymentAmount) VALUES (?)";
 
-    // 사용자의 고유 코드(userid)를 참조하여, 해당 사용자의 포인트 데이터를 조회하는 쿼리
+
     const selectQuery = "SELECT point FROM user WHERE userid = ?";
-    // 사용자의 point 데이터를 업데이트 하는 쿼리
+
     const updateQuery = "UPDATE user SET point = ? WHERE userid = ?";
 
     orderSheet.map(async (article) => {
@@ -416,7 +386,7 @@ app.post("/reqOrder", async (req, res, next) => {
   }
 });
 
-// 오더시트에서 사용자 정보 조회
+
 app.get("/ordersheet", async (req, res, next) => {
   try {
     const { userId } = req.query;
@@ -431,8 +401,7 @@ app.get("/ordersheet", async (req, res, next) => {
   }
 });
 
-// 사용자 주문 내역 페이지에서의 특정 기간별 주문 데이터 요청
-// GET
+
 app.get("/getOrderList", async (req, res, next) => {
   try {
     const { userId, periodDate } = req.query;
@@ -458,9 +427,7 @@ app.get("/getOrderList", async (req, res, next) => {
   }
 });
 
-// 주문 완료 페이지에서 상품 코드를 기반으로,
-// 해당 상품을 구매한 사용자들의 회원 식별 정보를 요청
-// GET
+
 app.get("/products/usertype", async (req, res, next) => {
   try {
     const query =
@@ -475,7 +442,6 @@ app.get("/products/usertype", async (req, res, next) => {
       buyerGroup: 0,
     };
 
-    // 배열을 순회하며, 일치하는 성별이 있을 때마다 그 성별의 데이터를 1씩 증가
     getUserData.forEach((userData) => {
       const { usertype } = userData;
 
@@ -529,9 +495,9 @@ const sessionStore = new MySQLStore(
     schema: {
       tableName: "sessions", // 세션 테이블의 이름
       columnNames: {
-        session_id: "session_id", // 세션 ID를 저장하는 열의 이름
-        expires: "expires", // 세션 만료 시간을 저장하는 열의 이름
-        data: "data", // 세션 데이터를 저장하는 열의 이름
+        session_id: "session_id", 
+        expires: "expires", 
+        data: "data", 
       },
     },
   },
@@ -571,25 +537,21 @@ app.post("/login", async (req, res) => {
               result[0].password
             );
             if (isPasswordMatch && usertype == result[0].usertype) {
-              // 0213 김민호 세션스토리 초기화 확인
               if (!req.session) {
                 req.session = {};
               }
-              //세션데이터 저장(새로운 데이터 추가시 이부분 수정)
-              req.session.usertype = result[0].usertype; //0213 김민호 익스플로우 세션기능 추가
-              req.session.userid = result[0].userid; //0213 김민호 익스플로우 세션기능 추가
+              req.session.usertype = result[0].usertype; 
+              req.session.userid = result[0].userid; 
 
               res.send({ success: true, message: "로그인 성공", data: result });
             } else {
               res.send({
                 success: false,
                 message: "정보가 일치하지 않습니다.",
-                //가입은 되어 있으나 정보가 맞지 않을 때
               });
             }
           } else {
             res.send({ success: false, message: "유저 정보가 없습니다." });
-            //가입된 정보가 없을 시 출력
           }
         }
       }
@@ -604,8 +566,6 @@ app.post("/login", async (req, res) => {
 const usedUserNumbers = new Set(); // 중복 방지를 위한 Set
 
 async function generateUserid(usertype) {
-  // 사용자 유형에 기반한 사용자 ID를 생성하는 로직을 추가합니다.
-  // 단순성을 위해 사용자 유형에 따라 접두어를 추가하고 6자리의 랜덤 숫자를 붙입니다.
   const prefix = {
     personal: 1,
     business: 2,
@@ -621,39 +581,9 @@ async function generateUserid(usertype) {
 
   return userid;
 }
-//-------------------------------사업자 중복 체크 2/14 김민호---------------------------------
-// app.post("/checkbusinessnumber", (req, res) => {
-//   const { businessnumber} = req.body;
 
-//   // 데이터베이스에서 이메일이 이미 존재하는지 확인합니다.
-//   const sql = "SELECT * FROM user WHERE email = ?";
-//   connection.query(sql, [businessnumber], (err, result) => {
-//     if (err) {
-//       console.error("MySQL에서 사업자번호 중복 확인 중 오류:", err);
-//       return res.status(500).json({
-//         success: false,
-//         message: "사업자 중복 확인 중 오류가 발생했습니다.",
-//         error: err.message,
-//       });
-//     }
 
-//     if (result.length > 0) {
-//       // 이미 등록된 사업자인 경우
-//       return res.status(200).json({
-//         success: false,
-//         message: "이미 등록된 사업자입니다.",
-//       });
-//     } else {
-//       // 중복되지 않은 사업자인 경우
-//       return res.status(200).json({
-//         success: true,
-//         message: "사용 가능한 사업자 입니다.",
-//       });
-//     }
-//   });
-// });
-
-//-------------------------------이메일 중복 체크 2/14 김민호---------------------------------
+//-------------------------------이메일 중복 체크 ---------------------------------
 app.post("/checkEmailDuplication", (req, res) => {
   const { email } = req.body;
 
@@ -705,7 +635,6 @@ app.post("/regester", async (req, res) => {
     // 회원번호를 생성합니다. (6자리)
     const userid = await generateUserid(clientUsertype);
 
-    // 클라이언트에서 받은 usertype을 서버에서 사용하는 usertype으로 변환합니다.
     const usertypeNumber = {
       personal: 1, // 개인
       business: 2, // 기업
@@ -714,7 +643,7 @@ app.post("/regester", async (req, res) => {
 
     const serverUsertype = usertypeNumber[clientUsertype];
 
-    // MySQL 쿼리를 작성하여 회원 정보를 데이터베이스에 삽입합니다.
+
     const sql =
       "INSERT INTO user (userid, username, email, password, address, detailedaddress, phonenumber, usertype, businessnumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     connection.query(
@@ -759,33 +688,7 @@ app.post("/regester", async (req, res) => {
     });
   }
 });
-//---------------------------회원가입 수정구현----------------------------------------------
-// app.get("/user", (req, res) => {
-//   const { usertype, userid } = req.session;
 
-//   if (!usertype || !userid) {
-//     return res.status(401).json({ success: false, message: "로그인되어 있지 않습니다." });
-//   }
-
-//   // 여기에서 데이터베이스에서 사용자 정보를 가져오는 로직을 구현합니다.
-//   const sql = "SELECT * FROM user WHERE userid = ?";
-//   connection.query(sql, [userid], (err, result) => {
-//     if (err) {
-//       console.error("사용자 정보 조회 중 오류:", err);
-//       return res.status(500).json({ success: false, message: "사용자 정보 조회 중 오류가 발생했습니다." });
-//     }
-
-//     const userData = result[0]; // 첫 번째 사용자 정보를 가져옴
-
-//     if (!userData) {
-//       return res.status(404).json({ success: false, message: "사용자 정보를 찾을 수 없습니다." });
-//     }
-
-//     res.status(200).json(userData);
-//   });
-// });
-
-// 전윤호 -------------------------------
 
 app.get("/shop", (req, res) => {
   const sqlQuery = "SELECT * FROM ezteam2.SHOPPRODUCTS;";
@@ -1032,7 +935,7 @@ app.get("/answer", (req, res) => {
   });
 });
 
-// app.listen(port, () => console.log(`port${port}`)); << 원본
+
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), `port server on...`);
-}); // 추가_이기현
+});
