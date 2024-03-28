@@ -22,7 +22,7 @@
         <br>
         <p>Back-End</p>
         <img alt="Static Badge" src="https://img.shields.io/badge/Node.js-%23339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
-        <img alt="Static Badge" src="https://img.shields.io/badge/express-%23000000?logo=Express">
+        <img alt="Static Badge" src="https://img.shields.io/badge/express-%23000000?style=for-the-badge&logo=Express">
         <img alt="Static Badge" src="https://img.shields.io/badge/MySQL-%234479A1?style=for-the-badge&logo=mysql&logoColor=white">
     </div>
 
