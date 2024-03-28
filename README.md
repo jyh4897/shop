@@ -1,8 +1,8 @@
 ﻿# BBANG끗 SHOP for carbon neutral
 
     - Team2 : 이기현, 김민호, 전윤호
-    - [전윤호](https://github.com/jyh4897) : 메인, 상품리스트, 개별상품, 리뷰 및 상품 문의 풀스택
-    - [이기현](https://github.com/hyundesk) : 장바구니, 결제, 구매내역 풀스택
+    - 전윤호 : 메인, 상품리스트, 개별상품, 리뷰 및 상품 문의 풀스택
+    - 이기현 : 장바구니, 결제, 구매내역 풀스택
     - 김민호 : 로그인, 회원가입
 
 # Teach Stacks
