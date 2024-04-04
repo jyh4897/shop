@@ -30,6 +30,12 @@
 ## Installation
 ```
 npm install
+
+cd client
+
+npm install
+
+cd ..
 ```
 ## Run
 ```
